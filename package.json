@@ -10,9 +10,18 @@
     "@types/node": "^12.20.12",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.4",
+    "@types/react-redux": "^7.1.16",
+    "@types/react-router-dom": "^5.1.7",
+    "axios": "^0.21.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "redux-persist": "^6.0.0",
+    "redux-toolkit": "^1.1.2",
+    "styled-component": "^2.8.0",
+    "styled-reset": "^4.3.4",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
