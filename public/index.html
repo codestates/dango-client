@@ -11,6 +11,15 @@
     />
 
     <title>DANGO</title>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+        //"REACT_APP_KAKAO_JAVASVRIPT_KEY"로 하면 팝업이안된다.
+        Kakao.init("755871062076058e7a7de06f7324e4e7");
+
+        // SDK 초기화 여부를 판단합니다.
+        console.log(Kakao.isInitialized());
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

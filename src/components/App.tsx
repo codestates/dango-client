@@ -1,7 +1,13 @@
 import React from 'react';
+import KakaoSignIn from './pages/SignInPage/kakao';
 
-function App() {
-  return <div className="App">Yummy Dango!</div>;
+function App(): JSX.Element {
+  return (
+    <div className="App">
+      Yummy Dango!
+      <KakaoSignIn />
+    </div>
+  );
 }
 
 export default App;
