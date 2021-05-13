@@ -1,0 +1,3 @@
+// talent detail
+
+export {};
