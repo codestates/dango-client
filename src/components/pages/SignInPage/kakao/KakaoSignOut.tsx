@@ -1,19 +1,29 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { signOut } from '../../../../_reducer/users/user';
+import { RootState } from '../../../../_reducer';
+import server from '../../../../api';
 
 function KakaoSignOut(): JSX.Element {
-  const { Kakao }: any = window;
-
+  const dispatch = useDispatch();
+  const { accessToken } = useSelector((state: RootState) => state.user);
   const handleKakaoSignout = () => {
-    if (!Kakao.Auth.getAccessToken()) {
-      console.log('로그인하지 않아서 토큰이 없습니당');
-      return;
-    }
-
-    // 로그아웃 함수
-    Kakao.Auth.logout(function () {
-      console.log('kakao로그아웃! 토큰은?->', Kakao.Auth.getAccessToken());
-      // 로컬스토리지와 전역상태에서 토큰 삭제해주기.
-    });
+    const data = {
+      accessToken,
+    };
+    server
+      .post('/users/kakao/signout', data)
+      .then(() => {
+        dispatch(signOut());
+        alert('로그아웃되었습니다.');
+      })
+      .catch((err) => {
+        if (err.response) {
+          alert(err.response.data.message);
+        } else {
+          console.log(err);
+        }
+      });
   };
 
   return (
