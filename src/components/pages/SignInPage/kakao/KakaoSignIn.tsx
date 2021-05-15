@@ -1,45 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import server from '../../../../api';
-import SignUp from '../SignUp';
-import { signIn, UserState } from '../../../../_reducer/users/user';
+import Signup from '../Signup';
+import { signin, UserState } from '../../../../_reducer/users/user';
 
-// const config = {
-//   headers: {
-//     authorization: `Bearer ${result.accessToken}`,
-//   },
-// };
-
-// 필요정보
-// 유저아이디, 닉네임, 이메일, 소셜종류, 이미지
-
-function KakaoSignIn({ Kakao }: any): JSX.Element {
+function KakaoSignin({ Kakao }: any): JSX.Element {
   const dispatch = useDispatch();
 
   const [kakaoAccessToken, setKakaoAccessToken] = useState<string | null>(null);
   const [isUser, setIsUser] = useState<boolean>(true);
 
-  const handleKakaoSignIn = () => {
-    // if (Kakao.Auth.getAccessToken()) {
-    //   console.log('이미 로그인한 상태입니다.');
-    //   return;
-    // }
+  const handleKakaoSignin = () => {
     Kakao.Auth.login({
       success: function (response: any) {
         setKakaoAccessToken(response.access_token);
         console.log(response.access_token);
-        const data = {
-          accessToken: response.access_token,
+        const config = {
+          headers: {
+            authorization: `Bearer ${response.access_token}`,
+          },
         };
         server
-          .post('/users/kakao/signin', data)
+          .post('/users/kakao/signin', null, config)
           .then((response) => {
             console.log('respose.data:::', response.data);
 
             const {
+              _id: id,
               accessToken,
               nickname,
-              socialData: { email, id, image, type: social },
+              socialData: { email, image, social },
             } = response.data;
 
             const payload: UserState = {
@@ -52,13 +42,13 @@ function KakaoSignIn({ Kakao }: any): JSX.Element {
               },
               accessToken,
             };
-            dispatch(signIn(payload));
-            // history.push('/');
+            dispatch(signin(payload));
+            alert('로그인되었습니다.');
           })
           .catch((err) => {
             const { message } = err.response.data;
-            console.log('message::::::', message);
             if (message === '회원정보가 없습니다.') {
+              alert('회원정보가 없습니다. 닉네임을 입력하여 회원가입을 진행해주세요.');
               setIsUser(false);
             }
           });
@@ -69,19 +59,15 @@ function KakaoSignIn({ Kakao }: any): JSX.Element {
     });
   };
 
-  useEffect(() => {
-    // 닉네임 창 띄우고, 닉네임과 토큰들을 준다.
-    console.log('isUser바뀜');
-  }, [isUser]);
-
+  // 카카오,구글 로그인 컴포넌트에서 SignUp컴포넌트를 각각 리턴한다.(social 종류와, 토큰과 setIsUser을 props로 담아서)
   return (
     <>
-      <button type="button" onClick={handleKakaoSignIn}>
+      <button type="button" onClick={handleKakaoSignin}>
         Kakao Login
       </button>
-      {isUser || <SignUp kakaoAccessToken={kakaoAccessToken} setIsUser={setIsUser} />}
+      {isUser || <Signup social="kakao" accessToken={kakaoAccessToken} setIsUser={setIsUser} />}
     </>
   );
 }
 
-export default KakaoSignIn;
+export default KakaoSignin;

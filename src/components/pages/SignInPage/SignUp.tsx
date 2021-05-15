@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import server from '../../../api';
+import { signin, UserState } from '../../../_reducer/users/user';
 
 interface SignupProps {
-  kakaoAccessToken: string | null;
+  social: string;
+  accessToken: string | null;
   setIsUser: (bool: boolean) => void;
 }
 
-function SignUp({ kakaoAccessToken, setIsUser }: SignupProps): JSX.Element {
+// 카카오와 구글의 signin 컴포넌트에서 각각 props를 내려받습니다.
+
+function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
+  const dispatch = useDispatch();
   const [nickname, setNickname] = useState<string | null>(null);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
-    console.log('kakaoToken::::::::::', kakaoAccessToken);
   };
 
   const handleNicknameSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -22,20 +27,50 @@ function SignUp({ kakaoAccessToken, setIsUser }: SignupProps): JSX.Element {
     }
 
     const data = {
-      accessToken: kakaoAccessToken,
       nickname,
     };
+    const config = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
 
-    server
-      .post('/users/kakao/signup', data)
-      .then(() => {
-        alert('회원가입완료');
-        setIsUser(true);
-      })
-      .catch(() => alert('회원가입실패'));
+    // 구글,카카오에 따라 서버랑 통신하는게 다를듯해서, 여기부터 분기하겠습니당.
+    if (social === 'kakao') {
+      server
+        .post('/users/kakao/signup', data, config)
+        .then((response) => {
+          const {
+            _id: id,
+            accessToken,
+            nickname,
+            socialData: { email, image, social },
+          } = response.data;
 
-    // 닉네임 중복체크는? api따로만들거면 버튼만들기. signup에 한꺼번에 할꺼면 버튼x
-    // 받아온 데이터 리덕스에 저장하고 로컬스토리지에 저장.
+          const payload: UserState = {
+            userInfo: {
+              id,
+              social,
+              nickname,
+              image,
+              email,
+            },
+            accessToken,
+          };
+          dispatch(signin(payload)); // 유저정보 저장
+          setIsUser(true); // 닉네임창 없앤다.
+          alert('회원가입완료');
+        })
+        .catch((err) => {
+          const { message } = err.response?.data;
+          alert(message);
+        });
+    }
+
+    // 구글 회원가입인 경우 서버랑 통신코드
+    else {
+      //
+    }
   };
 
   return (
@@ -49,4 +84,4 @@ function SignUp({ kakaoAccessToken, setIsUser }: SignupProps): JSX.Element {
   );
 }
 
-export default SignUp;
+export default Signup;

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserInfo {
-  id: number;
+  id: string;
   social: string;
   nickname: string;
   image: string | undefined;
@@ -11,31 +11,31 @@ interface UserInfo {
 export interface UserState {
   userInfo: UserInfo | null;
   accessToken: string | null;
-  isSignIn?: boolean;
+  isSignin?: boolean;
 }
 
 const initialState: UserState = {
   userInfo: null,
   accessToken: null,
-  isSignIn: false,
+  isSignin: false,
 };
 
 export const userSilce = createSlice({
-  name: 'signin',
+  name: 'user',
   initialState,
   reducers: {
-    signIn: (state, action: PayloadAction<UserState>) => {
+    signin: (state, action: PayloadAction<UserState>) => {
       state.userInfo = action.payload.userInfo;
-      state.isSignIn = true;
+      state.isSignin = true;
       state.accessToken = action.payload.accessToken;
     },
-    signOut: (state) => {
+    signout: () => {
       return initialState;
     },
   },
 });
 
-export const { signIn, signOut } = userSilce.actions;
+export const { signin, signout } = userSilce.actions;
 
 export default userSilce.reducer;
 // index
