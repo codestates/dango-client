@@ -59,7 +59,7 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
     });
   };
 
-  // 카카오,구글 로그인 컴포넌트에서 SignUp컴포넌트를 각각 리턴한다.(social 종류와, 토큰과 setIsUser을 props로 담아서)
+  // 카카오,구글 로그인 컴포넌트에서 SignUp컴포넌트를 각각 리턴합니다.(social 종류와, 토큰과 setIsUser을 props로 담아서)
   return (
     <>
       <button type="button" onClick={handleKakaoSignin}>
