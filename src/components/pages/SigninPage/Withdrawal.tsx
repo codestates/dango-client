@@ -19,9 +19,10 @@ function Withdrawal({ Kakao }: WithdrawalProps): JSX.Element {
   }
 
   // delete는 data를 넣지않기때문에 config로 한번 감싸서 보내면 서버에서 req.body로 받을 수 있다.
+  // TODO:로그인토큰이 만료되면 회원탈퇴가 안된다. 갱신하려면 refreshToken 이필요하기때문. 로그인 할때 리덕스에 저장해서 사용하는 방법밖에 없을듯.
   const config = { data: { nickname: userInfo?.nickname } };
 
-  const handleKakaoWithdrawal = () => {
+  const handleKakaoWithdrawal = async () => {
     Kakao.API.request({
       url: '/v1/user/unlink',
       success: function () {
@@ -41,6 +42,8 @@ function Withdrawal({ Kakao }: WithdrawalProps): JSX.Element {
       },
       fail: function (err: any) {
         console.log(err);
+        const message = err?.split(':')[2]?.split('}')[1];
+        console.log(message);
       },
     });
   };
