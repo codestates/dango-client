@@ -9,7 +9,7 @@ interface SignupProps {
   setIsUser: (bool: boolean) => void;
 }
 
-// 카카오와 구글의 signin 컴포넌트에서 각각 props를 내려받습니다.
+// 카카오와 구글의 signin 컴포넌트에서, 각각 props를 내려받습니다.
 
 function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
   const dispatch = useDispatch();
