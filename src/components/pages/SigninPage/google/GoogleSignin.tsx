@@ -1,9 +1,14 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+
 import GoogleLogin from 'react-google-login';
 import { GoogleLogout } from 'react-google-login';
 import server from '../../../../api/index';
+import { signin, UserState } from '../../../../_reducer/users/user';
 
 function GoogleSignin() {
+  const dispatch = useDispatch();
+
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_LOGIN_KEY as string;
   // 요청 성공 시
 
@@ -27,8 +32,30 @@ function GoogleSignin() {
 
     const config = { headers: { authorization: `Bearer ${response.tokenObj.id_token}` } };
     server
-      .post('/users/google/signin', config)
-      .then((res) => console.log('res: ', res))
+      .post('/users/google/signin', null, config)
+      .then((response) => {
+        console.log('respose.data:::', response.data);
+
+        const {
+          _id: id,
+          accessToken,
+          nickname,
+          socialData: { email, image, social },
+        } = response.data;
+
+        const payload: UserState = {
+          userInfo: {
+            id,
+            social,
+            nickname,
+            image,
+            email,
+          },
+          accessToken,
+        };
+        dispatch(signin(payload));
+        alert('로그인되었습니다.');
+      })
       .catch((err) => console.log('error: ', err));
 
     // // 2-2. if(없는 유저면) 닉네임 모달 켜준다 -> 닉네임과 함께 회원가입 요청
