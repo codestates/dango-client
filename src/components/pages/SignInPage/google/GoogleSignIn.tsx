@@ -1,11 +1,10 @@
-// import axios from 'axios';
 import React from 'react';
 import GoogleLogin from 'react-google-login';
-// import server from '../../../../api/index';
 import { GoogleLogout } from 'react-google-login';
+import server from '../../../../api/index';
 
-function GoogleSignIn() {
-  const googleKey = process.env.REACT_APP_GOOGLE_LOGIN_KEY as string;
+function GoogleSignin() {
+  const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_LOGIN_KEY as string;
   // 요청 성공 시
 
   // 1. 기존 유저
@@ -20,28 +19,31 @@ function GoogleSignIn() {
 
   const responseGoogle = (response: any) => {
     console.log('GoogleLogin response: ', response);
-    console.log('accessToken: ', response.accessToken);
+    console.log('id token: ', response.tokenObj.id_token);
     console.log('email: ', response.profileObj.email);
     console.log('profile image: ', response.profileObj.imageUrl);
 
     // 1-1. 토큰으로 서버에 로그인 요청
 
-    // const config = { headers: { authorization: `Bearer ${response.accessToken}` } };
-    // server.post('/users/google/signin', config);
+    const config = { headers: { authorization: `Bearer ${response.tokenObj.id_token}` } };
+    server
+      .post('/users/google/signin', config)
+      .then((res) => console.log('res: ', res))
+      .catch((err) => console.log('error: ', err));
 
     // // 2-2. if(없는 유저면) 닉네임 모달 켜준다 -> 닉네임과 함께 회원가입 요청
-    // const config = { headers: { nickname: 'nickname', authorization: `Bearer ${response.accessToken}` } };
+    // const config = { headers: { nickname: 'nickname', authorization: `Bearer ${response.tokenObj.id_token}` } };
     // server.post('/users/google/signup', config);
   };
 
   const logout = () => {
-    console.log('logout success');
+    console.log('-----logout success!-----');
   };
 
   return (
     <div>
       <GoogleLogin
-        clientId={googleKey}
+        clientId={GOOGLE_CLIENT_ID}
         render={(renderProps: any) => (
           <button
             type="button"
@@ -57,11 +59,11 @@ function GoogleSignIn() {
         onFailure={(result) => console.log('failure', result)}
         cookiePolicy="single_host_origin"
       />
-      <GoogleLogout clientId={googleKey} buttonText="Logout" onLogoutSuccess={logout}>
+      <GoogleLogout clientId={GOOGLE_CLIENT_ID} buttonText="Logout" onLogoutSuccess={logout}>
         Logout
       </GoogleLogout>
     </div>
   );
 }
 
-export default GoogleSignIn;
+export default GoogleSignin;
