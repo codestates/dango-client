@@ -13,8 +13,12 @@
     <title>DANGO</title>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script>
-        Kakao.init("755871062076058e7a7de06f7324e4e7");
+        Kakao.init('%REACT_APP_KAKAO_JAVASCRIPT_KEY%');
     </script>
+    <script
+    type="text/javascript"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_JAVASCRIPT_KEY%"
+  ></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
