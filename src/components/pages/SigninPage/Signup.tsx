@@ -69,7 +69,42 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
 
     // 구글 회원가입인 경우 서버랑 통신코드
     else {
-      //
+      const data = {
+        nickname,
+      };
+      const config = {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+      };
+      server
+        .post('/users/google/signup', data, config)
+        .then((response) => {
+          const {
+            _id: id,
+            accessToken,
+            nickname,
+            socialData: { email, image, social },
+          } = response.data;
+
+          const payload: UserState = {
+            userInfo: {
+              id,
+              social,
+              nickname,
+              image,
+              email,
+            },
+            accessToken,
+          };
+          dispatch(signin(payload)); // 유저정보 저장
+          setIsUser(true); // 닉네임창 없앤다.
+          alert('회원가입완료');
+        })
+        .catch((err) => {
+          const { message } = err.response?.data;
+          alert(message);
+        });
     }
   };
 

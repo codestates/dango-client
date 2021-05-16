@@ -4,11 +4,7 @@ import { signout } from '../../../_reducer/users/user';
 import { RootState } from '../../../_reducer';
 import server from '../../../api';
 
-interface WithdrawalProps {
-  Kakao: any;
-}
-
-function Withdrawal({ Kakao }: WithdrawalProps): JSX.Element {
+function Withdrawal(): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   let withdrawalURL = '';
@@ -22,6 +18,8 @@ function Withdrawal({ Kakao }: WithdrawalProps): JSX.Element {
   const config = { data: { nickname: userInfo?.nickname } };
 
   const handleKakaoWithdrawal = () => {
+    const { Kakao } = window;
+
     Kakao.API.request({
       url: '/v1/user/unlink',
       success: function () {
@@ -46,7 +44,19 @@ function Withdrawal({ Kakao }: WithdrawalProps): JSX.Element {
   };
 
   const handleGoogleWitherawal = () => {
-    ('');
+    server
+      .delete(withdrawalURL, config)
+      .then(() => {
+        dispatch(signout());
+        alert('회원탈퇴가 완료되었습니다.');
+      })
+      .catch((err) => {
+        if (err.response) {
+          alert(err.response.data.message);
+        } else {
+          console.log(err);
+        }
+      });
   };
 
   return (
