@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+// import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
+
+
 // path뒤의 exact는 세부경로 페이지가 다른 라우트에 걸려있을때만 붙여준다.
 // ex) path="/" exact
 // ex) path="/main" exact (다른 라우트에 path="/main/:id" 와같은 path가 걸려있을때)
@@ -14,6 +17,7 @@ function App(): JSX.Element {
         {/* NavBar */}
         {/* <Switch>
           <Route path="/" exact component={"컴포넌트"} />
+          <Route path="/registration" exact component={TalentRegistrationPage}>
         </Switch> */}
       </div>
     </Router>

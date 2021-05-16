@@ -22,6 +22,7 @@ module.exports = {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     // airbnb ESLint 구성의 문제를 해결하기 위함
+    'react/jsx-props-no-spreading': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
