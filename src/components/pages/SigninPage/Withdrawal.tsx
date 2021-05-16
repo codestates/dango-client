@@ -4,11 +4,7 @@ import { signout } from '../../../_reducer/users/user';
 import { RootState } from '../../../_reducer';
 import server from '../../../api';
 
-interface WithdrawalProps {
-  Kakao: any;
-}
-
-function Withdrawal({ Kakao }: WithdrawalProps): JSX.Element {
+function Withdrawal(): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   let withdrawalURL = '';
@@ -22,7 +18,9 @@ function Withdrawal({ Kakao }: WithdrawalProps): JSX.Element {
   // TODO:로그인토큰이 만료되면 회원탈퇴가 안된다. 갱신하려면 refreshToken 이필요하기때문. 로그인 할때 리덕스에 저장해서 사용하는 방법밖에 없을듯.
   const config = { data: { nickname: userInfo?.nickname } };
 
-  const handleKakaoWithdrawal = async () => {
+  const handleKakaoWithdrawal = () => {
+    const { Kakao } = window;
+
     Kakao.API.request({
       url: '/v1/user/unlink',
       success: function () {
@@ -42,14 +40,24 @@ function Withdrawal({ Kakao }: WithdrawalProps): JSX.Element {
       },
       fail: function (err: any) {
         console.log(err);
-        const message = err?.split(':')[2]?.split('}')[1];
-        console.log(message);
       },
     });
   };
 
   const handleGoogleWitherawal = () => {
-    ('');
+    server
+      .delete(withdrawalURL, config)
+      .then(() => {
+        dispatch(signout());
+        alert('회원탈퇴가 완료되었습니다.');
+      })
+      .catch((err) => {
+        if (err.response) {
+          alert(err.response.data.message);
+        } else {
+          console.log(err);
+        }
+      });
   };
 
   return (

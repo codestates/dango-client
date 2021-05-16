@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import Kakao from './pages/SigninPage/kakao';
 import MapPage from './pages/MapPage/MapPage';
+// import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
 
 // path뒤의 exact는 세부경로 페이지가 다른 라우트에 걸려있을때만 붙여준다.
 // ex) path="/" exact
@@ -22,6 +23,7 @@ function App(): JSX.Element {
             </Route>
             <Route path="/kakao" exact component={Kakao} />
             <Route path="/map" exact component={MapPage} />
+            {/* <Route path="/registration" exact component={TalentRegistrationPage}></Route> */}
           </Switch>
         </div>
       </Router>

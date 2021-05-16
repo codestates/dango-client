@@ -1,3 +1,8 @@
-// talent
+import React from 'react';
+import ImageUploadr from './Sections/imageUploader';
 
-export {};
+export default function TalentRegistrationPage():JSX.Element {
+    return (
+        <ImageUploadr />
+    )
+};
