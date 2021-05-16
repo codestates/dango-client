@@ -1,67 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-
-import GoogleLogin from 'react-google-login';
-import { GoogleLogout } from 'react-google-login';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import server from '../../../../api/index';
+import Signup from '../Signup';
 import { signin, UserState } from '../../../../_reducer/users/user';
 
 function GoogleSignin() {
   const dispatch = useDispatch();
+  const [googleIdToken, setGoogleIdToken] = useState<string | null>(null);
+  const [isUser, setIsUser] = useState<boolean>(true);
 
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_LOGIN_KEY as string;
+
   // 요청 성공 시
-
-  // 1. 기존 유저
-  // 1-1. [엑세스토큰]을 담아서 서버에 로그인 요청을 보낸다.[axios / signin]  DB에 존재하는 유저인지 확인한다.
-  // 필요할 때, DB에서 프로필 정보와 토큰을 꺼내서 클라이언트가 받는다. [axios / get]
-
-  // 2. 회원가입 해야하는 유저
-  // 2-1. [엑세스토큰]을 담아서 서버에 로그인 요청을 보낸다.[axios / signin]  DB에 존재하는 유저인지 확인한다.
-  // 2-2. 404 받았으면 없는 유저! 회원가입 시킨다. - 로그인 후 닉네임 입력 모달로 보냄 - [엑세스토큰 + 닉네임]을 서버로 보낸다 [axios / signup]
-  // 서버는 accessToken으로 구글에 api 요청을해서 사용자의 프로필을 얻어와 DB에 저장
-  // 필요할 때, DB에서 프로필 정보와 토큰을 꺼내서 클라이언트가 받는다. [axios / get]
-
   const responseGoogle = (response: any) => {
+    setGoogleIdToken(response.tokenObj.id_token);
     console.log('GoogleLogin response: ', response);
-    console.log('id token: ', response.tokenObj.id_token);
-    console.log('email: ', response.profileObj.email);
-    console.log('profile image: ', response.profileObj.imageUrl);
-
-    // 1-1. 토큰으로 서버에 로그인 요청
-
-    const config = { headers: { authorization: `Bearer ${response.tokenObj.id_token}` } };
-    server
-      .post('/users/google/signin', null, config)
-      .then((response) => {
-        console.log('respose.data:::', response.data);
-
-        const {
-          _id: id,
-          accessToken,
-          nickname,
-          socialData: { email, image, social },
-        } = response.data;
-
-        const payload: UserState = {
-          userInfo: {
-            id,
-            social,
-            nickname,
-            image,
-            email,
-          },
-          accessToken,
-        };
-        dispatch(signin(payload));
-        alert('로그인되었습니다.');
-      })
-      .catch((err) => console.log('error: ', err));
-
-    // // 2-2. if(없는 유저면) 닉네임 모달 켜준다 -> 닉네임과 함께 회원가입 요청
-    // const config = { headers: { nickname: 'nickname', authorization: `Bearer ${response.tokenObj.id_token}` } };
-    // server.post('/users/google/signup', config);
   };
+
+  // google id token 값을 받았을 때만 실행
+  useEffect(() => {
+    if (googleIdToken !== null) {
+      console.log('googleIdToken:::', googleIdToken);
+      const config = { headers: { authorization: `Bearer ${googleIdToken}` } };
+      server
+        .post('/users/google/signin', null, config)
+        .then((response) => {
+          console.log('respose.data:::', response.data);
+
+          const {
+            _id: id,
+            accessToken,
+            nickname,
+            socialData: { email, image, social },
+          } = response.data;
+
+          const payload: UserState = {
+            userInfo: {
+              id,
+              social,
+              nickname,
+              image,
+              email,
+            },
+            accessToken,
+          };
+          dispatch(signin(payload));
+          alert('로그인되었습니다.');
+        })
+        .catch((err) => {
+          const { message } = err.response.data;
+          if (message === '등록된 회원이 아닙니다.') {
+            alert('회원정보가 없습니다. 닉네임을 입력하여 회원가입을 진행해주세요.');
+            setIsUser(false);
+          }
+        });
+    }
+  }, [googleIdToken]);
 
   const logout = () => {
     console.log('-----logout success!-----');
@@ -89,6 +84,7 @@ function GoogleSignin() {
       <GoogleLogout clientId={GOOGLE_CLIENT_ID} buttonText="Logout" onLogoutSuccess={logout}>
         Logout
       </GoogleLogout>
+      {isUser || <Signup social="google" accessToken={googleIdToken} setIsUser={setIsUser} />}
     </div>
   );
 }
