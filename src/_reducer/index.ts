@@ -1,25 +1,25 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
-import { combineReducers } from "redux";
-import { persistReducer } from 'redux-persist'
+import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
 
-// import signinSlice from './users/signin';
+import user from './users/user';
 
 const reducers = combineReducers({
-    // signinSlice
-})
+  user,
+});
 
 const persistConfig = {
-    key: 'root',
-    storage,
-    whitelist: []   // accessToken, refreshToken 담을 예정
-}
+  key: 'root',
+  storage,
+  whitelist: ['user'], // 'user' 등 넣으면됨(문자로) 6번째줄의 import한 이름을 넣으면됨.
+};
 
-const rootReducer = persistReducer(persistConfig, reducers)
+const rootReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
-    reducer: rootReducer
-})
+  reducer: rootReducer,
+});
 
 export type RootState = ReturnType<typeof store.getState>;
 export default store;
