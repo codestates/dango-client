@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { GoogleLogin } from 'react-google-login';
 import server from '../../../../api/index';
 import Signup from '../Signup';
 import { signin, UserState } from '../../../../_reducer/users/user';
@@ -58,10 +58,6 @@ function GoogleSignin() {
     }
   }, [googleIdToken]);
 
-  const logout = () => {
-    console.log('-----logout success!-----');
-  };
-
   return (
     <div>
       <GoogleLogin
@@ -81,9 +77,7 @@ function GoogleSignin() {
         onFailure={(result) => console.log('failure', result)}
         cookiePolicy="single_host_origin"
       />
-      <GoogleLogout clientId={GOOGLE_CLIENT_ID} buttonText="Logout" onLogoutSuccess={logout}>
-        Logout
-      </GoogleLogout>
+
       {isUser || <Signup social="google" accessToken={googleIdToken} setIsUser={setIsUser} />}
     </div>
   );
