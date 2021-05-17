@@ -1,15 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface UserInfo {
-  id: string;
-  social: string;
-  nickname: string;
-  image: string | undefined;
-  email: string | undefined;
-}
-
 export interface UserState {
-  userInfo: UserInfo | null;
+  userInfo: {
+    id: string;
+    social: string;
+    nickname: string;
+    image: string | undefined;
+    email: string | undefined;
+  } | null;
   accessToken: string | null;
   isSignin?: boolean;
 }
@@ -38,8 +36,3 @@ export const userSilce = createSlice({
 export const { signin, signout } = userSilce.actions;
 
 export default userSilce.reducer;
-// index
-
-// export {};
-// 사용 할 때 dispatch(login(response.data?)) 해주면 되려나??
-// 로그아웃 할 때는 로컬스토리지를 비워주는??
