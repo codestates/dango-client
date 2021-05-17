@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+
 import styled from 'styled-components';
+import server from '../../../../api/index';
 
 declare global {
   interface Window {
@@ -59,6 +62,26 @@ const markerDummy = [
 // * 지도의 현재 레벨을 얻어옵니다
 // const level = map.getLevel();
 // [OPTIONAL] 일정 레벨이상이되면 마커가 안보이거나, 일반마커가아닌 클라스터러 라이브러리로 숫자표시하기
+//------------------------------------------------------------------------------------
+
+
+export interface LocationInterface {
+  latitude: number,
+  longitude: number,
+  area: string
+}
+
+export interface PreviewInterface {
+  category: string,
+  price: number,
+  title: string,
+  nickname: string,
+  subTitle: string,
+  ratings: Array<number>,
+  location: LocationInterface,
+  _id: string
+}
+
 
 function MapSection(): JSX.Element {
   const { kakao } = window;
@@ -68,6 +91,8 @@ function MapSection(): JSX.Element {
   const [latLng, setLatLng] = useState<number[]>([37.489457, 126.7223953]); // 지도중심 위도경도
   const [markers, setMarkers] = useState<any[]>([]);
   const [category, setCategory] = useState<string>('all');
+  const [preview, setPreview] = useState<PreviewInterface>();
+  const { talentId } = useParams<{talentId: string}>();
 
   // 렌더 초기 맵생성 및 지도 이벤트 등록
   useEffect(() => {
@@ -112,6 +137,17 @@ function MapSection(): JSX.Element {
     console.log('bounds', mapBounds);
   }, [mapBounds, category]);
 
+  // 클릭 이벤트 발생시 서버에 요청을 보낸다.
+  useEffect(()=>{
+    server.get(`telent/${talentId}`)
+    .then(response => {
+      setPreview(response.data.talent)
+    })
+    .catch(()=>'')
+  },[talentId])
+
+  
+
   // 마커 생성
   // TODO: 서버연결되면 bounds와 category로 서버에 데이터 요청해서 마커만들기
   const makeMarker = () => {
@@ -126,10 +162,29 @@ function MapSection(): JSX.Element {
         position: new kakao.maps.LatLng(data.lat, data.lng),
         image: markerImage,
         id: data.id,
+        clickable: true
       });
 
+      const iwcontent= `<div class="main" style="padding: 7px;">
+                        <div class="title">제목${preview?.title}</div>
+                        <div class="category">카테고리${preview?.category}</div>
+                        <div class="area">지역${preview?.location.area}</div>
+                        <div class="ratings">별점${preview?.ratings[1]}</div>
+                        <div class="nickname">닉네임${preview?.nickname}</div>
+                        <div class="price">가격${preview?.price}</div>
+                        <div class="subTitle">내용${preview?.subTitle.slice(0,50)}...</div>
+                        <div class="button">More details</div>
+                        </div>
+                        `
+      const iwRemovealbe = true
+
+      const infowindow = new kakao.maps.InfoWindow({
+        content: iwcontent,
+        removable: iwRemovealbe
+      })
+
       kakao.maps.event.addListener(marker, 'click', function () {
-        alert('마커를 클릭했습니다!');
+        infowindow.open(map, marker)
       });
 
       return marker;
