@@ -1,64 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import server from '../../../../api/index';
-
-const CONTAINER = styled.div`
-  display: grid;
-  grid-column: 5/7;
-  border: 1px solid black;
-`;
-
-const FILTERSECTION = styled.div`
-  grid-row: 1/2;
-  border: 1px solid black;
-`;
-
-const TALENTSLIST = styled.div`
-  display: grid;
-  grid-row: 2/4;
-  border: 1px solid black;
-`;
-
-const TALENT = styled.div`
-  border: 1px solid black;
-`;
-
-const CATEGORY = styled.div`
-  border: 1px solid black;
-`;
-
-const NICKNAME = styled.div`
-  border: 1px solid black;
-`;
-
-const RATINGS = styled.div`
-  border: 1px solid black;
-`;
-
-const RATINGSCOUNT = styled.div`
-  border: 1px solid black;
-`;
-
-const PRICE = styled.div`
-  border: 1px solid black;
-`;
-
-const TITLE = styled.div`
-  border: 1px solid black;
-`;
+import {
+  CONTAINER,
+  FILTERSECTION,
+  TALENTSLIST,
+  TALENT,
+  CATEGORY,
+  NICKNAME,
+  RATINGS,
+  RATINGSCOUNT,
+  PRICE,
+  TITLE,
+} from './TalentsSectionStyle';
 
 /* TODO:
- [v] 1. 전체 리스트 렌더 
- [ ] 2. radiobox(sort) 렌더
- [ ] 3. checkbox(filter) 렌더
+ [ ] 1. 전체 리스트 렌더 
+ [v] 2. radiobox(sort) 렌더
+ [v] 3. checkbox(filter) 렌더
  [ ] 4. 지도 마커랑..
  [ ] 5. 카테고리 이모지, 별점 범위로 렌더
 */
 
 /**
  * 1. 전체 리스트 렌더
- * 1-1. axios.get으로 서버에서 모든 데이터를 요청한다. (FIXME: 필터정보, 소트 정보는 어떻게 보내는거지?)
- * 1-2. 받아온 데이터를 렌더한다.
+ * 1-1. 부모(MapPage)가 서버로부터 받아온 데이터를 props로 내려 받아 렌더한다.
+ * 1-2. map으로 돌린다.
  */
 
 /**
@@ -68,13 +34,12 @@ const TITLE = styled.div`
  * FIXME: 전체 옵션을 넣어야하나?
  */
 
-/* 3. checkbox(filter)
-각 카테고리마다 id와 이름을 지정해놓는다. (데이터 파일에)
-체크가 눌렸을 때 어떤 id인지 파악한다.
-그 id의 카테고리들을 달라고 서버로 요청 보낸다!
-
-
-*/
+/*
+ * 3. checkbox(filter) 렌더 (FIXME: 서버가 어떻게 달라고 하는지에 따라..)
+ * 처음 체크박스를 눌렀으면 배열에 푸쉬한다.
+ * 한 번 더 누르면 그 값은 받지 않는다. - 눌려있는지를 파악하고 한 번 더 누르면 배열에서 뺀다.
+ * 하나 눌러진 상태에서 다른 거 또 체크하면 기존 배열에 추가한다.
+ */
 
 interface TalentsListInterface {
   category: string;
@@ -85,6 +50,19 @@ interface TalentsListInterface {
   ratingsCount: number;
   _id: string;
 }
+
+const filterData = [
+  {
+    id: 1,
+    value: 'pet',
+    name: '반려동물',
+  },
+  {
+    id: 2,
+    value: 'lesson',
+    name: '레슨',
+  },
+];
 
 const sortData = [
   {
@@ -103,8 +81,24 @@ const sortData = [
 
 function TalentsSection() {
   const [talentsList, setTalentsList] = useState<TalentsListInterface>();
+  const [checkBoxList, setCheckBoxList] = useState<number[]>([]);
   // radioValue는 sort 정보 보낼 때 쓴다.
   const [radioValue, setRadioValue] = useState<string>('');
+
+  const handleFilterChange = (currentValue: any) => {
+    const currentIndex = checkBoxList.indexOf(currentValue);
+
+    const newCheckBoxList = [...checkBoxList];
+
+    if (currentIndex === -1) {
+      newCheckBoxList.push(currentValue);
+    } else {
+      newCheckBoxList.splice(currentIndex, 1);
+    }
+
+    setCheckBoxList(newCheckBoxList);
+    console.log(newCheckBoxList);
+  };
 
   const handleSortChange = (event: any) => {
     console.log(event.target.value);
@@ -133,6 +127,18 @@ function TalentsSection() {
   return (
     <CONTAINER>
       <FILTERSECTION>
+        {filterData.map((ele) => (
+          <div key={ele.id} onChange={() => handleFilterChange(ele.id)}>
+            <input
+              type="checkbox"
+              id={ele.value}
+              name={ele.value}
+              value={ele.value}
+              checked={checkBoxList.indexOf(ele.id) !== -1}
+            />
+            <label htmlFor={ele.value}>{ele.name}</label>
+          </div>
+        ))}
         {sortData.map((ele) => (
           <div key={ele.id} onChange={handleSortChange}>
             <input type="radio" id={ele.id} name="sort" value={ele.id} />
