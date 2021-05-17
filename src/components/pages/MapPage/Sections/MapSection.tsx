@@ -12,11 +12,6 @@ const CONTAINER = styled.div`
   border: 1px solid black;
 `;
 
-const BUTTON = styled.button`
-  position: absolute;
-  z-index: 10;
-`;
-
 const markerDummy = [
   { id: '1', lat: 37.485076030661446, lng: 126.72999597387181 },
   { id: '2', lat: 37.489457, lng: 126.7223953 },
@@ -26,11 +21,8 @@ const markerDummy = [
 // -------------------------------LOGIC ------------------------------------------
 // 1. 처음 default 좌표 영역(bounds)안의 전체카테고리 재능판매리스트를 서버에서 받는다.
 //   -  서버에서는 재능컬렉션에 위도, 경도값이 있을테니 위도 몇 이상 몇이하 && 경도 몇이상 몇이하 && 카테고리 = 뭐 요렇게 쿼리가능할듯
-// 1.1 리스트안의 값들을 리덕스에 저장한다.(재능글ID, 제목,내용,별점,가격,이름,카테고리이미지,위도경도)
-//     - 지도의 위치를 중심으로 랜더되기때문에 하나의 리듀서에 넣는게 좋을듯.
-//     - 지도가 움직일때마다 리셋시키고 다시 서버에서 받는다.
-// 1.2 받은 위도경도로 마커를 만든다.
-// 1.3 지도가 움직여서 범위가 변하거나, 카테고리를 골랐을 때 서버에 이 두가지를 만족하는 재능판매리스트를 다시 받는다.
+// 1.1 받은 위도경도로 마커를 만든다.
+// 1.2 지도가 움직여서 범위가 변하거나, 카테고리를 골랐을 때 서버에 이 두가지를 만족하는 재능판매리스트를 다시 받는다.
 //
 // 2. 마커에 클릭이벤트를 넣는다.
 //    - 클릭이벤트 함수에서 모달on 시킨다.
@@ -66,32 +58,19 @@ const markerDummy = [
 // ----- 레벨 ------- //
 // * 지도의 현재 레벨을 얻어옵니다
 // const level = map.getLevel();
+// [OPTIONAL] 일정 레벨이상이되면 마커가 안보이거나, 일반마커가아닌 클라스터러 라이브러리로 숫자표시하기
 
 function MapSection(): JSX.Element {
   const { kakao } = window;
   const [map, setMap] = useState<any>();
   const [mapLevel, setMapLevel] = useState<number>(6);
-  const [mapBounds, setMapBounds] = useState<any>();
+  const [mapBounds, setMapBounds] = useState<any>([]);
   const [latLng, setLatLng] = useState<number[]>([37.489457, 126.7223953]); // 지도중심 위도경도
-  const [markers, setMarkers] = useState<any[] | null>(null);
+  const [markers, setMarkers] = useState<any[]>([]);
   const [category, setCategory] = useState<string>('all');
 
+  // 렌더 초기 맵생성 및 지도 이벤트 등록
   useEffect(() => {
-    if (map) {
-      const center = map.getCenter();
-      setLatLng([center.getLat(), center.getLng()]);
-      setBoundsToArray();
-    }
-  }, [map]);
-
-  useEffect(() => {
-    deletemarker();
-    makeMarker();
-    console.log('bounds', mapBounds);
-  }, [mapBounds, category]);
-
-  useEffect(() => {
-    console.log('2');
     const container = document.querySelector('.kakaoMap');
     const options = {
       center: new kakao.maps.LatLng(latLng[0], latLng[1]),
@@ -101,68 +80,79 @@ function MapSection(): JSX.Element {
     const map = new kakao.maps.Map(container, options);
     setMap(map);
 
-    kakao.maps.event.addListener(map, 'click', function (mouseEvent: any) {
-      // 클릭한 위도, 경도 정보를 가져옵니다
-      const latlng = mouseEvent.latLng;
-
-      console.log('위도:::::::::', latlng.getLat());
-      console.log('경도:::::::::', latlng.getLng());
-    });
-
     kakao.maps.event.addListener(map, 'zoom_changed', () => {
-      // let level = map.getLevel();
-      // setMapLevel(level);
-      setBoundsToArray();
+      setBoundsToArray(map);
     });
 
     kakao.maps.event.addListener(map, 'dragend', () => {
-      // let latlng = map.getCenter();
-      // setLatLng([latlng.getLat(), latlng.getLng()]);
-      setBoundsToArray();
+      setBoundsToArray(map);
+    });
+
+    // 개발 테스트용 // 클릭한 위도, 경도 정보를 가져온다.
+    kakao.maps.event.addListener(map, 'click', function (mouseEvent: any) {
+      const latlng = mouseEvent.latLng;
+      console.log('위도:::::::::', latlng.getLat());
+      console.log('경도:::::::::', latlng.getLng());
     });
   }, []);
 
+  // 지도가 생성되면 중심좌표와 지도범위를 갱신해준다.
+  useEffect(() => {
+    if (map) {
+      const center = map.getCenter();
+      setLatLng([center.getLat(), center.getLng()]);
+      setBoundsToArray(map);
+    }
+  }, [map]);
+
+  // 지도범위와 카테고리가 변경될때마다 마커를 삭제-생성 해준다.
+  useEffect(() => {
+    deleteMarker();
+    makeMarker();
+    console.log('bounds', mapBounds);
+  }, [mapBounds, category]);
+
+  // 마커 생성
+  // TODO: 서버연결되면 bounds와 category로 서버에 데이터 요청해서 마커만들기
   const makeMarker = () => {
+    // 마커 이미지, 사이즈, 이미지의 위치 설정
     const markerImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(50, 58), {
       offset: new window.kakao.maps.Point(20, 58),
     });
-    const markers: any = markerDummy.map((data) => {
+
+    const newMarkers = markerDummy.map((data) => {
       const marker = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(data.lat, data.lng),
         image: markerImage,
         id: data.id,
       });
+
+      kakao.maps.event.addListener(marker, 'click', function () {
+        alert('마커를 클릭했습니다!');
+      });
+
       return marker;
     });
-    setMarkers(markers);
+    setMarkers(newMarkers);
+    console.log('마커만들었음');
   };
 
-  const deletemarker = () => {
+  // 마커 삭제
+  const deleteMarker = () => {
     markers?.forEach((marker) => marker.setMap(null));
     console.log('마커삭제함');
   };
 
-  const setBoundsToArray = () => {
-    if (map) {
-      const bounds = map.getBounds();
-      setMapBounds([
-        [bounds.qa, bounds.pa],
-        [bounds.ha, bounds.oa],
-      ]);
-    }
+  //
+  const setBoundsToArray = (map: any) => {
+    const bounds = map.getBounds();
+    setMapBounds([
+      [bounds.qa, bounds.pa],
+      [bounds.ha, bounds.oa],
+    ]);
   };
-  useEffect(() => {
-    console.log('markers::::::::', markers);
-    if (markers) markers.forEach((marker) => console.log('markerID::::::', marker.id));
-  }, [markers]);
 
-  return (
-    <CONTAINER className="kakaoMap">
-      <BUTTON type="button" onClick={deletemarker}>
-        마커초기화
-      </BUTTON>
-    </CONTAINER>
-  );
+  return <CONTAINER className="kakaoMap" />;
 }
 export default MapSection;

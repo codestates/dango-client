@@ -21,8 +21,8 @@ function App(): JSX.Element {
             <Route path="/" exact>
               Yummy Dango!
             </Route>
-            <Route path="/kakao" exact component={Kakao} />
-            <Route path="/map" exact component={MapPage} />
+            <Route path="/kakao" component={Kakao} />
+            <Route path="/map" component={MapPage} />
             {/* <Route path="/registration" exact component={TalentRegistrationPage}></Route> */}
           </Switch>
         </div>
