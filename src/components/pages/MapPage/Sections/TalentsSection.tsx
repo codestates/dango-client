@@ -17,8 +17,10 @@ import {
  [ ] 1. 전체 리스트 렌더 
  [v] 2. radiobox(sort) 렌더
  [v] 3. checkbox(filter) 렌더
- [ ] 4. 지도 마커랑..
+ [ ] 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
  [ ] 5. 카테고리 이모지, 별점 범위로 렌더
+ [ ] 6. sort reducer 만들기
+ [ ] 7. filter 체크리스트 숫자를 카테고리 스트링으로 바꿔줘야 함.
 */
 
 /**
@@ -31,7 +33,8 @@ import {
  * 2. radiobox(sort) 렌더
  * 유저가 가격순을 눌렀어. 그러면 누른 타겟을 토대로 그 value를 읽어서
  * body의 sort 키에 'price'  ||  'ratings'  ||  'review'를 넣어 보낸다.
- * FIXME: 전체 옵션을 넣어야하나? sort 안 하면 기본적으로 거리순으로 정렬된 데이터.
+ * sort 안 하면 기본적으로 거리순으로 정렬된 데이터.
+ * FIXME: radiobox는 해제가 안되니까 전체옵션 필요할듯
  */
 
 /*
@@ -43,8 +46,8 @@ import {
 
 /**
  * 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
- * 프리뷰 모달은 마커를 클릭 했을 때 뜨는데..
- * TODO: 재능 리스트 클릭 ==> 마커 클릭 인식하게.. 해야하나.. how..?
+ * 프리뷰 모달 infowindow은 마커를 클릭 했을 때 뜨는데..
+ * TODO: 재능 리스트 클릭 시 infowindow.open
  */
 
 /**
@@ -53,7 +56,7 @@ import {
  * 4.75 <= x <= 5.0 ==> 5.0 ==> ⭐️⭐️⭐️⭐️⭐️
  * 4.25 <= x < 4.75 ==> 4.5
  * 3.75 <= x < 4.25 ==> 4.0 ==> ⭐️⭐️⭐️⭐️
- * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다? (모달에서도 쓸 수 있긴 함..)
+ * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
  */
 
 interface TalentsListInterface {
@@ -65,6 +68,12 @@ interface TalentsListInterface {
   ratingsCount: number;
   _id: string;
 }
+
+// interface FilterDataInterface {
+//   id: number;
+//   value: string | number;
+//   name: string;
+// }[]
 
 const filterData = [
   {
@@ -96,10 +105,11 @@ const sortData = [
 
 function TalentsSection() {
   const [talentsList, setTalentsList] = useState<TalentsListInterface>();
-  const [checkBoxList, setCheckBoxList] = useState<number[]>([]);
+  const [checkBoxList, setCheckBoxList] = useState<string[]>([]);
   // radioValue는 sort 정보 보낼 때 쓴다.
   const [radioValue, setRadioValue] = useState<string>('');
 
+  // checkbox(filter)
   const handleFilterChange = (currentValue: any) => {
     const currentIndex = checkBoxList.indexOf(currentValue);
 
@@ -115,6 +125,7 @@ function TalentsSection() {
     console.log(newCheckBoxList);
   };
 
+  // radiobox(sort)
   const handleSortChange = (event: any) => {
     console.log(event.target.value);
     setRadioValue(event.target.value);
@@ -143,13 +154,13 @@ function TalentsSection() {
     <CONTAINER>
       <FILTERSECTION>
         {filterData.map((ele) => (
-          <div key={ele.id} onChange={() => handleFilterChange(ele.id)}>
+          <div key={ele.id} onChange={() => handleFilterChange(ele.value)}>
             <input
               type="checkbox"
               id={ele.value}
               name={ele.value}
               value={ele.value}
-              checked={checkBoxList.indexOf(ele.id) !== -1}
+              checked={checkBoxList.indexOf(ele.value) !== -1}
             />
             <label htmlFor={ele.value}>{ele.name}</label>
           </div>
