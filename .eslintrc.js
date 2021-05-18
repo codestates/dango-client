@@ -33,6 +33,9 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'jsx-a11y/label-has-associated-control': 'off',
+    'jsx-a11y/label-has-for': 'off',
+    'react/jsx-boolean-value': 'off',
   },
   settings: {
     'import/resolver': {
