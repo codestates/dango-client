@@ -1,4 +1,5 @@
 import React from 'react';
+import 'dotenv/config';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import Kakao from './pages/SigninPage/kakao';
