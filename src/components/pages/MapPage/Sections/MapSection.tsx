@@ -65,21 +65,16 @@ const markerDummy = [
 //------------------------------------------------------------------------------------
 
 
-export interface LocationInterface {
-  latitude: number,
-  longitude: number,
-  area: string
-}
-
 export interface PreviewInterface {
-  category: string,
-  price: number,
-  title: string,
-  nickname: string,
-  subTitle: string,
-  ratings: Array<number>,
-  location: LocationInterface,
-  _id: string
+  category?: string;
+  price?: number;
+  title?: string;
+  nickname?: string;
+  description?: string;
+  ratings?: Array<number | null>;
+  location?: Array<number | null>;
+  address?: string;
+  _id?: string;
 }
 
 
@@ -141,10 +136,11 @@ function MapSection(): JSX.Element {
   useEffect(()=>{
     server.get(`telent/${talentId}`)
     .then(response => {
-      setPreview(response.data.talent)
+      console.log(response)
+      setPreview(response.data)
     })
     .catch(()=>'')
-  },[talentId])
+  },[])
 
   
 
@@ -168,19 +164,19 @@ function MapSection(): JSX.Element {
       const iwcontent= `<div class="main" style="padding: 7px;">
                         <div class="title">제목${preview?.title}</div>
                         <div class="category">카테고리${preview?.category}</div>
-                        <div class="area">지역${preview?.location.area}</div>
-                        <div class="ratings">별점${preview?.ratings[1]}</div>
+                        <div class="address">지역${preview?.address}</div>
+                        <div class="ratings">별점${preview?.ratings}</div>
                         <div class="nickname">닉네임${preview?.nickname}</div>
                         <div class="price">가격${preview?.price}</div>
-                        <div class="subTitle">내용${preview?.subTitle.slice(0,50)}...</div>
+                        <div class="description">내용${preview?.description}</div>
                         <div class="button">More details</div>
                         </div>
                         `
-      const iwRemovealbe = true
+      const iwRemoveable = true
 
       const infowindow = new kakao.maps.InfoWindow({
         content: iwcontent,
-        removable: iwRemovealbe
+        removable: iwRemoveable
       })
 
       kakao.maps.event.addListener(marker, 'click', function () {
