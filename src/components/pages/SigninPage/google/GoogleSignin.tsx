@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
 import server from '../../../../api/index';
 import Signup from '../Signup';
-import { signin, UserState } from '../../../../_reducer/users/user';
+import { signin, UserState } from '../../../../_reducer/user';
 
 function GoogleSignin() {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function GoogleSignin() {
             nickname,
             socialData: { email, image, social },
             sold,
-            bought
+            bought,
           } = response.data;
 
           const payload: UserState = {
@@ -45,7 +45,7 @@ function GoogleSignin() {
               image,
               email,
               sold,
-              bought
+              bought,
             },
             accessToken,
           };

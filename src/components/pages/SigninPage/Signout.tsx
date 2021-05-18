@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GoogleLogout } from 'react-google-login';
-import { signout } from '../../../_reducer/users/user';
+import { signout } from '../../../_reducer/user';
 import { RootState } from '../../../_reducer';
 import server from '../../../api';
 

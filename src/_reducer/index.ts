@@ -3,7 +3,7 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 
-import user from './users/user';
+import user from './user';
 
 const reducers = combineReducers({
   user,
