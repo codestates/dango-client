@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+
 export interface UserState {
   userInfo: {
     id: string;
@@ -7,6 +8,16 @@ export interface UserState {
     nickname: string;
     image: string | undefined;
     email: string | undefined;
+    sold: {
+      title: string | undefined;
+      address: string | undefined;
+      price: number | undefined;
+    } | null;
+    bought: {
+      title: string | undefined;
+      address: string | undefined;
+      price: number | undefined;
+    } | null;
   } | null;
   accessToken: string | null;
   isSignin?: boolean;
@@ -18,7 +29,7 @@ const initialState: UserState = {
   isSignin: false,
 };
 
-export const userSilce = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -33,6 +44,6 @@ export const userSilce = createSlice({
   },
 });
 
-export const { signin, signout } = userSilce.actions;
+export const { signin, signout } = userSlice.actions;
 
-export default userSilce.reducer;
+export default userSlice.reducer;
