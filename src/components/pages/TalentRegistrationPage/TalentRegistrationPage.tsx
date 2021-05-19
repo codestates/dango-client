@@ -40,7 +40,6 @@ export default function TalentRegistrationPage(): JSX.Element {
     title: '',
     userId: userInfo?.id,
   });
-  const [toggle, setToggle] = useState('off');
 
   useEffect(() => {
     console.log('location::::', location);
