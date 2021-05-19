@@ -43,8 +43,8 @@ function imageUploader(): JSX.Element {
         inputWithFilesContent={(files) => `+ ${3 - files.length} More`}
         styles={{
           dropzone: {
-            width: 350,
-            height: 350,
+            width: 150,
+            height: 150,
             borderWidth: 2,
             borderRadius: 2,
             borderColor: '#eeeeee',
@@ -59,8 +59,8 @@ function imageUploader(): JSX.Element {
             minHeight: 220,
           },
           previewImage: {
-            maxHeight: 200,
-            maxWidth: 200,
+            maxHeight: 150,
+            maxWidth: 150,
           },
         }}
       />
