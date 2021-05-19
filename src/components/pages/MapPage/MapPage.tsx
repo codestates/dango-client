@@ -18,6 +18,8 @@ function MapPage(): JSX.Element {
   const { latLng, width, sort = null, filter = null } = useSelector((state: RootState) => state.map);
 
   const [map, setMap] = useState<any>();
+  // infoWindowGroup구조 = [[talentData, infowindow, marker]]
+  // 예시) group의 talentId에 접근하려면 -> infoWindowGroup[i][0].id
   const [infoWindowGroup, setInfoWindowGroup] = useState<any[]>([]);
 
   useEffect(() => {
@@ -37,7 +39,6 @@ function MapPage(): JSX.Element {
         } = data;
         return { id, title, nickname, location, category, ratings, price, address, description };
       });
-      console.log('콘솔로찍은 서버에서온 talentData:::::::::;', newTalentData);
       // 지도범위, 정렬기준, 카테고리가 바뀔때마다 해당하는 talentData를 서버에서 받아서 갱신시킨다.
       dispatch(postData({ talentData: newTalentData }));
     });
@@ -46,7 +47,12 @@ function MapPage(): JSX.Element {
   return (
     <CONTAINER>
       <MapSection map={map} setMap={setMap} infoWindowGroup={infoWindowGroup} setInfoWindowGroup={setInfoWindowGroup} />
-      <TalentsSection />
+      <TalentsSection
+        map={map}
+        setMap={setMap}
+        infoWindowGroup={infoWindowGroup}
+        setInfoWindowGroup={setInfoWindowGroup}
+      />
     </CONTAINER>
   );
 }

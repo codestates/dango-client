@@ -51,7 +51,6 @@ export const mapSlice = createSlice({
   reducers: {
     postData: (state, action: PayloadAction<MapState>) => {
       state.talentData = action.payload.talentData;
-      console.log('리덕스내의 state.talentData::::::', state.talentData);
     },
     setMapConfig: (state, action: PayloadAction<MapState>) => {
       const { mapLevel, latLng, width } = action.payload;

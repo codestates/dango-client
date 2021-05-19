@@ -93,12 +93,19 @@ const sortData = [
     name: '고용횟수순',
   },
 ];
+interface MapSectionProps {
+  map: any;
+  setMap: (map: any) => void;
+  infoWindowGroup: any[];
+  setInfoWindowGroup: (infoWindowGroup: any) => void;
+}
 
-function TalentsSection() {
+function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
   const [talentsList, setTalentsList] = useState<TalentsListInterface>();
   const [checkBoxList, setCheckBoxList] = useState<number[]>([]);
   // radioValue는 sort 정보 보낼 때 쓴다.
   const [radioValue, setRadioValue] = useState<string>('');
+  // const [open, setOpen] = useState<boolean>(false);
 
   const handleFilterChange = (currentValue: any) => {
     const currentIndex = checkBoxList.indexOf(currentValue);
@@ -127,6 +134,12 @@ function TalentsSection() {
       width: [10, 40],
     },
   };
+
+  // useEffect(() => {
+  //   if (infoWindowGroup.length > 0) {
+  //     setOpen(true);
+  //   }
+  // }, [infoWindowGroup]);
 
   // 서버에 재능 리스트 요청
   useEffect(() => {
@@ -163,6 +176,9 @@ function TalentsSection() {
       </FILTERSECTION>
       <TALENTSLIST>
         <TALENT>
+          {/* {open && (
+            <div style={{ position: 'absolute', zIndex: 99, top: '100px' }}>{infoWindowGroup[0][0].title}찍히나??</div>
+          )} */}
           <CATEGORY>카테고리{talentsList?.category}</CATEGORY>
           <TITLE>재능 글 제목{talentsList?.title}</TITLE>
           <PRICE>가격{talentsList?.price}</PRICE>
