@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import server from '../../../../api/index';
 import { RootState } from '../../../../_reducer';
 import { handleSort, handleFilter, MapState } from '../../../../_reducer/map';
 import {
@@ -17,7 +16,7 @@ import {
 } from './TalentsSectionStyle';
 
 /* TODO:
- [ ] 1. 전체 리스트 렌더 
+ [ ] 1. 리덕스에서 데이터 꺼내서 렌더 - useSelector
  [v] 2. radiobox(sort) 렌더
  [v] 3. checkbox(filter) 렌더
  [x] 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
@@ -55,10 +54,6 @@ import {
  * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
  */
 
-/*
- FIXME: 유저마다 filter정보가 달라야하는데..
- */
-
 interface TalentsListInterface {
   category: string;
   title: string;
@@ -72,13 +67,38 @@ interface TalentsListInterface {
 const filterData = [
   {
     id: 1,
+    value: 'business',
+    name: '비즈니스',
+  },
+  {
+    id: 2,
+    value: 'coding',
+    name: '개발/디자인',
+  },
+  {
+    id: 3,
+    value: 'health',
+    name: '건강',
+  },
+  {
+    id: 4,
+    value: 'lesson',
+    name: '레슨',
+  },
+  {
+    id: 5,
+    value: 'living',
+    name: '홈/리빙',
+  },
+  {
+    id: 6,
     value: 'pet',
     name: '반려동물',
   },
   {
-    id: 2,
-    value: 'lesson',
-    name: '레슨',
+    id: 7,
+    value: 'etc',
+    name: '기타',
   },
 ];
 
@@ -99,7 +119,7 @@ const sortData = [
 
 function TalentsSection() {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state: RootState) => state.map);
+  const { filter, talentData } = useSelector((state: RootState) => state.map);
   const [talentsList, setTalentsList] = useState<TalentsListInterface>();
 
   // checkbox(filter)
@@ -139,25 +159,6 @@ function TalentsSection() {
     };
     dispatch(handleSort(payload));
   };
-
-  const config = {
-    data: {
-      category: 'all',
-      location: [100, 200],
-      width: [10, 40],
-    },
-  };
-
-  // 서버에 재능 리스트 요청
-  useEffect(() => {
-    server
-      .get('/talents/map', config)
-      .then((res) => {
-        console.log('res:::', res);
-        setTalentsList(res.data.result);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   return (
     <CONTAINER>
