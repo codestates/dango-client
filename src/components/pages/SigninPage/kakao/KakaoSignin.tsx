@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import server from '../../../../api';
 import Signup from '../Signup';
-import { signin, UserState } from '../../../../_reducer/users/user';
+import { signin, UserState } from '../../../../_reducer/user';
 
 function KakaoSignin({ Kakao }: any): JSX.Element {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
               nickname,
               socialData: { email, image, social },
               sold,
-              bought
+              bought,
             } = response.data;
 
             const payload: UserState = {
@@ -42,7 +42,7 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
                 image,
                 email,
                 sold,
-                bought
+                bought,
               },
               accessToken,
             };

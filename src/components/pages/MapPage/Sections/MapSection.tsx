@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-
 import styled from 'styled-components';
-import server from '../../../../api/index';
+import { RootState } from '../../../../_reducer';
+import { getData, setMapConfig } from '../../../../_reducer/map';
+import server from '../../../../api';
 
 declare global {
   interface Window {
@@ -14,12 +16,6 @@ const CONTAINER = styled.div`
   grid-column: 1/5;
   border: 1px solid black;
 `;
-
-const markerDummy = [
-  { id: '1', lat: 37.485076030661446, lng: 126.72999597387181 },
-  { id: '2', lat: 37.489457, lng: 126.7223953 },
-  { id: '3', lat: 37.49523575818197, lng: 126.72842148515839 },
-];
 
 // -------------------------------LOGIC ------------------------------------------
 // 1. 처음 default 좌표 영역(bounds)안의 전체카테고리 재능판매리스트를 서버에서 받는다.
@@ -64,7 +60,6 @@ const markerDummy = [
 // [OPTIONAL] 일정 레벨이상이되면 마커가 안보이거나, 일반마커가아닌 클라스터러 라이브러리로 숫자표시하기
 //------------------------------------------------------------------------------------
 
-
 export interface PreviewInterface {
   category?: string;
   price?: number;
@@ -77,23 +72,26 @@ export interface PreviewInterface {
   _id?: string;
 }
 
+interface MapSectionProps {
+  map: any;
+  setMap: (map: any) => void;
+}
 
-function MapSection(): JSX.Element {
+function MapSection({ map, setMap }: MapSectionProps): JSX.Element {
   const { kakao } = window;
-  const [map, setMap] = useState<any>();
-  const [mapLevel, setMapLevel] = useState<number>(6);
-  const [mapBounds, setMapBounds] = useState<any>([]);
-  const [latLng, setLatLng] = useState<number[]>([37.489457, 126.7223953]); // 지도중심 위도경도
   const [markers, setMarkers] = useState<any[]>([]);
-  const [category, setCategory] = useState<string>('all');
   const [preview, setPreview] = useState<PreviewInterface>();
-  const { talentId } = useParams<{talentId: string}>();
+  const { talentId } = useParams<{ talentId: string }>();
 
+  const dispatch = useDispatch();
+  const { mapLevel, latLng, width, talentData } = useSelector((state: RootState) => state.map);
+
+  const infowindowRef = useRef<any[]>([]);
   // 렌더 초기 맵생성 및 지도 이벤트 등록
   useEffect(() => {
     const container = document.querySelector('.kakaoMap');
     const options = {
-      center: new kakao.maps.LatLng(latLng[0], latLng[1]),
+      center: latLng && new kakao.maps.LatLng(latLng[0], latLng[1]),
       level: mapLevel,
     };
     // 지도 생성
@@ -101,11 +99,11 @@ function MapSection(): JSX.Element {
     setMap(map);
 
     kakao.maps.event.addListener(map, 'zoom_changed', () => {
-      setBoundsToArray(map);
+      renewMapConfig(map);
     });
 
     kakao.maps.event.addListener(map, 'dragend', () => {
-      setBoundsToArray(map);
+      renewMapConfig(map);
     });
 
     // 개발 테스트용 // 클릭한 위도, 경도 정보를 가져온다.
@@ -114,35 +112,16 @@ function MapSection(): JSX.Element {
       console.log('위도:::::::::', latlng.getLat());
       console.log('경도:::::::::', latlng.getLng());
     });
+    // 지도를 만들었으니 지도범위 상태를 갱신시킨다.
+    renewMapConfig(map);
   }, []);
 
-  // 지도가 생성되면 중심좌표와 지도범위를 갱신해준다.
-  useEffect(() => {
-    if (map) {
-      const center = map.getCenter();
-      setLatLng([center.getLat(), center.getLng()]);
-      setBoundsToArray(map);
-    }
-  }, [map]);
-
-  // 지도범위와 카테고리가 변경될때마다 마커를 삭제-생성 해준다.
+  // talentData가 갱신될때마다 마커를 새로만들어준다.
   useEffect(() => {
     deleteMarker();
     makeMarker();
-    console.log('bounds', mapBounds);
-  }, [mapBounds, category]);
-
-  // 클릭 이벤트 발생시 서버에 요청을 보낸다.
-  useEffect(()=>{
-    server.get(`telent/${talentId}`)
-    .then(response => {
-      console.log(response)
-      setPreview(response.data)
-    })
-    .catch(()=>'')
-  },[])
-
-  
+    console.log('bounds', width);
+  }, [talentData]);
 
   // 마커 생성
   // TODO: 서버연결되면 bounds와 category로 서버에 데이터 요청해서 마커만들기
@@ -151,17 +130,18 @@ function MapSection(): JSX.Element {
     const markerImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(50, 58), {
       offset: new window.kakao.maps.Point(20, 58),
     });
+    if (talentData && talentData[0].id !== '') {
+      const newMarkers = talentData.map((data) => {
+        const [lng, lat] = data.location;
 
-    const newMarkers = markerDummy.map((data) => {
-      const marker = new kakao.maps.Marker({
-        map: map,
-        position: new kakao.maps.LatLng(data.lat, data.lng),
-        image: markerImage,
-        id: data.id,
-        clickable: true
-      });
+        const marker = new kakao.maps.Marker({
+          map: map,
+          position: new kakao.maps.LatLng(lat, lng),
+          image: markerImage,
+          clickable: true,
+        });
 
-      const iwcontent= `<div class="main" style="padding: 7px;">
+        const iwcontent = `<div class="main" style="padding: 7px;">
                         <div class="title">제목${preview?.title}</div>
                         <div class="category">카테고리${preview?.category}</div>
                         <div class="address">지역${preview?.address}</div>
@@ -171,22 +151,31 @@ function MapSection(): JSX.Element {
                         <div class="description">내용${preview?.description}</div>
                         <div class="button">More details</div>
                         </div>
-                        `
-      const iwRemoveable = true
+                        `;
+        const iwRemoveable = true;
 
-      const infowindow = new kakao.maps.InfoWindow({
-        content: iwcontent,
-        removable: iwRemoveable
-      })
+        const infowindow = new kakao.maps.InfoWindow({
+          content: iwcontent,
+          removable: iwRemoveable,
+        });
 
-      kakao.maps.event.addListener(marker, 'click', function () {
-        infowindow.open(map, marker)
+        kakao.maps.event.addListener(marker, 'click', function () {
+          infowindow.open(map, marker);
+        });
+
+        // [talentId,infowindow,marker] 형태로 묶어서 따로 저장한다.
+        if (infowindowRef.current.length < 3) {
+          infowindowRef.current = [...infowindowRef.current, [data.id, infowindow, marker]];
+        }
+        // if (infowindowRef.current.length === 3) {
+        //   dispatch(setInfowindow({ infowindowGroup: infowindowRef.current }));
+        // }
+
+        return marker;
       });
-
-      return marker;
-    });
-    setMarkers(newMarkers);
-    console.log('마커만들었음');
+      setMarkers(newMarkers);
+      console.log('마커만들었음');
+    }
   };
 
   // 마커 삭제
@@ -195,15 +184,49 @@ function MapSection(): JSX.Element {
     console.log('마커삭제함');
   };
 
-  //
-  const setBoundsToArray = (map: any) => {
-    const bounds = map.getBounds();
-    setMapBounds([
-      [bounds.qa, bounds.pa],
-      [bounds.ha, bounds.oa],
-    ]);
+  const renewMapConfig = (map: any) => {
+    if (map) {
+      const bounds = map.getBounds();
+      const mapLevel = map.getLevel();
+      const center = map.getCenter();
+
+      const payload = {
+        mapLevel,
+        latLng: [center.getLat(), center.getLng()], // 지도중심의 [위도,경도]
+        width: [bounds.qa, bounds.pa], // 지도범위의 [남,북]
+      };
+
+      dispatch(setMapConfig(payload));
+    }
   };
 
-  return <CONTAINER className="kakaoMap" />;
+  const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('btn;;;;;;;;;;;', event.currentTarget.textContent);
+    const num = String(event.currentTarget.textContent);
+    const infowindow = infowindowRef.current.find((infowindow) => {
+      return infowindow[0] === num;
+    });
+    console.log('인포윈도우 그룹정보::::::::::', infowindowRef.current); // [id,infowindow,marker]
+
+    console.log('infowindow;;;;;;;;;;;;;;;;', infowindow[1]);
+
+    infowindowRef.current.forEach((infowindow) => infowindow[1].close());
+    infowindow[1].open(map, infowindow[2]);
+  };
+  return (
+    <CONTAINER className="kakaoMap">
+      <div style={{ position: 'absolute', zIndex: 110 }}>
+        <button type="button" onClick={handleButton}>
+          1
+        </button>
+        <button type="button" onClick={handleButton}>
+          2
+        </button>
+        <button type="button" onClick={handleButton}>
+          3
+        </button>
+      </div>
+    </CONTAINER>
+  );
 }
 export default MapSection;

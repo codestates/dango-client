@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import server from '../api';
 
 export interface MapState {
-  map: any;
-  markers: any[];
-  mapLevel: number;
-  infowindow: any;
+  markers?: any[];
+  mapLevel?: number; //
+  infowindowGroup?: any[]; //
   sort?: string | null;
   filter?: string[] | null;
-  latLng: number[];
-  width: number[];
-  talentData: {
-    _id: string;
+  latLng?: number[]; //
+  width?: number[]; //
+  talentData?: {
+    id: string;
     title: string;
     nickname: string;
     location: number[];
@@ -23,17 +23,16 @@ export interface MapState {
 }
 
 const initialState: MapState = {
-  map: '',
   markers: [],
   mapLevel: 6,
-  infowindow: null,
+  infowindowGroup: [],
   sort: null,
   filter: null,
   latLng: [37.489457, 126.7223953],
   width: [37.4825775166787, 37.49633289086903],
   talentData: [
     {
-      _id: '',
+      id: '',
       title: '',
       nickname: '',
       location: [0, 0],
@@ -49,7 +48,22 @@ const initialState: MapState = {
 export const mapSlice = createSlice({
   name: 'map',
   initialState,
-  reducers: {},
+  reducers: {
+    getData: (state, action: PayloadAction<MapState>) => {
+      state.talentData = action.payload.talentData;
+    },
+    setMapConfig: (state, action: PayloadAction<MapState>) => {
+      const { mapLevel, latLng, width } = action.payload;
+      state.mapLevel = mapLevel;
+      state.latLng = latLng;
+      state.width = width;
+    },
+    setInfowindow: (state, action: PayloadAction<MapState>) => {
+      state.infowindowGroup = [];
+      state.infowindowGroup.push(action.payload.infowindowGroup);
+    },
+  },
 });
 
+export const { getData, setMapConfig, setInfowindow } = mapSlice.actions;
 export default mapSlice.reducer;

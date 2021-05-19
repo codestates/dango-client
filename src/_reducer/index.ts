@@ -3,10 +3,12 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 
-import user from './users/user';
+import user from './user';
+import map from './map';
 
 const reducers = combineReducers({
   user,
+  map,
 });
 
 const persistConfig = {
