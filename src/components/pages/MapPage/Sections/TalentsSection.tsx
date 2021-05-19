@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import server from '../../../../api/index';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../../_reducer';
+import { handleSort, handleFilter, MapState } from '../../../../_reducer/map';
 import {
   CONTAINER,
   FILTERSECTION,
@@ -14,11 +16,13 @@ import {
 } from './TalentsSectionStyle';
 
 /* TODO:
- [ ] 1. 전체 리스트 렌더 
+ [ ] 1. 리덕스에서 데이터 꺼내서 렌더 - useSelector
  [v] 2. radiobox(sort) 렌더
  [v] 3. checkbox(filter) 렌더
- [ ] 4. 지도 마커랑..
+ [x] 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
  [ ] 5. 카테고리 이모지, 별점 범위로 렌더
+ [v] 6. reducer 만들기
+ [v] 7. filter 체크리스트 숫자를 카테고리 스트링으로 바꿔줘야 함.
 */
 
 /**
@@ -31,20 +35,14 @@ import {
  * 2. radiobox(sort) 렌더
  * 유저가 가격순을 눌렀어. 그러면 누른 타겟을 토대로 그 value를 읽어서
  * body의 sort 키에 'price'  ||  'ratings'  ||  'review'를 넣어 보낸다.
- * FIXME: 전체 옵션을 넣어야하나? sort 안 하면 기본적으로 거리순으로 정렬된 데이터.
- */
-
-/*
- * 3. checkbox(filter) 렌더
- * 처음 체크박스를 눌렀으면 배열에 푸쉬한다.
- * 한 번 더 누르면 그 값은 받지 않는다. - 눌려있는지를 파악하고 한 번 더 누르면 배열에서 뺀다.
- * 하나 눌러진 상태에서 다른 거 또 체크하면 기존 배열에 추가한다.
+ * sort 안 하면 기본적으로 거리순으로 정렬된 데이터.
+ * FIXME: radiobox는 해제가 안되니까 전체옵션 필요할듯
  */
 
 /**
  * 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
- * 프리뷰 모달은 마커를 클릭 했을 때 뜨는데..
- * TODO: 재능 리스트 클릭 ==> 마커 클릭 인식하게.. 해야하나.. how..?
+ * 프리뷰 모달 infowindow은 마커를 클릭 했을 때 뜨는데..
+ * TODO: 재능 리스트 클릭 시 infowindow.open
  */
 
 /**
@@ -53,7 +51,7 @@ import {
  * 4.75 <= x <= 5.0 ==> 5.0 ==> ⭐️⭐️⭐️⭐️⭐️
  * 4.25 <= x < 4.75 ==> 4.5
  * 3.75 <= x < 4.25 ==> 4.0 ==> ⭐️⭐️⭐️⭐️
- * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다? (모달에서도 쓸 수 있긴 함..)
+ * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
  */
 
 interface TalentsListInterface {
@@ -69,13 +67,38 @@ interface TalentsListInterface {
 const filterData = [
   {
     id: 1,
+    value: 'business',
+    name: '비즈니스',
+  },
+  {
+    id: 2,
+    value: 'coding',
+    name: '개발/디자인',
+  },
+  {
+    id: 3,
+    value: 'health',
+    name: '건강',
+  },
+  {
+    id: 4,
+    value: 'lesson',
+    name: '레슨',
+  },
+  {
+    id: 5,
+    value: 'living',
+    name: '홈/리빙',
+  },
+  {
+    id: 6,
     value: 'pet',
     name: '반려동물',
   },
   {
-    id: 2,
-    value: 'lesson',
-    name: '레슨',
+    id: 7,
+    value: 'etc',
+    name: '기타',
   },
 ];
 
@@ -101,38 +124,48 @@ interface MapSectionProps {
 }
 
 function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
+  const dispatch = useDispatch();
+  const { filter, talentData } = useSelector((state: RootState) => state.map);
   const [talentsList, setTalentsList] = useState<TalentsListInterface>();
-  const [checkBoxList, setCheckBoxList] = useState<number[]>([]);
-  // radioValue는 sort 정보 보낼 때 쓴다.
-  const [radioValue, setRadioValue] = useState<string>('');
+
   // const [open, setOpen] = useState<boolean>(false);
 
-  const handleFilterChange = (currentValue: any) => {
-    const currentIndex = checkBoxList.indexOf(currentValue);
-
-    const newCheckBoxList = [...checkBoxList];
-
+  // checkbox(filter)
+  const handleCheckBox = (currentValue: any) => {
+    // null의 indexOf 못하므로 기본 설정.
+    if (filter === null) {
+      const payload: MapState = {
+        filter: [],
+      };
+      dispatch(handleFilter(payload));
+    }
+    // 이전의 배열(체크리스트)을 불러온다. 그 배열에서 현재 체크된 것의 인덱스를 알아낸다.
+    console.log('filter', filter);
+    const currentIndex = filter.indexOf(currentValue);
+    // 배열 복사.
+    const newCheckBoxList = [...filter];
+    // 기존 배열에 없는 값이면 새로 값을 푸쉬, 있는 값이면 삭제.
     if (currentIndex === -1) {
       newCheckBoxList.push(currentValue);
     } else {
       newCheckBoxList.splice(currentIndex, 1);
     }
+    // 변화된 배열을 저장한다! 이걸로 filter에 담아서 서버에 요청 보내야 함.
+    const payload: MapState = {
+      filter: newCheckBoxList,
+    };
+    dispatch(handleFilter(payload));
 
-    setCheckBoxList(newCheckBoxList);
     console.log(newCheckBoxList);
   };
 
-  const handleSortChange = (event: any) => {
+  // radiobox(sort)
+  const handleRadioBox = (event: any) => {
     console.log(event.target.value);
-    setRadioValue(event.target.value);
-  };
-
-  const config = {
-    data: {
-      category: 'all',
-      location: [100, 200],
-      width: [10, 40],
-    },
+    const payload: MapState = {
+      sort: event.target.value,
+    };
+    dispatch(handleSort(payload));
   };
 
   // useEffect(() => {
@@ -141,34 +174,23 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
   //   }
   // }, [infoWindowGroup]);
 
-  // 서버에 재능 리스트 요청
-  useEffect(() => {
-    server
-      .get('/talents/map', config)
-      .then((res) => {
-        console.log('res:::', res);
-        setTalentsList(res.data.result);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
     <CONTAINER>
       <FILTERSECTION>
         {filterData.map((ele) => (
-          <div key={ele.id} onChange={() => handleFilterChange(ele.id)}>
+          <div key={ele.id} onChange={() => handleCheckBox(ele.value)}>
             <input
               type="checkbox"
               id={ele.value}
               name={ele.value}
               value={ele.value}
-              checked={checkBoxList.indexOf(ele.id) !== -1}
+              checked={filter.indexOf(ele.value) !== -1}
             />
             <label htmlFor={ele.value}>{ele.name}</label>
           </div>
         ))}
         {sortData.map((ele) => (
-          <div key={ele.id} onChange={handleSortChange}>
+          <div key={ele.id} onChange={handleRadioBox}>
             <input type="radio" id={ele.id} name="sort" value={ele.id} />
             <label htmlFor={ele.id}>{ele.name}</label>
           </div>

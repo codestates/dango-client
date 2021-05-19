@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
-import { setInfowindow, setMapConfig } from '../../../../_reducer/map';
+import { setMapConfig } from '../../../../_reducer/map';
 import server from '../../../../api';
 
 declare global {

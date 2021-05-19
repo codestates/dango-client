@@ -3,12 +3,11 @@ import server from '../api';
 
 export interface MapState {
   markers?: any[];
-  mapLevel?: number; //
-  infowindowGroup?: any[]; //
+  mapLevel?: number;
   sort?: string | null;
-  filter?: string[] | null;
-  latLng?: number[]; //
-  width?: number[]; //
+  filter?: any;
+  latLng?: number[];
+  width?: number[];
   talentData?: {
     id: string;
     title: string;
@@ -25,7 +24,6 @@ export interface MapState {
 const initialState: MapState = {
   markers: [],
   mapLevel: 6,
-  infowindowGroup: [],
   sort: null,
   filter: null,
   latLng: [37.489455183958114, 126.722336451675],
@@ -58,12 +56,14 @@ export const mapSlice = createSlice({
       state.latLng = latLng;
       state.width = width;
     },
-    setInfowindow: (state, action: PayloadAction<MapState>) => {
-      state.infowindowGroup = [];
-      state.infowindowGroup.push(action.payload.infowindowGroup);
+    handleSort: (state, action: PayloadAction<MapState>) => {
+      state.sort = action.payload.sort;
+    },
+    handleFilter: (state, action: PayloadAction<MapState>) => {
+      state.filter = action.payload.filter;
     },
   },
 });
 
-export const { postData, setMapConfig, setInfowindow } = mapSlice.actions;
+export const { postData, setMapConfig, handleSort, handleFilter } = mapSlice.actions;
 export default mapSlice.reducer;

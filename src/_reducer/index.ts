@@ -14,7 +14,7 @@ const reducers = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user'], // 'user' 등 넣으면됨(문자로) 6번째줄의 import한 이름을 넣으면됨.
+  whitelist: ['user'], // 로컬스토리지에 저장할 것만 'user' 등 넣으면됨(문자로) 6번째줄의 import한 이름을 넣으면됨.
 };
 
 const rootReducer = persistReducer(persistConfig, reducers);
