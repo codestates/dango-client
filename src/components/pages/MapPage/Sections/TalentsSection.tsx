@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import server from '../../../../api/index';
+import { RootState } from '../../../../_reducer';
+import { handleSort, handleFilter, MapState } from '../../../../_reducer/map';
 import {
   CONTAINER,
   FILTERSECTION,
@@ -17,10 +20,10 @@ import {
  [ ] 1. 전체 리스트 렌더 
  [v] 2. radiobox(sort) 렌더
  [v] 3. checkbox(filter) 렌더
- [ ] 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
+ [x] 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
  [ ] 5. 카테고리 이모지, 별점 범위로 렌더
- [ ] 6. sort reducer 만들기
- [ ] 7. filter 체크리스트 숫자를 카테고리 스트링으로 바꿔줘야 함.
+ [v] 6. reducer 만들기
+ [v] 7. filter 체크리스트 숫자를 카테고리 스트링으로 바꿔줘야 함.
 */
 
 /**
@@ -35,13 +38,6 @@ import {
  * body의 sort 키에 'price'  ||  'ratings'  ||  'review'를 넣어 보낸다.
  * sort 안 하면 기본적으로 거리순으로 정렬된 데이터.
  * FIXME: radiobox는 해제가 안되니까 전체옵션 필요할듯
- */
-
-/*
- * 3. checkbox(filter) 렌더
- * 처음 체크박스를 눌렀으면 배열에 푸쉬한다.
- * 한 번 더 누르면 그 값은 받지 않는다. - 눌려있는지를 파악하고 한 번 더 누르면 배열에서 뺀다.
- * 하나 눌러진 상태에서 다른 거 또 체크하면 기존 배열에 추가한다.
  */
 
 /**
@@ -59,6 +55,10 @@ import {
  * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
  */
 
+/*
+ FIXME: 유저마다 filter정보가 달라야하는데..
+ */
+
 interface TalentsListInterface {
   category: string;
   title: string;
@@ -68,12 +68,6 @@ interface TalentsListInterface {
   ratingsCount: number;
   _id: string;
 }
-
-// interface FilterDataInterface {
-//   id: number;
-//   value: string | number;
-//   name: string;
-// }[]
 
 const filterData = [
   {
@@ -104,31 +98,46 @@ const sortData = [
 ];
 
 function TalentsSection() {
+  const dispatch = useDispatch();
+  const { filter } = useSelector((state: RootState) => state.map);
   const [talentsList, setTalentsList] = useState<TalentsListInterface>();
-  const [checkBoxList, setCheckBoxList] = useState<string[]>([]);
-  // radioValue는 sort 정보 보낼 때 쓴다.
-  const [radioValue, setRadioValue] = useState<string>('');
 
   // checkbox(filter)
-  const handleFilterChange = (currentValue: any) => {
-    const currentIndex = checkBoxList.indexOf(currentValue);
-
-    const newCheckBoxList = [...checkBoxList];
-
+  const handleCheckBox = (currentValue: any) => {
+    // null의 indexOf 못하므로 기본 설정.
+    if (filter === null) {
+      const payload: MapState = {
+        filter: [],
+      };
+      dispatch(handleFilter(payload));
+    }
+    // 이전의 배열(체크리스트)을 불러온다. 그 배열에서 현재 체크된 것의 인덱스를 알아낸다.
+    console.log('filter', filter);
+    const currentIndex = filter.indexOf(currentValue);
+    // 배열 복사.
+    const newCheckBoxList = [...filter];
+    // 기존 배열에 없는 값이면 새로 값을 푸쉬, 있는 값이면 삭제.
     if (currentIndex === -1) {
       newCheckBoxList.push(currentValue);
     } else {
       newCheckBoxList.splice(currentIndex, 1);
     }
+    // 변화된 배열을 저장한다! 이걸로 filter에 담아서 서버에 요청 보내야 함.
+    const payload: MapState = {
+      filter: newCheckBoxList,
+    };
+    dispatch(handleFilter(payload));
 
-    setCheckBoxList(newCheckBoxList);
     console.log(newCheckBoxList);
   };
 
   // radiobox(sort)
-  const handleSortChange = (event: any) => {
+  const handleRadioBox = (event: any) => {
     console.log(event.target.value);
-    setRadioValue(event.target.value);
+    const payload: MapState = {
+      sort: event.target.value,
+    };
+    dispatch(handleSort(payload));
   };
 
   const config = {
@@ -154,19 +163,19 @@ function TalentsSection() {
     <CONTAINER>
       <FILTERSECTION>
         {filterData.map((ele) => (
-          <div key={ele.id} onChange={() => handleFilterChange(ele.value)}>
+          <div key={ele.id} onChange={() => handleCheckBox(ele.value)}>
             <input
               type="checkbox"
               id={ele.value}
               name={ele.value}
               value={ele.value}
-              checked={checkBoxList.indexOf(ele.value) !== -1}
+              checked={filter.indexOf(ele.value) !== -1}
             />
             <label htmlFor={ele.value}>{ele.name}</label>
           </div>
         ))}
         {sortData.map((ele) => (
-          <div key={ele.id} onChange={handleSortChange}>
+          <div key={ele.id} onChange={handleRadioBox}>
             <input type="radio" id={ele.id} name="sort" value={ele.id} />
             <label htmlFor={ele.id}>{ele.name}</label>
           </div>
