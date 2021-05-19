@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import server from '../../../api/index';
+import { RootState } from '../../../_reducer';
 import ImageUploader from './Sections/imageUploader';
 import LocationSearch from './Sections/LocationSearch';
 
@@ -19,20 +21,25 @@ const FORM = styled.form`
   border: 1px solid black;
 `;
 
+const BUTTON = styled.button`
+  grid-column: 10/13;
+  grid-row: 12/13;
+`;
+
 const categoryList = ['홈/리빙', '비즈니스', '디자인/개발', '건강', '레슨', '반려동물', '기타'];
 
 export default function TalentRegistrationPage(): JSX.Element {
+  const { userInfo } = useSelector((state: RootState) => state.user);
   const [location, setLocation] = useState<number[]>([]);
   const [address, setAddress] = useState<string>();
   const [registerData, setRegisterData] = useState({
     images: ['사진'],
     description: '',
     price: 0,
-    category: '',
+    category: 'living',
     title: '',
-    userId: '609ec5a42b6cd4396e5d2bcf',
+    userId: userInfo?.id,
   });
-  // FIXME: userinfo.id 리듀서에서 가져와서 담기.
 
   useEffect(() => {
     console.log('location::::', location);
@@ -78,11 +85,11 @@ export default function TalentRegistrationPage(): JSX.Element {
 
         <label>재능 설명 textarea</label>
         <textarea onChange={handleChange('description')} />
-        <button type="button" onClick={handleFormSubmit}>
-          제출
-        </button>
       </FORM>
       <ImageUploader />
+      <BUTTON type="button" onClick={handleFormSubmit}>
+        제출
+      </BUTTON>
     </CONTAINER>
   );
 }
