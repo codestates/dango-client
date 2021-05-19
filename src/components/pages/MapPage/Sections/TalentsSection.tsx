@@ -116,11 +116,19 @@ const sortData = [
     name: '고용횟수순',
   },
 ];
+interface MapSectionProps {
+  map: any;
+  setMap: (map: any) => void;
+  infoWindowGroup: any[];
+  setInfoWindowGroup: (infoWindowGroup: any) => void;
+}
 
-function TalentsSection() {
+function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
   const dispatch = useDispatch();
   const { filter, talentData } = useSelector((state: RootState) => state.map);
   const [talentsList, setTalentsList] = useState<TalentsListInterface>();
+
+  // const [open, setOpen] = useState<boolean>(false);
 
   // checkbox(filter)
   const handleCheckBox = (currentValue: any) => {
@@ -160,6 +168,12 @@ function TalentsSection() {
     dispatch(handleSort(payload));
   };
 
+  // useEffect(() => {
+  //   if (infoWindowGroup.length > 0) {
+  //     setOpen(true);
+  //   }
+  // }, [infoWindowGroup]);
+
   return (
     <CONTAINER>
       <FILTERSECTION>
@@ -184,6 +198,9 @@ function TalentsSection() {
       </FILTERSECTION>
       <TALENTSLIST>
         <TALENT>
+          {/* {open && (
+            <div style={{ position: 'absolute', zIndex: 99, top: '100px' }}>{infoWindowGroup[0][0].title}찍히나??</div>
+          )} */}
           <CATEGORY>카테고리{talentsList?.category}</CATEGORY>
           <TITLE>재능 글 제목{talentsList?.title}</TITLE>
           <PRICE>가격{talentsList?.price}</PRICE>

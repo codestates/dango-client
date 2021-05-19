@@ -1,16 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import server from '../api';
 
 export interface MapState {
-  map?: any;
   markers?: any[];
   mapLevel?: number;
-  infowindow?: any;
   sort?: string | null;
   filter?: any;
   latLng?: number[];
   width?: number[];
   talentData?: {
-    _id: string;
+    id: string;
     title: string;
     nickname: string;
     location: number[];
@@ -23,17 +22,15 @@ export interface MapState {
 }
 
 const initialState: MapState = {
-  map: '',
   markers: [],
   mapLevel: 6,
-  infowindow: null,
   sort: null,
-  filter: [],
-  latLng: [37.489457, 126.7223953],
-  width: [37.4825775166787, 37.49633289086903],
+  filter: null,
+  latLng: [37.489455183958114, 126.722336451675],
+  width: [37.46195123771726, 37.51695659436168],
   talentData: [
     {
-      _id: '',
+      id: '',
       title: '',
       nickname: '',
       location: [0, 0],
@@ -50,6 +47,15 @@ export const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
+    postData: (state, action: PayloadAction<MapState>) => {
+      state.talentData = action.payload.talentData;
+    },
+    setMapConfig: (state, action: PayloadAction<MapState>) => {
+      const { mapLevel, latLng, width } = action.payload;
+      state.mapLevel = mapLevel;
+      state.latLng = latLng;
+      state.width = width;
+    },
     handleSort: (state, action: PayloadAction<MapState>) => {
       state.sort = action.payload.sort;
     },
@@ -59,6 +65,5 @@ export const mapSlice = createSlice({
   },
 });
 
-export const { handleSort, handleFilter } = mapSlice.actions;
-
+export const { postData, setMapConfig, handleSort, handleFilter } = mapSlice.actions;
 export default mapSlice.reducer;
