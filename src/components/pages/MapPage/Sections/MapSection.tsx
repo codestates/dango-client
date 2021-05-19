@@ -144,8 +144,8 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
       offset: new window.kakao.maps.Point(20, 58),
     });
 
-    const clickImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(80, 88), {
-      offset: new window.kakao.maps.Point(20, 88),
+    const hoverImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(62, 74), {
+      offset: new window.kakao.maps.Point(20, 74),
     });
     if (talentData) {
       const newMarkers = [];
@@ -183,10 +183,13 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
           kakao.maps.event.addListener(marker, 'click', function () {
             infowindowRef.current.forEach((infowindow) => infowindow[1].close());
             infowindow.open(map, marker);
+            // 클릭시 지도 이동
+            const moveLatLon = new kakao.maps.LatLng(lat, lng);
+            map.panTo(moveLatLon);
           });
 
           kakao.maps.event.addListener(marker, 'mouseover', function () {
-            marker.setImage(clickImage);
+            marker.setImage(hoverImage);
           });
 
           // 마커에 mouseout 이벤트 등록
@@ -201,7 +204,7 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
 
           // [talentId,infowindow,marker] 형태로 묶어서 따로 저장한다.
           if (infowindowRef.current.length < talentData.length) {
-            infowindowRef.current = [...infowindowRef.current, [talentData[i].id, infowindow, marker]];
+            infowindowRef.current = [...infowindowRef.current, [talentData[i], infowindow, marker]];
           }
           // if (infowindowRef.current.length === 3) {
           //   dispatch(setInfowindow({ infowindowGroup: infowindowRef.current }));
@@ -246,11 +249,20 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
     console.log('btn;;;;;;;;;;;', event.currentTarget.textContent);
     const talentId = event.currentTarget.dataset.id;
     const infowindow = infowindowRef.current.find((infowindow) => {
-      return infowindow[0] === talentId;
+      return infowindow[0].id === talentId;
     });
     console.log('타겟 인포윈도우 그룹::::::::::', infowindow); // [id,infowindow,marker]
+
+    // 인포윈도우 모두 끄고
     infowindowRef.current.forEach((infowindow) => infowindow[1].close());
+    // 다시 킨다.
     infowindow[1].open(map, infowindow[2]);
+
+    // 클릭시 해당 마커위치로 지도위치 이동
+    // ->근데 이렇게 이동하면 지도범위 안불러와짐. 지도범위는 드래그나 휠로만됨지금.
+    const [lng, lat] = infowindow[0].location;
+    const moveLatLon = new kakao.maps.LatLng(lat, lng);
+    map.panTo(moveLatLon);
 
     // console.log('btn;;;;;;;;;;;', event.currentTarget.textContent);
     // const talentId = event.currentTarget.dataset.id;
