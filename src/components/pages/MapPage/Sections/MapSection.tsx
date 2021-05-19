@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
-import { getData, setMapConfig } from '../../../../_reducer/map';
+import { setInfowindow, setMapConfig } from '../../../../_reducer/map';
 import server from '../../../../api';
 
 declare global {
@@ -75,18 +75,20 @@ export interface PreviewInterface {
 interface MapSectionProps {
   map: any;
   setMap: (map: any) => void;
+  infoWindowGroup: any[];
+  setInfoWindowGroup: (infoWindowGroup: any) => void;
 }
 
-function MapSection({ map, setMap }: MapSectionProps): JSX.Element {
+function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
+  const dispatch = useDispatch();
+  const { mapLevel, latLng, width, talentData } = useSelector((state: RootState) => state.map);
+
   const { kakao } = window;
   const [markers, setMarkers] = useState<any[]>([]);
   const [preview, setPreview] = useState<PreviewInterface>();
   const { talentId } = useParams<{ talentId: string }>();
-
-  const dispatch = useDispatch();
-  const { mapLevel, latLng, width, talentData } = useSelector((state: RootState) => state.map);
-
   const infowindowRef = useRef<any[]>([]);
+
   // 렌더 초기 맵생성 및 지도 이벤트 등록
   useEffect(() => {
     const container = document.querySelector('.kakaoMap');
@@ -111,6 +113,11 @@ function MapSection({ map, setMap }: MapSectionProps): JSX.Element {
       const latlng = mouseEvent.latLng;
       console.log('위도:::::::::', latlng.getLat());
       console.log('경도:::::::::', latlng.getLng());
+      infowindowRef.current.forEach((infowindow) => infowindow[1].close());
+
+      // // 클릭한 곳으로 지도이동
+      // const moveLatLon = new kakao.maps.LatLng(latlng.getLat(), latlng.getLng());
+      // map.panTo(moveLatLon);
     });
     // 지도를 만들었으니 지도범위 상태를 갱신시킨다.
     renewMapConfig(map);
@@ -118,61 +125,91 @@ function MapSection({ map, setMap }: MapSectionProps): JSX.Element {
 
   // talentData가 갱신될때마다 마커를 새로만들어준다.
   useEffect(() => {
-    deleteMarker();
-    makeMarker();
-    console.log('bounds', width);
+    console.log('바뀐 talentData', talentData);
+    if (talentData && talentData.length > 0 && talentData[0].id !== '') {
+      deleteMarker();
+      makeMarker();
+    }
   }, [talentData]);
 
   // 마커 생성
   // TODO: 서버연결되면 bounds와 category로 서버에 데이터 요청해서 마커만들기
   const makeMarker = () => {
+    setInfoWindowGroup([]);
+    infowindowRef.current = [];
+    console.log('마커만들기전 인포윈도우', infoWindowGroup);
+
     // 마커 이미지, 사이즈, 이미지의 위치 설정
     const markerImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(50, 58), {
       offset: new window.kakao.maps.Point(20, 58),
     });
-    if (talentData && talentData[0].id !== '') {
-      const newMarkers = talentData.map((data) => {
-        const [lng, lat] = data.location;
 
-        const marker = new kakao.maps.Marker({
-          map: map,
-          position: new kakao.maps.LatLng(lat, lng),
-          image: markerImage,
-          clickable: true,
-        });
+    const clickImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(80, 88), {
+      offset: new window.kakao.maps.Point(20, 88),
+    });
+    if (talentData) {
+      const newMarkers = [];
+      for (let i = 0; i < talentData.length; i++) {
+        if (talentData[i].id === '') {
+          continue;
+        } else {
+          const [lng, lat] = talentData[i].location;
 
-        const iwcontent = `<div class="main" style="padding: 7px;">
-                        <div class="title">제목${preview?.title}</div>
-                        <div class="category">카테고리${preview?.category}</div>
-                        <div class="address">지역${preview?.address}</div>
-                        <div class="ratings">별점${preview?.ratings}</div>
-                        <div class="nickname">닉네임${preview?.nickname}</div>
-                        <div class="price">가격${preview?.price}</div>
-                        <div class="description">내용${preview?.description}</div>
-                        <div class="button">More details</div>
-                        </div>
-                        `;
-        const iwRemoveable = true;
+          const marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(lat, lng),
+            image: markerImage,
+            clickable: true,
+          });
 
-        const infowindow = new kakao.maps.InfoWindow({
-          content: iwcontent,
-          removable: iwRemoveable,
-        });
+          const iwcontent = `<div class="main" style="padding: 7px;">
+                          <div class="title">제목${preview?.title}</div>
+                          <div class="category">카테고리${preview?.category}</div>
+                          <div class="address">지역${preview?.address}</div>
+                          <div class="ratings">별점${preview?.ratings}</div>
+                          <div class="nickname">닉네임${preview?.nickname}</div>
+                          <div class="price">가격${preview?.price}</div>
+                          <div class="description">내용${preview?.description}</div>
+                          <div class="button">More details</div>
+                          </div>
+                          `;
+          const iwRemoveable = true;
 
-        kakao.maps.event.addListener(marker, 'click', function () {
-          infowindow.open(map, marker);
-        });
+          const infowindow = new kakao.maps.InfoWindow({
+            content: iwcontent,
+            removable: iwRemoveable,
+          });
 
-        // [talentId,infowindow,marker] 형태로 묶어서 따로 저장한다.
-        if (infowindowRef.current.length < 3) {
-          infowindowRef.current = [...infowindowRef.current, [data.id, infowindow, marker]];
+          kakao.maps.event.addListener(marker, 'click', function () {
+            infowindowRef.current.forEach((infowindow) => infowindow[1].close());
+            infowindow.open(map, marker);
+          });
+
+          kakao.maps.event.addListener(marker, 'mouseover', function () {
+            marker.setImage(clickImage);
+          });
+
+          // 마커에 mouseout 이벤트 등록
+          kakao.maps.event.addListener(marker, 'mouseout', function () {
+            marker.setImage(markerImage);
+          });
+
+          newMarkers.push(marker);
+          // setInfoWindowGroup((infoWindowGroup: any) => {
+          //   infoWindowGroup.push([talentData[i].id, infowindow, marker]);
+          // });
+
+          // [talentId,infowindow,marker] 형태로 묶어서 따로 저장한다.
+          if (infowindowRef.current.length < talentData.length) {
+            infowindowRef.current = [...infowindowRef.current, [talentData[i].id, infowindow, marker]];
+          }
+          // if (infowindowRef.current.length === 3) {
+          //   dispatch(setInfowindow({ infowindowGroup: infowindowRef.current }));
+          // }
         }
-        // if (infowindowRef.current.length === 3) {
-        //   dispatch(setInfowindow({ infowindowGroup: infowindowRef.current }));
-        // }
-
-        return marker;
-      });
+      }
+      setInfoWindowGroup(infowindowRef.current);
+      console.log('ref로 넣은 infowindowGroup', infoWindowGroup);
       setMarkers(newMarkers);
       console.log('마커만들었음');
     }
@@ -181,50 +218,74 @@ function MapSection({ map, setMap }: MapSectionProps): JSX.Element {
   // 마커 삭제
   const deleteMarker = () => {
     markers?.forEach((marker) => marker.setMap(null));
+
     console.log('마커삭제함');
   };
 
-  const renewMapConfig = (map: any) => {
-    if (map) {
-      const bounds = map.getBounds();
-      const mapLevel = map.getLevel();
-      const center = map.getCenter();
+  const renewMapConfig = useCallback(
+    (map: any) => {
+      if (map) {
+        const bounds = map.getBounds();
+        const mapLevel = map.getLevel();
+        const center = map.getCenter();
 
-      const payload = {
-        mapLevel,
-        latLng: [center.getLat(), center.getLng()], // 지도중심의 [위도,경도]
-        width: [bounds.qa, bounds.pa], // 지도범위의 [남,북]
-      };
-
-      dispatch(setMapConfig(payload));
-    }
-  };
+        const payload = {
+          mapLevel,
+          latLng: [center.getLat(), center.getLng()], // 지도중심의 [위도,경도]
+          width: [bounds.qa, bounds.pa], // 지도범위의 [남,북]
+        };
+        console.log('들어가는 latLng::::', payload.latLng);
+        console.log('들어가는 width::::', payload.width);
+        dispatch(setMapConfig(payload));
+      }
+    },
+    [map],
+  );
 
   const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log('btn;;;;;;;;;;;', event.currentTarget.textContent);
-    const num = String(event.currentTarget.textContent);
+    const talentId = event.currentTarget.dataset.id;
     const infowindow = infowindowRef.current.find((infowindow) => {
-      return infowindow[0] === num;
+      return infowindow[0] === talentId;
     });
-    console.log('인포윈도우 그룹정보::::::::::', infowindowRef.current); // [id,infowindow,marker]
-
-    console.log('infowindow;;;;;;;;;;;;;;;;', infowindow[1]);
-
+    console.log('타겟 인포윈도우 그룹::::::::::', infowindow); // [id,infowindow,marker]
     infowindowRef.current.forEach((infowindow) => infowindow[1].close());
     infowindow[1].open(map, infowindow[2]);
+
+    // console.log('btn;;;;;;;;;;;', event.currentTarget.textContent);
+    // const talentId = event.currentTarget.dataset.id;
+    // const infowindow = infoWindowGroup.find((infowindow) => {
+    //   return infowindow[0] === talentId;
+    // });
+    // console.log('인포윈도우 그룹정보::::::::::', infoWindowGroup); // [id,infowindow,marker]
+    // console.log('타겟 인포윈도우 그룹::::::::::', infowindow); // [id,infowindow,marker]
+
+    // infoWindowGroup.forEach((infowindow) => infowindow[1].close());
+    // infowindow[1].open(map, infowindow[2]);
+    console.log('ddd');
   };
   return (
     <CONTAINER className="kakaoMap">
       <div style={{ position: 'absolute', zIndex: 110 }}>
-        <button type="button" onClick={handleButton}>
+        {talentData &&
+          talentData.length > 0 &&
+          talentData[0].id !== '' &&
+          talentData.map((data, idx) => {
+            return (
+              <button key={idx} type="button" data-id={data.id} onClick={handleButton}>
+                {data.title}
+              </button>
+            );
+          })}
+        {/* <button type="button" data-id="60a3ed13e372ede3855afc83" onClick={handleButton}>
           1
         </button>
-        <button type="button" onClick={handleButton}>
+        <button type="button" data-id="60a3ed4de372ede3855afc84" onClick={handleButton}>
           2
         </button>
-        <button type="button" onClick={handleButton}>
+        <button type="button" data-id="60a3ed8ae372ede3855afc85" onClick={handleButton}>
           3
-        </button>
+        </button> */}
       </div>
     </CONTAINER>
   );

@@ -28,8 +28,8 @@ const initialState: MapState = {
   infowindowGroup: [],
   sort: null,
   filter: null,
-  latLng: [37.489457, 126.7223953],
-  width: [37.4825775166787, 37.49633289086903],
+  latLng: [37.489455183958114, 126.722336451675],
+  width: [37.46195123771726, 37.51695659436168],
   talentData: [
     {
       id: '',
@@ -49,8 +49,9 @@ export const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
-    getData: (state, action: PayloadAction<MapState>) => {
+    postData: (state, action: PayloadAction<MapState>) => {
       state.talentData = action.payload.talentData;
+      console.log('리덕스내의 state.talentData::::::', state.talentData);
     },
     setMapConfig: (state, action: PayloadAction<MapState>) => {
       const { mapLevel, latLng, width } = action.payload;
@@ -65,5 +66,5 @@ export const mapSlice = createSlice({
   },
 });
 
-export const { getData, setMapConfig, setInfowindow } = mapSlice.actions;
+export const { postData, setMapConfig, setInfowindow } = mapSlice.actions;
 export default mapSlice.reducer;

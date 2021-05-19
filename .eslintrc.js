@@ -17,6 +17,7 @@ module.exports = {
     'no-param-reassign': 0,
     'no-shadow': 0,
     'no-plusplus': 0,
+    'no-continue': 0,
     'react/no-array-index-key': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
