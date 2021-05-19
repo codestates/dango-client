@@ -1,40 +1,48 @@
 import React from 'react';
 import Dropzone, { IDropzoneProps } from 'react-dropzone-uploader';
-import 'react-dropzone-uploader/dist/styles.css'
+import styled from 'styled-components';
+import 'react-dropzone-uploader/dist/styles.css';
 
 // import server from '../../../..//api/index'
 
+const CONTAINER = styled.div`
+  display: grid;
+  place-items: center;
+  grid-column: 10/13;
+  grid-row: 3/12;
+  border: 1px solid blue;
+`;
 
-function imageUploader():JSX.Element {
-    // const getUploadParams = async ({ meta: { name } }) => {
-    //     const { fields, uploadUrl, fileUrl } = await server.getPresignedUploadParams(name)
-    //     return { fields, meta: { fileUrl }, url: uploadUrl }
-    // }
-    
+function imageUploader(): JSX.Element {
+  // const getUploadParams = async ({ meta: { name } }) => {
+  //     const { fields, uploadUrl, fileUrl } = await server.getPresignedUploadParams(name)
+  //     return { fields, meta: { fileUrl }, url: uploadUrl }
+  // }
 
-    const handleChangeStatus: IDropzoneProps["onChangeStatus"] = ({ meta }, status) => {
-        console.log(status, meta)
-    }
-    
-    const handleSubmit: IDropzoneProps["onSubmit"] = (files, allFiles) => {
-        console.log(files.map(f => f.meta))
-        console.log(allFiles)
-        alert('파일이 업로드 되었습니다!')
-        // allFiles.forEach(f => f.remove())
-    }
+  const handleChangeStatus: IDropzoneProps['onChangeStatus'] = ({ meta }, status) => {
+    console.log(status, meta);
+  };
 
-    return (
-      <div>
-        <Dropzone
-          // getUploadParams={getUploadParams}
-          onChangeStatus={handleChangeStatus}
-          onSubmit={handleSubmit}
-          maxFiles={3}
-          autoUpload={false}
-          submitButtonContent="Upload"
-          inputContent=" + files "
-          inputWithFilesContent={files => `+ ${3-files.length} More`}
-          styles={{ dropzone: { 
+  const handleSubmit: IDropzoneProps['onSubmit'] = (files, allFiles) => {
+    console.log(files.map((f) => f.meta));
+    console.log(allFiles);
+    alert('파일이 업로드 되었습니다!');
+    // allFiles.forEach(f => f.remove())
+  };
+
+  return (
+    <CONTAINER>
+      <Dropzone
+        // getUploadParams={getUploadParams}
+        onChangeStatus={handleChangeStatus}
+        onSubmit={handleSubmit}
+        maxFiles={3}
+        autoUpload={false}
+        submitButtonContent="Upload"
+        inputContent=" + files "
+        inputWithFilesContent={(files) => `+ ${3 - files.length} More`}
+        styles={{
+          dropzone: {
             width: 350,
             height: 350,
             borderWidth: 2,
@@ -46,19 +54,18 @@ function imageUploader():JSX.Element {
             outline: 'none',
             transition: 'border .24s ease-in-out',
           },
-          preview:{
-            justifyContent:'center',
+          preview: {
+            justifyContent: 'center',
             minHeight: 220,
           },
-          previewImage:{
-            maxHeight:200,
-            maxWidth:200,
-          }
+          previewImage: {
+            maxHeight: 200,
+            maxWidth: 200,
+          },
         }}
-        />
-      </div>
-      
-    )
+      />
+    </CONTAINER>
+  );
 }
 
 export default imageUploader;
