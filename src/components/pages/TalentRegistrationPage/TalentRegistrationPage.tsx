@@ -40,6 +40,7 @@ export default function TalentRegistrationPage(): JSX.Element {
     title: '',
     userId: userInfo?.id,
   });
+  const [toggle, setToggle] = useState('off');
 
   useEffect(() => {
     console.log('location::::', location);
@@ -53,38 +54,52 @@ export default function TalentRegistrationPage(): JSX.Element {
     });
   };
 
-  const handleFormSubmit = () => {
-    const body = {
+  const handleFreeTalent = () => {
+    setRegisterData({
       ...registerData,
-      address,
-      location,
-    };
-    server
-      .post('/talents/create', body)
-      .then((res) => {
-        console.log(res);
-        alert('재능 등록에 성공하였습니다!');
-      })
-      .catch((err) => console.log(err));
+      price: 0,
+    });
+  };
+
+  const handleFormSubmit = () => {
+    if (!registerData.title || !registerData.description || !address) {
+      alert('정보를 모두 입력해주세요!');
+    } else {
+      const body = {
+        ...registerData,
+        address,
+        location,
+      };
+      server
+        .post('/talents/create', body)
+        .then((res) => {
+          console.log(res);
+          alert('재능 등록에 성공하였습니다!');
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
     <CONTAINER>
       <FORM>
         <LocationSearch setLocation={setLocation} setAddress={setAddress} />
-        <label>글 제목 input</label>
-        <input onChange={handleChange('title')} />
+        <label>글 제목</label>
+        <input onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" />
         <label>카테고리 선택</label>
         <select onBlur={handleChange('category')}>
           {categoryList.map((category) => (
             <option key={category}>{category}</option>
           ))}
         </select>
-        <label>가격 input</label>
-        <input onChange={handleChange('price')} />
-
-        <label>재능 설명 textarea</label>
-        <textarea onChange={handleChange('description')} />
+        <label>가격</label>
+        <input onChange={handleChange('price')} value={registerData.price} />
+        <div onChange={handleFreeTalent}>
+          <input type="checkbox" />
+          <label>무료 재능 기부</label>
+        </div>
+        <label>재능 설명</label>
+        <textarea onChange={handleChange('description')} placeholder="ex) 비좁아진 냉장고의 공간을 되찾아 드립니다!" />
       </FORM>
       <ImageUploader />
       <BUTTON type="button" onClick={handleFormSubmit}>
