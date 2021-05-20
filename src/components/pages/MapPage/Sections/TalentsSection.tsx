@@ -140,7 +140,6 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
       dispatch(handleFilter(payload));
     }
     // 이전의 배열(체크리스트)을 불러온다. 그 배열에서 현재 체크된 것의 인덱스를 알아낸다.
-    console.log('filter', filter);
     const currentIndex = filter.indexOf(currentValue);
     // 배열 복사.
     const newCheckBoxList = [...filter];
@@ -178,13 +177,13 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
     <CONTAINER>
       <FILTERSECTION>
         {filterData.map((ele) => (
-          <div key={ele.id} onChange={() => handleCheckBox(ele.value)}>
+          <div key={ele.id} onChange={() => handleCheckBox(ele.name)}>
             <input
               type="checkbox"
               id={ele.value}
               name={ele.value}
               value={ele.value}
-              checked={filter.indexOf(ele.value) !== -1}
+              checked={filter.indexOf(ele.name) !== -1}
             />
             <label htmlFor={ele.value}>{ele.name}</label>
           </div>
