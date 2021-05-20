@@ -167,11 +167,12 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
     dispatch(handleSort(payload));
   };
 
-  // useEffect(() => {
-  //   if (infoWindowGroup.length > 0) {
-  //     setOpen(true);
-  //   }
-  // }, [infoWindowGroup]);
+  const handleInfoWindow = (talent: any) => {
+    if (infoWindowGroup.length > 0) {
+      infoWindowGroup.forEach((infowindow) => infowindow[1].close());
+      talent[1].open(map, talent[2]);
+    }
+  };
 
   return (
     <CONTAINER>
@@ -196,19 +197,16 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
         ))}
       </FILTERSECTION>
       <TALENTSLIST>
-        <TALENT>
-          {/* {open && (
-            <div style={{ position: 'absolute', zIndex: 99, top: '100px' }}>{infoWindowGroup[0][0].title}찍히나??</div>
-          )} */}
-          <CATEGORY>카테고리{talentsList?.category}</CATEGORY>
-          <TITLE>재능 글 제목{talentsList?.title}</TITLE>
-          <PRICE>가격{talentsList?.price}</PRICE>
-          <NICKNAME>닉네임{talentsList?.nickname}</NICKNAME>
-          <RATINGS>별점 평균{talentsList?.ratings}</RATINGS>
-          <RATINGSCOUNT>리뷰 개수{talentsList?.ratingsCount}</RATINGSCOUNT>
-        </TALENT>
-        <TALENT>TALENT</TALENT>
-        <TALENT>TALENT</TALENT>
+        {infoWindowGroup.map((talent) => (
+          <TALENT onClick={() => handleInfoWindow(talent)} key={talent[0].id}>
+            <CATEGORY>카테고리: {talent[0].category}</CATEGORY>
+            <TITLE>재능 글 제목{talent[0].title}</TITLE>
+            <PRICE>가격{talent[0].price}</PRICE>
+            <NICKNAME>닉네임{talent[0].nickname}</NICKNAME>
+            <RATINGS>별점 평균{talent[0].ratings}</RATINGS>
+            <RATINGSCOUNT>리뷰 개수{talent[0].ratingsCount}</RATINGSCOUNT>
+          </TALENT>
+        ))}
       </TALENTSLIST>
     </CONTAINER>
   );
