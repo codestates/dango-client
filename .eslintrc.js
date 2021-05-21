@@ -20,6 +20,7 @@ module.exports = {
     'no-continue': 0,
     'react/no-array-index-key': 0,
     'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     // 확장자 허용 (JSX not allowed in files with extension '.tsx')
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],

@@ -84,6 +84,10 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
     if (infoWindowGroup.length > 0) {
       infoWindowGroup.forEach((infowindow) => infowindow[1].close());
       talent[1].open(map, talent[2]);
+
+      const [lng, lat] = talent[0].location;
+      const moveLatLon = new window.kakao.maps.LatLng(lat, lng);
+      map.panTo(moveLatLon);
     }
   };
 
