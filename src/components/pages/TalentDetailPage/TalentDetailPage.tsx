@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import server from '../../../api';
 import { CONTAINER, SELLER, DETAIL, PHOTOS, REVIEW } from './TalentDetailPageStyle';
 
 function TalentDetailPage() {
   const [detailData, setDetailData] = useState<any>();
 
+  const { talentId } = useParams<{ talentId: string }>();
+
   useEffect(() => {
-    server.get('/talents/detail/60a5c5ea35cfa506fbb9bebc').then((res) => {
+    server.get(`/talents/detail/${talentId}`).then((res) => {
       console.log(res.data);
       setDetailData(res.data);
     });
@@ -20,6 +23,7 @@ function TalentDetailPage() {
         <div>{detailData?.address}</div>
         <div>별점 평균 : {detailData?.ratings[0] ?? '별점 없음'}</div>
         <div>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</div>
+        <button type="button">채팅으로 거래하기</button>
       </SELLER>
       <DETAIL>
         <div>카테고리 : {detailData?.category}</div>
