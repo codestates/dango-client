@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { handleSort, handleFilter, MapState } from '../../../../_reducer/map';
+import { filterData, sortData } from './data';
 import {
   CONTAINER,
   FILTERSECTION,
@@ -15,38 +16,15 @@ import {
   TITLE,
 } from './TalentsSectionStyle';
 
-/* TODO:
- [ ] 1. 리덕스에서 데이터 꺼내서 렌더 - useSelector
- [v] 2. radiobox(sort) 렌더
- [v] 3. checkbox(filter) 렌더
- [x] 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
+/* TODO: 
  [ ] 5. 카테고리 이모지, 별점 범위로 렌더
- [v] 6. reducer 만들기
- [v] 7. filter 체크리스트 숫자를 카테고리 스트링으로 바꿔줘야 함.
+ [ ] 6. sort 기본옵션? 거리순?
 */
 
 /**
- * 1. 전체 리스트 렌더
- * 1-1. 부모(MapPage)가 서버로부터 받아온 데이터를 props로 내려 받아 렌더한다.
- * 1-2. map으로 돌린다.
- */
-
-/**
- * 2. radiobox(sort) 렌더
- * 유저가 가격순을 눌렀어. 그러면 누른 타겟을 토대로 그 value를 읽어서
- * body의 sort 키에 'price'  ||  'ratings'  ||  'review'를 넣어 보낸다.
- * sort 안 하면 기본적으로 거리순으로 정렬된 데이터.
- * FIXME: radiobox는 해제가 안되니까 전체옵션 필요할듯
- */
-
-/**
- * 4. 재능 리스트 클릭 시 프리뷰 모달 띄우기
- * 프리뷰 모달 infowindow은 마커를 클릭 했을 때 뜨는데..
- * TODO: 재능 리스트 클릭 시 infowindow.open
- */
-
-/**
- * 5. 별점 범위 설정
+ * 5. 카테고리 이모지
+ * 데이터에 따라 들어오는 카테고리가 다 다르다. 그것에 맞춰 렌더하는데, 이모지로 치환해서..
+ * 별점 범위 설정
  * 받아온 별점 평균을 반올림처리한다.
  * 4.75 <= x <= 5.0 ==> 5.0 ==> ⭐️⭐️⭐️⭐️⭐️
  * 4.25 <= x < 4.75 ==> 4.5
@@ -54,68 +32,6 @@ import {
  * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
  */
 
-interface TalentsListInterface {
-  category: string;
-  title: string;
-  price: number;
-  nickname: string;
-  ratings: number;
-  ratingsCount: number;
-  _id: string;
-}
-
-const filterData = [
-  {
-    id: 1,
-    value: 'business',
-    name: '비즈니스',
-  },
-  {
-    id: 2,
-    value: 'coding',
-    name: '개발/디자인',
-  },
-  {
-    id: 3,
-    value: 'health',
-    name: '건강',
-  },
-  {
-    id: 4,
-    value: 'lesson',
-    name: '레슨',
-  },
-  {
-    id: 5,
-    value: 'living',
-    name: '홈/리빙',
-  },
-  {
-    id: 6,
-    value: 'pet',
-    name: '반려동물',
-  },
-  {
-    id: 7,
-    value: 'etc',
-    name: '기타',
-  },
-];
-
-const sortData = [
-  {
-    id: 'price',
-    name: '가격순',
-  },
-  {
-    id: 'ratings',
-    name: '별점순',
-  },
-  {
-    id: 'review',
-    name: '고용횟수순',
-  },
-];
 interface MapSectionProps {
   map: any;
   setMap: (map: any) => void;
@@ -126,9 +42,6 @@ interface MapSectionProps {
 function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
   const dispatch = useDispatch();
   const { filter, talentData } = useSelector((state: RootState) => state.map);
-  const [talentsList, setTalentsList] = useState<TalentsListInterface>();
-
-  // const [open, setOpen] = useState<boolean>(false);
 
   // checkbox(filter)
   const handleCheckBox = (currentValue: any) => {
@@ -200,11 +113,11 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
         {infoWindowGroup.map((talent) => (
           <TALENT onClick={() => handleInfoWindow(talent)} key={talent[0].id}>
             <CATEGORY>카테고리: {talent[0].category}</CATEGORY>
-            <TITLE>재능 글 제목{talent[0].title}</TITLE>
-            <PRICE>가격{talent[0].price}</PRICE>
-            <NICKNAME>닉네임{talent[0].nickname}</NICKNAME>
-            <RATINGS>별점 평균{talent[0].ratings}</RATINGS>
-            <RATINGSCOUNT>리뷰 개수{talent[0].ratingsCount}</RATINGSCOUNT>
+            <TITLE>제목: {talent[0].title}</TITLE>
+            <PRICE>가격: {talent[0].price}</PRICE>
+            <NICKNAME>닉네임: {talent[0].nickname}</NICKNAME>
+            <RATINGS>별점 평균: {talent[0].ratings[0] ?? '별점 없음'}</RATINGS>
+            <RATINGSCOUNT>리뷰 개수: {talent[0].ratings[1] ?? '리뷰 없음'}</RATINGSCOUNT>
           </TALENT>
         ))}
       </TALENTSLIST>

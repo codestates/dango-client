@@ -26,7 +26,7 @@ const BUTTON = styled.button`
   grid-row: 12/13;
 `;
 
-const categoryList = ['홈/리빙', '비즈니스', '디자인/개발', '건강', '레슨', '반려동물', '기타'];
+const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
 
 export default function TalentRegistrationPage(): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
@@ -36,7 +36,7 @@ export default function TalentRegistrationPage(): JSX.Element {
     images: ['사진'],
     description: '',
     price: 0,
-    category: 'living',
+    category: '홈/리빙',
     title: '',
     userId: userInfo?.id,
   });
