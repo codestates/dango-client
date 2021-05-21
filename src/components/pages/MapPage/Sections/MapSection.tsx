@@ -121,7 +121,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
 
   // 마커 생성
   const makeMarker = () => {
-    setInfoWindowGroup([]);
     infowindowRef.current = [];
 
     // 마커 이미지, 사이즈, 이미지의 위치 설정
@@ -201,6 +200,7 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
 
   // 마커 삭제
   const deleteMarker = () => {
+    setInfoWindowGroup([]);
     markers?.forEach((marker) => marker.setMap(null));
 
     console.log('마커삭제함');
