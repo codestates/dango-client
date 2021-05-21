@@ -1,12 +1,127 @@
 import React from 'react';
-import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../../_reducer';
+import { handleSort, handleFilter, MapState } from '../../../../_reducer/map';
+import { filterData, sortData } from './data';
+import {
+  CONTAINER,
+  FILTERSECTION,
+  TALENTSLIST,
+  TALENT,
+  CATEGORY,
+  NICKNAME,
+  RATINGS,
+  RATINGSCOUNT,
+  PRICE,
+  TITLE,
+} from './TalentsSectionStyle';
 
-const CONTAINER = styled.div`
-  grid-column: 5/7;
-  border: 1px solid black;
-`;
+/* TODO: 
+ [ ] 5. 카테고리 이모지, 별점 범위로 렌더
+ [ ] 6. sort 기본옵션? 거리순?
+*/
 
-function TalentsSection() {
-  return <CONTAINER>TalentList</CONTAINER>;
+/**
+ * 5. 카테고리 이모지
+ * 데이터에 따라 들어오는 카테고리가 다 다르다. 그것에 맞춰 렌더하는데, 이모지로 치환해서..
+ * 별점 범위 설정
+ * 받아온 별점 평균을 반올림처리한다.
+ * 4.75 <= x <= 5.0 ==> 5.0 ==> ⭐️⭐️⭐️⭐️⭐️
+ * 4.25 <= x < 4.75 ==> 4.5
+ * 3.75 <= x < 4.25 ==> 4.0 ==> ⭐️⭐️⭐️⭐️
+ * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
+ */
+
+interface MapSectionProps {
+  map: any;
+  setMap: (map: any) => void;
+  infoWindowGroup: any[];
+  setInfoWindowGroup: (infoWindowGroup: any) => void;
+}
+
+function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
+  const dispatch = useDispatch();
+  const { filter, talentData } = useSelector((state: RootState) => state.map);
+
+  // checkbox(filter)
+  const handleCheckBox = (currentValue: any) => {
+    // null의 indexOf 못하므로 기본 설정.
+    if (filter === null) {
+      const payload: MapState = {
+        filter: [],
+      };
+      dispatch(handleFilter(payload));
+    }
+    // 이전의 배열(체크리스트)을 불러온다. 그 배열에서 현재 체크된 것의 인덱스를 알아낸다.
+    const currentIndex = filter.indexOf(currentValue);
+    // 배열 복사.
+    const newCheckBoxList = [...filter];
+    // 기존 배열에 없는 값이면 새로 값을 푸쉬, 있는 값이면 삭제.
+    if (currentIndex === -1) {
+      newCheckBoxList.push(currentValue);
+    } else {
+      newCheckBoxList.splice(currentIndex, 1);
+    }
+    // 변화된 배열을 저장한다! 이걸로 filter에 담아서 서버에 요청 보내야 함.
+    const payload: MapState = {
+      filter: newCheckBoxList,
+    };
+    dispatch(handleFilter(payload));
+
+    console.log(newCheckBoxList);
+  };
+
+  // radiobox(sort)
+  const handleRadioBox = (event: any) => {
+    console.log(event.target.value);
+    const payload: MapState = {
+      sort: event.target.value,
+    };
+    dispatch(handleSort(payload));
+  };
+
+  const handleInfoWindow = (talent: any) => {
+    if (infoWindowGroup.length > 0) {
+      infoWindowGroup.forEach((infowindow) => infowindow[1].close());
+      talent[1].open(map, talent[2]);
+    }
+  };
+
+  return (
+    <CONTAINER>
+      <FILTERSECTION>
+        {filterData.map((ele) => (
+          <div key={ele.id} onChange={() => handleCheckBox(ele.name)}>
+            <input
+              type="checkbox"
+              id={ele.value}
+              name={ele.value}
+              value={ele.value}
+              checked={filter.indexOf(ele.name) !== -1}
+            />
+            <label htmlFor={ele.value}>{ele.name}</label>
+          </div>
+        ))}
+        {sortData.map((ele) => (
+          <div key={ele.id} onChange={handleRadioBox}>
+            <input type="radio" id={ele.id} name="sort" value={ele.id} />
+            <label htmlFor={ele.id}>{ele.name}</label>
+          </div>
+        ))}
+      </FILTERSECTION>
+      <TALENTSLIST>
+        {infoWindowGroup.map((talent) => (
+          <TALENT onClick={() => handleInfoWindow(talent)} key={talent[0].id}>
+            <CATEGORY>카테고리: {talent[0].category}</CATEGORY>
+            <TITLE>제목: {talent[0].title}</TITLE>
+            <PRICE>가격: {talent[0].price}</PRICE>
+            <NICKNAME>닉네임: {talent[0].nickname}</NICKNAME>
+            <RATINGS>별점 평균: {talent[0].ratings[0] ?? '별점 없음'}</RATINGS>
+            <RATINGSCOUNT>리뷰 개수: {talent[0].ratings[1] ?? '리뷰 없음'}</RATINGSCOUNT>
+          </TALENT>
+        ))}
+      </TALENTSLIST>
+    </CONTAINER>
+  );
 }
 export default TalentsSection;

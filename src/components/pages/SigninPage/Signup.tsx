@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import server from '../../../api';
-import { signin, UserState } from '../../../_reducer/users/user';
+import { signin, UserState } from '../../../_reducer/user';
 
 interface SignupProps {
   social: string;
@@ -46,7 +46,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             nickname,
             socialData: { email, image, social },
             sold,
-            bought
+            bought,
           } = response.data;
 
           const payload: UserState = {
@@ -57,7 +57,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               image,
               email,
               sold,
-              bought
+              bought,
             },
             accessToken,
           };
@@ -89,8 +89,8 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             accessToken,
             nickname,
             socialData: { email, image, social },
-            sold, 
-            bought 
+            sold,
+            bought,
           } = response.data;
 
           const payload: UserState = {
@@ -101,7 +101,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               image,
               email,
               sold,
-              bought
+              bought,
             },
             accessToken,
           };

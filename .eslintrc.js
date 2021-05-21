@@ -16,6 +16,11 @@ module.exports = {
     'object-shorthand': 0,
     'no-param-reassign': 0,
     'no-shadow': 0,
+    'no-plusplus': 0,
+    'no-continue': 0,
+    'react/no-array-index-key': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
     // 확장자 허용 (JSX not allowed in files with extension '.tsx')
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     // 정의되기 전에 사용되도록 허용 ('React' was used before it was defined)
@@ -33,6 +38,9 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'jsx-a11y/label-has-associated-control': 'off',
+    'jsx-a11y/label-has-for': 'off',
+    'react/jsx-boolean-value': 'off',
   },
   settings: {
     'import/resolver': {
