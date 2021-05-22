@@ -7,7 +7,6 @@ import ReviewCreate from './ReviewCreate';
 //  ㄴ UL 리뷰리스트
 //    ㄴ LI 리뷰 하나하나
 //      ㄴ DIV 리뷰INFO
-//        ㄴ IMG 프로필 이미지??
 //        ㄴ SPAN 리뷰 작성자 이름
 //        ㄴ UL 별점 공간
 //          ㄴLI 별점 이미지 하나하나

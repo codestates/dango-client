@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
-  grid-row: 2/9;
-  grid-column: 1/3;
+  flex: 6 1 auto;
+
   border: 1px solid black;
 `;
 

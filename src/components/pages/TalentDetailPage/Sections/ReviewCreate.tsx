@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { REVIEWCREATE } from './ReviewStyle';
-import Stars from './Stars';
+import StarScore from './StarScore';
 
 interface Props {
   setShow: (bool: boolean) => void;
@@ -48,7 +48,7 @@ function ReviewCreate({ setShow }: Props) {
       <div>
         {[1, 2, 3, 4, 5].map((idx) => {
           return (
-            <Stars
+            <StarScore
               key={idx}
               index={idx}
               rating={rating}

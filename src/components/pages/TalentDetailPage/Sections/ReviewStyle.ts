@@ -2,12 +2,13 @@ import styled from 'styled-components';
 
 const CONTAINER = styled.div`
   display: flex;
+  flex: 3 1 auto;
   flex-direction: column;
-  grid-row: 2/9;
-  grid-column: 3/4;
+
   border: 1px solid green;
 `;
 const REVIEWLIST = styled.ul`
+  width: 100%;
   border: 1px solid black;
   flex: 7 1 auto;
 `;

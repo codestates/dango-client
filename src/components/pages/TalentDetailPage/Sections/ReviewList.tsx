@@ -1,51 +1,68 @@
 import React from 'react';
 import { REVIEWLIST } from './ReviewStyle';
+import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 
-const dummy = [
-  { nickname: '유저1', rating: '5', text: '좋아요좋아요', date: '2021년 5월 19일' },
-  { nickname: '유저2', rating: '4', text: '그냥그랬어요', date: '2021년 5월 21일' },
+const dummyReview = [
+  { nickname: '유저1', rating: 5, text: '좋아요좋아요', date: '2021년 5월 22일' },
+  {
+    nickname: '유저2',
+    rating: 4,
+    text: '그냥그랬어요',
+    date: '2021년 5월 21일',
+    reply: { text: '앞으로는 좀더 준비해서 만족시켜드리겠습니다.', date: '2021년 5월 23일' },
+  },
   {
     nickname: '유저3',
-    rating: '0',
-    text: '길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기',
-    date: '2021년 5월 22일',
+    rating: 0,
+    text: '길게써보기',
+    date: '2021년 5월 19일',
+  },
+  {
+    nickname: '유저4',
+    rating: 2,
+    text: '아무말아무말',
+    date: '2021년 5월 17일',
   },
 ];
 
 const dummy2 = [];
 
+// useCallback으로 감싸기
 function ReviewList() {
+  const getStar = (rating: number) => {
+    const Stars = [];
+    const YELLOW = '#ffdb58';
+    const GREY = '#dcdcdc';
+    let fillColor;
+
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        fillColor = YELLOW;
+      } else {
+        fillColor = GREY;
+      }
+      Stars.push(<StarSvg key={i} style={{ marginRight: '3px' }} fill={fillColor} />);
+    }
+    return Stars;
+  };
+
   return (
     <REVIEWLIST>
-      {dummy.length > 0 ? (
-        dummy.map((review, idx) => {
+      {dummyReview.length > 0 ? (
+        dummyReview.map((review, idx) => {
           return (
-            <li key={idx} style={{ border: '1px solid black' }}>
-              <div>
-                <span>이름: {review.nickname}</span>
-                <ul>dddddd</ul>
-              </div>
-              <div>
+            <li key={idx} style={{ marginBottom: '20px' }}>
+              <div
+                className="리뷰INFO"
+                style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}
+              >
                 <div>
-                  <p
-                    style={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-
-                      width: '90%',
-                      height: '80%',
-                      WebkitLineClamp: 3,
-                      WebkitBoxOrient: 'vertical',
-                    }}
-                  >
-                    {review.text}
-                  </p>
+                  <span style={{ marginRight: '10px' }}>{review.nickname}</span>
+                  <span>{getStar(review.rating)}</span>
                 </div>
-                <div>
-                  <span>더보기</span>
-                </div>
+                <div>{review.date}</div>
               </div>
+              <div className="리뷰내용">{review.text}</div>
             </li>
           );
         })

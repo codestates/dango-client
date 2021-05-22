@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import StarIcon from './StarIcon';
+import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 
 interface StarsProps {
   index: number;
@@ -13,7 +13,7 @@ interface StarsProps {
 const YELLOW = '#ffdb58';
 const GREY = '#dcdcdc';
 
-function Stars({ index, rating, hoverRating, onMouseEnter, onMouseLeave, onSaveRating }: StarsProps): JSX.Element {
+function StarScore({ index, rating, hoverRating, onMouseEnter, onMouseLeave, onSaveRating }: StarsProps): JSX.Element {
   const fillColor = useMemo(() => {
     if (hoverRating >= index) {
       return YELLOW;
@@ -30,9 +30,9 @@ function Stars({ index, rating, hoverRating, onMouseEnter, onMouseLeave, onSaveR
       onMouseLeave={() => onMouseLeave()}
       onClick={() => onSaveRating(index)}
     >
-      <StarIcon fillColor={fillColor} />
+      <StarSvg style={{ marginRight: '3px' }} fill={fillColor} />
     </span>
   );
 }
 
-export default Stars;
+export default StarScore;

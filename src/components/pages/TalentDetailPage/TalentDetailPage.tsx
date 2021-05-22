@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import Review from './Sections/Review';
 import TalentContent from './Sections/TalentContent';
 
-const CONTAINER = styled.div`
-  display: grid;
+const PAGECONTAINER = styled.div`
+  display: flex;
   height: 100vh;
-  grid-column-gap: 20px;
+  width: 100%;
 `;
 
 // 여기서 해당 글의 정보를 서버에서 받고, 리덕스에 저장한다.
@@ -16,10 +16,10 @@ const CONTAINER = styled.div`
 
 function TalentDetailPage(): JSX.Element {
   return (
-    <CONTAINER>
+    <PAGECONTAINER>
       <TalentContent />
       <Review />
-    </CONTAINER>
+    </PAGECONTAINER>
   );
 }
 
