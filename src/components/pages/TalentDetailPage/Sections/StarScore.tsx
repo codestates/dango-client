@@ -30,7 +30,7 @@ function StarScore({ index, rating, hoverRating, onMouseEnter, onMouseLeave, onS
       onMouseLeave={() => onMouseLeave()}
       onClick={() => onSaveRating(index)}
     >
-      <StarSvg style={{ marginRight: '3px' }} fill={fillColor} />
+      <StarSvg style={{ marginRight: '3px', cursor: 'pointer' }} fill={fillColor} />
     </span>
   );
 }

@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const CONTAINER = styled.div`
-  flex: 6 1 auto;
-
+  flex: 6;
   border: 1px solid black;
 `;
 

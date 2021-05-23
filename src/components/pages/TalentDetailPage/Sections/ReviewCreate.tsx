@@ -3,11 +3,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { REVIEWCREATE } from './ReviewStyle';
 import StarScore from './StarScore';
+import getToday from '../../../../utils/getToday';
 
 interface Props {
-  setShow: (bool: boolean) => void;
+  role: string;
+  setShow: (boolean: boolean) => void;
 }
-function ReviewCreate({ setShow }: Props) {
+function ReviewCreate({ role, setShow }: Props): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
   const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number>(0);
@@ -27,18 +29,13 @@ function ReviewCreate({ setShow }: Props) {
     console.log('서버에 요청할 닉네임', userInfo?.nickname);
     console.log('서버에 요청할 별점', rating);
     console.log('서버에 요청할 리뷰내용', reviewText);
-    const date = new Date();
-    const today = date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+    const today = getToday();
     console.log('서버에 요청할 작성날짜', today);
 
     // TODO: 어차피 리뷰작성하면 이 컴포넌트는 안보이니까 아래는 지운다.
     // api완성되면, 해당글에 내가 리뷰를 남겼다는 흔적을 줘야함. 그걸 기준으로 부모에서 이 컴포넌트를 랜더한다.
-    setShow(false);
     setRating(0);
+    setShow(false);
     if (textRef.current) {
       textRef.current.value = '';
     }
@@ -68,6 +65,7 @@ function ReviewCreate({ setShow }: Props) {
         rows={3}
         cols={20}
       />
+
       <div>
         <button type="submit" onClick={handleSubmit}>
           리뷰등록
