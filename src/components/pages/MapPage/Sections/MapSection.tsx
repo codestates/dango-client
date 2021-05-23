@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
 import { setMapConfig } from '../../../../_reducer/map';
-import server from '../../../../api';
 
 declare global {
   interface Window {
@@ -70,11 +68,9 @@ interface MapSectionProps {
 function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
   const dispatch = useDispatch();
   const { mapLevel, latLng, width, talentData } = useSelector((state: RootState) => state.map);
-
-  const { kakao } = window;
   const [markers, setMarkers] = useState<any[]>([]);
-  const { talentId } = useParams<{ talentId: string }>();
   const infowindowRef = useRef<any[]>([]);
+  const { kakao } = window;
 
   // 렌더 초기 맵생성 및 지도 이벤트 등록
   useEffect(() => {
@@ -246,21 +242,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
     const moveLatLon = new kakao.maps.LatLng(lat, lng);
     map.panTo(moveLatLon);
   };
-  return (
-    <CONTAINER className="kakaoMap">
-      {/* <div style={{ position: 'absolute', zIndex: 110 }}>
-        {talentData &&
-          talentData.length > 0 &&
-          talentData[0].id !== '' &&
-          talentData.map((data, idx) => {
-            return (
-              <button key={idx} type="button" data-id={data.id} onClick={handleButton}>
-                {data.title}
-              </button>
-            );
-          })}
-      </div> */}
-    </CONTAINER>
-  );
+  return <CONTAINER className="kakaoMap" />;
 }
 export default MapSection;
