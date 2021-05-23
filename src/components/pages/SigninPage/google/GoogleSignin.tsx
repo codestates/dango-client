@@ -33,8 +33,9 @@ function GoogleSignin() {
             accessToken,
             nickname,
             socialData: { email, image, social },
-            sold,
+            selling,
             bought,
+            talks
           } = response.data;
 
           const payload: UserState = {
@@ -44,8 +45,9 @@ function GoogleSignin() {
               nickname,
               image,
               email,
-              sold,
+              selling,
               bought,
+              talks
             },
             accessToken,
           };

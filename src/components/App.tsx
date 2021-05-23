@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import GlobalStyles from './GlobalStyles';
 import Kakao from './pages/SigninPage/kakao';
 import MapPage from './pages/MapPage/MapPage';
+import ChattingPage from './pages/ChattingPage/ChattingPage';
 import TalentRegister from './pages/TalentRegistrationPage/TalentRegistrationPage';
 import TalentDetailPage from './pages/TalentDetailPage/TalentDetailPage';
 // import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
@@ -26,7 +27,7 @@ function App(): JSX.Element {
             </Route>
             <Route path="/kakao" component={Kakao} />
             <Route path="/map" component={MapPage} />
-            {/* <Route path="/registration" exact component={TalentRegistrationPage}></Route> */}
+            <Route path="/chatting" component={ChattingPage} />
             <Route path="/register" component={TalentRegister} />
             <Route path="/detail/:talentId" component={TalentDetailPage} />
           </Switch>

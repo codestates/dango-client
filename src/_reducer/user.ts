@@ -7,16 +7,9 @@ export interface UserState {
     nickname: string;
     image: string | undefined;
     email: string | undefined;
-    sold: {
-      title: string | undefined;
-      address: string | undefined;
-      price: number | undefined;
-    } | null;
-    bought: {
-      title: string | undefined;
-      address: string | undefined;
-      price: number | undefined;
-    } | null;
+    selling: [string] | null;
+    bought: [string] | null;
+    talks: [string] | null;  // 채팅 방 아이디만 들어갑니다
   } | null;
   accessToken: string | null;
   isSignin?: boolean;
