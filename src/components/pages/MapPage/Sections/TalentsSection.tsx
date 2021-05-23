@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../_reducer';
-import { handleSort, handleFilter, MapState } from '../../../../_reducer/map';
+import { handleSort, handleFilter, MapState, setMarkerLatLng } from '../../../../_reducer/map';
 import { filterData, sortData } from './data';
 import {
   CONTAINER,
@@ -108,6 +108,7 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
       talent[2].setImage(clickImage);
 
       const [lng, lat] = talent[0].location;
+      dispatch(setMarkerLatLng({ clickedMarkerLatLng: [lat, lng] }));
       const moveLatLon = new window.kakao.maps.LatLng(lat, lng);
       map.panTo(moveLatLon);
     }
