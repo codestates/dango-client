@@ -49,7 +49,7 @@ export default function OriginalReview({ review, role }: OriginalReviewProps): J
     const limit = 100;
     return {
       text: (
-        <p>
+        <p style={{ wordBreak: 'break-all' }}>
           {str.slice(0, limit)}
           {more ? '...' : str.slice(limit, str.length)}
         </p>

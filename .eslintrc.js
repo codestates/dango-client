@@ -43,6 +43,7 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/label-has-for': 'off',
     'react/jsx-boolean-value': 'off',
+    'no-underscore-dangle': 'off',
   },
   settings: {
     'import/resolver': {

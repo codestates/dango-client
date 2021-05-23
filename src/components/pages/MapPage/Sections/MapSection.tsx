@@ -143,14 +143,16 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
           });
 
           const iwcontent = `<div class="main" style="padding: 7px;">
-                          <div class="title">제목${talentData[i]?.title}</div>
-                          <div class="category">카테고리${talentData[i]?.category}</div>
-                          <div class="address">지역${talentData[i]?.address}</div>
-                          <div class="ratings">별점${talentData[i]?.ratings[0] ?? '별점 없음'}</div>
-                          <div class="nickname">닉네임${talentData[i]?.nickname}</div>
-                          <div class="price">가격${talentData[i]?.price}</div>
-                          <div class="description">내용${talentData[i]?.description}</div>
-                          <div class="button">More details</div>
+                          <div class="title">제목 : ${talentData[i]?.title}</div>
+                          <div class="category">카테고리 : ${talentData[i]?.category}</div>
+                          <div class="address">지역 : ${talentData[i]?.address}</div>
+                          <div class="ratings">별점 : ${talentData[i]?.ratings[0] ?? '별점 없음'}</div>
+                          <div class="nickname">닉네임 : ${talentData[i]?.nickname}</div>
+                          <div class="price">가격 : ${talentData[i]?.price}</div>
+                          <div class="description">내용 : ${talentData[i]?.description}</div>
+                          <a href="/detail/${talentData[i]?.id}" target="_self">
+                            <button class="button">상세페이지로 이동</button>
+                          </a>
                           </div>
                           `;
           const iwRemoveable = true;

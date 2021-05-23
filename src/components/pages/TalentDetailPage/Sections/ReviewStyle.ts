@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 
-const CONTAINER = styled.div`
+const REVIEW = styled.div`
   display: flex;
-  width: 100%;
-  flex: 3;
+  grid-column: 7/10;
+  grid-row: 2/6;
+  border: 1px solid;
   flex-direction: column;
-  border: 1px solid green;
+
+  @media screen and (max-width: 768px) {
+    grid-column: 1/7;
+    grid-row: 6/10;
+  }
 `;
 // ReviewList
 const REVIEWLIST = styled.ul`
@@ -53,4 +58,4 @@ const REVIEWCREATE = styled.div`
   flex: 3 1 auto;
 `;
 
-export { CONTAINER, REVIEWLIST, REVIEWCREATE };
+export { REVIEW, REVIEWLIST, REVIEWCREATE };

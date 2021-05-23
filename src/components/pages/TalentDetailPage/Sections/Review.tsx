@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CONTAINER } from './ReviewStyle';
+import { REVIEW } from './ReviewStyle';
 import ReviewList from './ReviewList';
 import ReviewCreate from './ReviewCreate';
 
@@ -38,7 +38,7 @@ function Review(): JSX.Element {
   const [show, setShow] = useState<boolean>(true);
 
   return (
-    <CONTAINER>
+    <REVIEW>
       {/* 테스트버튼 */}
       <button
         type="button"
@@ -53,7 +53,7 @@ function Review(): JSX.Element {
       </button>
       <ReviewList role={role} />
       {role === 'buyer' && show && <ReviewCreate role={role} setShow={setShow} />}
-    </CONTAINER>
+    </REVIEW>
   );
 }
 
