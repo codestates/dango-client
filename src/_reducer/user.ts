@@ -9,7 +9,7 @@ export interface UserState {
     email: string | undefined;
     selling: [string] | null;
     bought: [string] | null;
-    talks: [string] | null;  // 채팅 방 아이디만 들어갑니다
+    talks: [string] | null; // 채팅 방 아이디만 들어갑니다
   } | null;
   accessToken: string | null;
   isSignin?: boolean;

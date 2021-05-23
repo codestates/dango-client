@@ -120,11 +120,15 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
     infowindowRef.current = [];
 
     // 마커 이미지, 사이즈, 이미지의 위치 설정
-    const markerImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(50, 58), {
-      offset: new window.kakao.maps.Point(20, 58),
+    const markerImage = new kakao.maps.MarkerImage(`/images/markerPurple.png`, new window.kakao.maps.Size(30, 38), {
+      offset: new window.kakao.maps.Point(14, 38),
     });
 
-    const hoverImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(62, 74), {
+    const clickImage = new kakao.maps.MarkerImage(`/images/markerClick.png`, new window.kakao.maps.Size(38, 45), {
+      offset: new window.kakao.maps.Point(19, 45),
+    });
+
+    const hoverImage = new kakao.maps.MarkerImage(`/images/markerPurple.png`, new window.kakao.maps.Size(62, 74), {
       offset: new window.kakao.maps.Point(20, 74),
     });
     if (talentData) {
@@ -161,8 +165,12 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
             content: iwcontent,
             removable: iwRemoveable,
           });
+          /// ---------------marker,infowindow 생성 끝 -------------------------- ///
 
           kakao.maps.event.addListener(marker, 'click', function () {
+            infowindowRef.current.forEach((infowindow) => infowindow[2].setImage(markerImage));
+
+            marker.setImage(clickImage);
             infowindowRef.current.forEach((infowindow) => infowindow[1].close());
             infowindow.open(map, marker);
             // 클릭시 지도 이동
@@ -170,14 +178,15 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
             map.panTo(moveLatLon);
           });
 
-          kakao.maps.event.addListener(marker, 'mouseover', function () {
-            marker.setImage(hoverImage);
-          });
+          // kakao.maps.event.addListener(marker, 'mouseover', function () {
+          //   marker.setImage(null);
+          //   marker.setImage(hoverImage);
+          // });
 
-          // 마커에 mouseout 이벤트 등록
-          kakao.maps.event.addListener(marker, 'mouseout', function () {
-            marker.setImage(markerImage);
-          });
+          // // 마커에 mouseout 이벤트 등록
+          // kakao.maps.event.addListener(marker, 'mouseout', function () {
+          //   marker.setImage(markerImage);
+          // });
 
           newMarkers.push(marker);
 
@@ -188,9 +197,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
         }
       }
       setInfoWindowGroup(infowindowRef.current);
-      setTimeout(() => {
-        console.log('ref로 넣은 infowindowGroup', infoWindowGroup);
-      }, 1000);
       setMarkers(newMarkers);
       console.log('마커만들었음');
     }

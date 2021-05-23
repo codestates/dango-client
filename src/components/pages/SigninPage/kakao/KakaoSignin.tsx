@@ -23,7 +23,7 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
         server
           .post('/users/kakao/signin', null, config)
           .then((response) => {
-            console.log('respose.data:::', response.data);
+            console.log('kakao respose.data:::', response.data);
 
             const {
               _id: id,
@@ -32,7 +32,7 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
               socialData: { email, image, social },
               selling,
               bought,
-              talks
+              talks,
             } = response.data;
 
             const payload: UserState = {
@@ -44,7 +44,7 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
                 email,
                 selling,
                 bought,
-                talks
+                talks,
               },
               accessToken,
             };
