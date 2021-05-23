@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import server from '../../../api';
 import { CONTAINER, SELLER, DETAIL, PHOTOS, REVIEW } from './TalentDetailPageStyle';
 
-function TalentDetailPage() {
+function TalentDetailPage(): JSX.Element {
   const [detailData, setDetailData] = useState<any>();
 
   const { talentId } = useParams<{ talentId: string }>();
