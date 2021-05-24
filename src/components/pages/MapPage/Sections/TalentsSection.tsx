@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../_reducer';
-import { handleSort, handleFilter, MapState } from '../../../../_reducer/map';
+import { handleSort, handleFilter, MapState, setMarkerLatLng } from '../../../../_reducer/map';
 import { filterData, sortData } from './data';
 import {
   CONTAINER,
@@ -81,11 +81,34 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
   };
 
   const handleInfoWindow = (talent: any) => {
+    const markerImage = new window.kakao.maps.MarkerImage(
+      `/images/markerPurple.png`,
+      new window.kakao.maps.Size(30, 38),
+      {
+        offset: new window.kakao.maps.Point(14, 38),
+      },
+    );
+
+    const clickImage = new window.kakao.maps.MarkerImage(
+      `/images/markerClick.png`,
+      new window.kakao.maps.Size(38, 45),
+      {
+        offset: new window.kakao.maps.Point(19, 45),
+      },
+    );
+
     if (infoWindowGroup.length > 0) {
-      infoWindowGroup.forEach((infowindow) => infowindow[1].close());
+      // 모든 인포윈도우를 닫고, 모든 마커를 기본마커이미지로바꾼다.
+      infoWindowGroup.forEach((infowindow) => {
+        infowindow[1].close();
+        infowindow[2].setImage(markerImage);
+      });
+      // 클릭한 마커의 인포윈도우를 열고,마커를 클릭이미지로 바꾼다.
       talent[1].open(map, talent[2]);
+      talent[2].setImage(clickImage);
 
       const [lng, lat] = talent[0].location;
+      dispatch(setMarkerLatLng({ clickedMarkerLatLng: [lat, lng] }));
       const moveLatLon = new window.kakao.maps.LatLng(lat, lng);
       map.panTo(moveLatLon);
     }

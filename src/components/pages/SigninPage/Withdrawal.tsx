@@ -1,11 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { signout } from '../../../_reducer/user';
 import { RootState } from '../../../_reducer';
 import server from '../../../api';
 
 function Withdrawal(): JSX.Element {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { userInfo } = useSelector((state: RootState) => state.user);
   let withdrawalURL = '';
   if (userInfo?.social === 'kakao') {
@@ -29,6 +31,7 @@ function Withdrawal(): JSX.Element {
           .then(() => {
             dispatch(signout());
             alert('회원탈퇴가 완료되었습니다.');
+            history.push('/');
           })
           .catch((err) => {
             if (err.response) {
@@ -50,6 +53,7 @@ function Withdrawal(): JSX.Element {
       .then(() => {
         dispatch(signout());
         alert('회원탈퇴가 완료되었습니다.');
+        history.push('/');
       })
       .catch((err) => {
         if (err.response) {

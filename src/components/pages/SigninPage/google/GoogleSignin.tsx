@@ -26,7 +26,7 @@ function GoogleSignin() {
       server
         .post('/users/google/signin', null, config)
         .then((response) => {
-          console.log('respose.data:::', response.data);
+          console.log('google respose.data:::', response.data);
 
           const {
             _id: id,
@@ -36,7 +36,7 @@ function GoogleSignin() {
             selling,
             buying,
             bought,
-            chatRooms
+            chatRooms,
           } = response.data;
 
           const payload: UserState = {
@@ -49,7 +49,7 @@ function GoogleSignin() {
               selling,
               buying,
               bought,
-              chatRooms
+              chatRooms,
             },
             accessToken,
           };

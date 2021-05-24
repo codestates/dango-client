@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface Chat {
   roomId: string;
   other: string | null;
-  count: number
+  count: number;
 }
 
 export interface UserState {
@@ -16,7 +16,7 @@ export interface UserState {
     selling: [string] | null;
     buying: [string] | null;
     bought: [string] | null;
-    chatRooms: [Chat] | null; 
+    chatRooms: [Chat] | null;
   } | null;
   accessToken: string | null;
   isSignin?: boolean;
