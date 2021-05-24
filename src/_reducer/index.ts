@@ -5,10 +5,12 @@ import { persistReducer } from 'redux-persist';
 
 import user from './user';
 import map from './map';
+import modal from './modal';
 
 const reducers = combineReducers({
   user,
   map,
+  modal,
 });
 
 const persistConfig = {
