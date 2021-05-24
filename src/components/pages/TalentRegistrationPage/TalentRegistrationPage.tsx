@@ -68,6 +68,7 @@ export default function TalentRegistrationPage(): JSX.Element {
         ...registerData,
         address,
         location,
+        description: registerData.description.replace('\r\n', '<br>'),
       };
       server
         .post('/talents/create', body)

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
-import { setMapConfig } from '../../../../_reducer/map';
+import { setMapConfig, setMarkerLatLng } from '../../../../_reducer/map';
 
 declare global {
   interface Window {
@@ -67,7 +67,7 @@ interface MapSectionProps {
 
 function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
   const dispatch = useDispatch();
-  const { mapLevel, latLng, width, talentData } = useSelector((state: RootState) => state.map);
+  const { mapLevel, latLng, talentData, clickedMarkerLatLng } = useSelector((state: RootState) => state.map);
   const [markers, setMarkers] = useState<any[]>([]);
   const infowindowRef = useRef<any[]>([]);
   const { kakao } = window;
@@ -84,10 +84,16 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
     setMap(map);
 
     kakao.maps.event.addListener(map, 'zoom_changed', () => {
+      infowindowRef.current.forEach((infowindow) => {
+        infowindow[1].close();
+      });
       renewMapConfig(map);
     });
 
     kakao.maps.event.addListener(map, 'dragend', () => {
+      infowindowRef.current.forEach((infowindow) => {
+        infowindow[1].close();
+      });
       renewMapConfig(map);
     });
 
@@ -120,14 +126,18 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
     infowindowRef.current = [];
 
     // 마커 이미지, 사이즈, 이미지의 위치 설정
-    const markerImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(50, 58), {
-      offset: new window.kakao.maps.Point(20, 58),
+    const markerImage = new kakao.maps.MarkerImage(`/images/markerPurple.png`, new window.kakao.maps.Size(30, 38), {
+      offset: new window.kakao.maps.Point(14, 38),
     });
 
-    const hoverImage = new kakao.maps.MarkerImage(`/images/dango_p.png`, new window.kakao.maps.Size(62, 74), {
-      offset: new window.kakao.maps.Point(20, 74),
+    const clickImage = new kakao.maps.MarkerImage(`/images/markerClick.png`, new window.kakao.maps.Size(38, 45), {
+      offset: new window.kakao.maps.Point(19, 45),
     });
-    if (talentData) {
+
+    // const hoverImage = new kakao.maps.MarkerImage(`/images/markerPurple.png`, new window.kakao.maps.Size(62, 74), {
+    //   offset: new window.kakao.maps.Point(20, 74),
+    // });
+    if (talentData && mapLevel && mapLevel <= 10) {
       const newMarkers = [];
       for (let i = 0; i < talentData.length; i++) {
         if (talentData[i].id === '') {
@@ -138,7 +148,7 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
           const marker = new kakao.maps.Marker({
             map: map,
             position: new kakao.maps.LatLng(lat, lng),
-            image: markerImage,
+            image: clickedMarkerLatLng?.toString() === `${lat},${lng}` ? clickImage : markerImage,
             clickable: true,
           });
 
@@ -161,23 +171,31 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
             content: iwcontent,
             removable: iwRemoveable,
           });
+          /// ---------------marker,infowindow 생성 끝 -------------------------- ///
 
           kakao.maps.event.addListener(marker, 'click', function () {
-            infowindowRef.current.forEach((infowindow) => infowindow[1].close());
+            infowindowRef.current.forEach((infowindow) => {
+              infowindow[2].setImage(markerImage);
+              infowindow[1].close();
+            });
+            marker.setImage(clickImage);
             infowindow.open(map, marker);
+            dispatch(setMarkerLatLng({ clickedMarkerLatLng: [lat, lng] }));
+
             // 클릭시 지도 이동
             const moveLatLon = new kakao.maps.LatLng(lat, lng);
             map.panTo(moveLatLon);
           });
 
-          kakao.maps.event.addListener(marker, 'mouseover', function () {
-            marker.setImage(hoverImage);
-          });
+          // kakao.maps.event.addListener(marker, 'mouseover', function () {
+          //   marker.setImage(null);
+          //   marker.setImage(hoverImage);
+          // });
 
-          // 마커에 mouseout 이벤트 등록
-          kakao.maps.event.addListener(marker, 'mouseout', function () {
-            marker.setImage(markerImage);
-          });
+          // // 마커에 mouseout 이벤트 등록
+          // kakao.maps.event.addListener(marker, 'mouseout', function () {
+          //   marker.setImage(markerImage);
+          // });
 
           newMarkers.push(marker);
 
@@ -188,9 +206,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
         }
       }
       setInfoWindowGroup(infowindowRef.current);
-      setTimeout(() => {
-        console.log('ref로 넣은 infowindowGroup', infoWindowGroup);
-      }, 1000);
       setMarkers(newMarkers);
       console.log('마커만들었음');
     }
@@ -223,25 +238,25 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
     [map],
   );
 
-  const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('btn;;;;;;;;;;;', event.currentTarget.textContent);
-    const talentId = event.currentTarget.dataset.id;
-    const infowindow = infowindowRef.current.find((infowindow) => {
-      return infowindow[0].id === talentId;
-    });
-    console.log('타겟 인포윈도우 그룹::::::::::', infowindow); // [id,infowindow,marker]
+  // const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   console.log('btn;;;;;;;;;;;', event.currentTarget.textContent);
+  //   const talentId = event.currentTarget.dataset.id;
+  //   const infowindow = infowindowRef.current.find((infowindow) => {
+  //     return infowindow[0].id === talentId;
+  //   });
+  //   console.log('타겟 인포윈도우 그룹::::::::::', infowindow); // [id,infowindow,marker]
 
-    // 인포윈도우 모두 끄고
-    infowindowRef.current.forEach((infowindow) => infowindow[1].close());
-    // 다시 킨다.
-    infowindow[1].open(map, infowindow[2]);
+  //   // 인포윈도우 모두 끄고
+  //   infowindowRef.current.forEach((infowindow) => infowindow[1].close());
+  //   // 다시 킨다.
+  //   infowindow[1].open(map, infowindow[2]);
 
-    // 클릭시 해당 마커위치로 지도위치 이동
-    // ->근데 이렇게 이동하면 지도범위 안불러와짐. 드래그나 휠로 지도를 움직였을때만 지도범위에 해당하는 데이터를 요청한다.
-    const [lng, lat] = infowindow[0].location;
-    const moveLatLon = new kakao.maps.LatLng(lat, lng);
-    map.panTo(moveLatLon);
-  };
+  //   // 클릭시 해당 마커위치로 지도위치 이동
+  //   // ->근데 이렇게 이동하면 지도범위 안불러와짐. 드래그나 휠로 지도를 움직였을때만 지도범위에 해당하는 데이터를 요청한다.
+  //   const [lng, lat] = infowindow[0].location;
+  //   const moveLatLon = new kakao.maps.LatLng(lat, lng);
+  //   map.panTo(moveLatLon);
+  // };
   return <CONTAINER className="kakaoMap" />;
 }
 export default MapSection;
