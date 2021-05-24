@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface Chat {
+  roomId: string;
+  other: string | null;
+  count: number;
+}
+
 export interface UserState {
   userInfo: {
     id: string;
@@ -8,8 +14,9 @@ export interface UserState {
     image: string | undefined;
     email: string | undefined;
     selling: [string] | null;
+    buying: [string] | null;
     bought: [string] | null;
-    talks: [string] | null; // 채팅 방 아이디만 들어갑니다
+    chatRooms: [Chat] | null;
   } | null;
   accessToken: string | null;
   isSignin?: boolean;
