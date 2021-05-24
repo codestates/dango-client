@@ -1,8 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ModalState {
-  type: 'ok' | 'yesno';
+  type: 'ok' | 'error' | 'danger';
   open: boolean;
+  text: string;
+}
+
+export interface OpenPayload {
+  type: 'ok' | 'error' | 'danger';
   text: string;
 }
 
@@ -16,15 +21,18 @@ export const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    open: (state, action: PayloadAction<ModalState>) => {
-      state = action.payload;
+    openModal: (state, action: PayloadAction<OpenPayload>) => {
+      console.log('open');
+      const newState = { ...action.payload, open: true };
+      return newState;
     },
-    close: () => {
+    closeModal: () => {
+      console.log('close');
       return initialState;
     },
   },
 });
 
-export const { open, close } = modalSlice.actions;
+export const { openModal, closeModal } = modalSlice.actions;
 
 export default modalSlice.reducer;
