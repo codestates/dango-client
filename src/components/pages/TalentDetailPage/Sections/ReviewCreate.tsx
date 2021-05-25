@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../_reducer';
+import { updateReview } from '../../../../_reducer/user';
 import { REVIEWCREATE } from './ReviewStyle';
 import StarScore from './StarScore';
 import getToday from '../../../../utils/getToday';
+import server from '../../../../api';
 
-interface Props {
-  role: string;
-  setShow: (boolean: boolean) => void;
-}
-function ReviewCreate({ role, setShow }: Props): JSX.Element {
+function ReviewCreate(): JSX.Element {
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
+  const { talentId, userId } = useSelector((state: RootState) => state.talent);
+
   const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>();
@@ -34,8 +35,20 @@ function ReviewCreate({ role, setShow }: Props): JSX.Element {
 
     // TODO: 어차피 리뷰작성하면 이 컴포넌트는 안보이니까 아래는 지운다.
     // api완성되면, 해당글에 내가 리뷰를 남겼다는 흔적을 줘야함. 그걸 기준으로 부모에서 이 컴포넌트를 랜더한다.
+    const data = {
+      talentId,
+      userId,
+      review: reviewText,
+      rating,
+      nickname: userInfo?.nickname,
+      date: today,
+    };
+
+    server.post('talents/review/', data).then((response) => {
+      console.log('리뷰작성됐나?', response.data);
+      dispatch(updateReview({ talentId }));
+    });
     setRating(0);
-    setShow(false);
     if (textRef.current) {
       textRef.current.value = '';
     }

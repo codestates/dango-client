@@ -6,11 +6,13 @@ import { persistReducer } from 'redux-persist';
 import user from './user';
 import map from './map';
 import modal from './modal';
+import talent from './talent';
 
 const reducers = combineReducers({
   user,
   map,
   modal,
+  talent,
 });
 
 const persistConfig = {

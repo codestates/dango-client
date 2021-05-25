@@ -36,6 +36,7 @@ interface LiType {
 // `;
 const LI = styled.li<LiType>`
   background: ${(props) => props['data-idx'] === 0 && '#DEDCEE'};
+  cursor: pointer;
 `;
 
 interface LocationSearchProps {

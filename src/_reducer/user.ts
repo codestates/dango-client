@@ -15,12 +15,16 @@ export interface UserState {
     email: string | undefined;
     selling: [string] | null;
     buying: [string] | null;
-    unreviewed: [string] | null;
-    reviewed: [string] | null;
+    unreviewed: [string];
+    reviewed: [string];
     talks: [Chats] | null;
   } | null;
   accessToken: string | null;
   isSignin?: boolean;
+}
+
+export interface UpdateReviewPayload {
+  talentId: string;
 }
 
 const initialState: UserState = {
@@ -41,9 +45,17 @@ export const userSlice = createSlice({
     signout: () => {
       return initialState;
     },
+    updateReview: (state, action: PayloadAction<UpdateReviewPayload>) => {
+      const { talentId } = action.payload;
+      if (state.userInfo) {
+        const index = state.userInfo.unreviewed.indexOf(talentId);
+        state.userInfo?.unreviewed.splice(index, 1);
+        state.userInfo.reviewed.push(talentId);
+      }
+    },
   },
 });
 
-export const { signin, signout } = userSlice.actions;
+export const { signin, signout, updateReview } = userSlice.actions;
 
 export default userSlice.reducer;

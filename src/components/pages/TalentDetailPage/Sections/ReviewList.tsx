@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../_reducer';
 import { REVIEWLIST } from './ReviewStyle';
 import OriginalReview from './OriginalReview';
 import { ReactComponent as StarSvg } from '../../../../images/star.svg';
@@ -26,17 +28,15 @@ const dummyReview = [
   },
 ];
 
-interface Props {
-  role: string;
-}
-
 // useCallback으로 감싸기
-function ReviewList({ role }: Props): JSX.Element {
+function ReviewList(): JSX.Element {
+  const reviews = useSelector((state: RootState) => state.talent.reviews);
+
   return (
     <REVIEWLIST>
-      {dummyReview.length > 0 ? (
-        dummyReview.map((review, idx) => {
-          return <OriginalReview key={idx} review={review} role={role} />;
+      {reviews.length > 0 ? (
+        reviews.map((review) => {
+          return <OriginalReview key={review._id} review={review} />;
         })
       ) : (
         <div>앗..! 아직 남겨진 리뷰가 없습니다.😢</div>

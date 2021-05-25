@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Review from './Sections/Review';
+import { RootState } from '../../../_reducer';
+import { postTalentData, TalentState } from '../../../_reducer/talent';
 import server from '../../../api';
 import { CONTAINER, SELLER, DETAIL, PHOTOS } from './TalentDetailPageStyle';
 import dangoImage from '../../../images/dangoImage.jpeg';
@@ -25,6 +28,8 @@ declare global {
 
 function TalentDetailPage(): JSX.Element {
   const { Kakao } = window;
+  const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
+  const dispatch = useDispatch();
   const [detailData, setDetailData] = useState<any>();
   const [editDetail, setEditDetail] = useState<any>(); // 수정 가능한 데이터
   const [isClicked, setIsClicked] = useState<boolean>(false);
@@ -36,11 +41,30 @@ function TalentDetailPage(): JSX.Element {
   // 렌더할 데이터 서버에서 불러오기
   useEffect(() => {
     server.get(`/talents/detail/${talentId}`).then((res) => {
-      console.log(res.data);
+      let userRole: 'normal' | 'seller' | 'reviewer' = 'normal';
+
+      console.log('탤런트 디테일 데이터', res.data);
+      // 작성자의 id와 유저의 id가 같으면 판매자
+      if (res.data.userInfo._id === userInfo?.id) {
+        userRole = 'seller';
+        // 유저의 unreviewed 에 해당 글의 id가있으면 리뷰작성가능자
+      } else if (userInfo?.unreviewed.find((id) => id === talentId)) {
+        userRole = 'reviewer';
+      }
+
+      const payload: TalentState = {
+        talentId,
+        sellerId: res.data.userInfo._id,
+        reviews: res.data.reviews,
+        userId: userInfo?.id,
+        userRole,
+      };
+      dispatch(postTalentData(payload));
+
       setDetailData(res.data);
       setEditDetail(res.data);
     });
-  }, []);
+  }, [userInfo]);
 
   // 카카오톡으로 공유하기
   useEffect(() => {
