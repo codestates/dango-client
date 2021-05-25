@@ -21,7 +21,7 @@ export const TALENTSLIST = styled.div`
 export const TALENT = styled.div`
   border: 1px solid black;
   &:hover {
-    background-color: ${({ theme }) => theme.colors.green};
+    background-color: ${({ theme }) => theme.colors.purple};
     color: white;
   }
 `;

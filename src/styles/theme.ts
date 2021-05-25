@@ -7,7 +7,7 @@
 const colors = {
   purple: '#6A60A9',
   lightpurple: '#DEDCEE',
-  lightgrey: '#F6F6F6',
+  lightgray: '#F6F6F6',
   yellow: '#fbd14b',
   black: '#000000',
   white: '#ffffff',
@@ -49,13 +49,13 @@ const margins = {
 const common = {
   flexCenter: `
       display: flex;
-      justify-contents: center;
+      justify-content: center;
       align-items: center;
     `,
   flexCenterColumn: `
       display: flex;
       flex-direction: column;
-      justify-contents: center;
+      justify-content: center;
       align-items: center;
     `,
 };
