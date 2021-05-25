@@ -48,8 +48,9 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             socialData: { email, image, social },
             selling,
             buying,
-            bought,
-            chatRooms,
+            unreviewed,
+            reviewed,
+            talks,
           } = response.data;
 
           const payload: UserState = {
@@ -61,8 +62,9 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               email,
               selling,
               buying,
-              bought,
-              chatRooms,
+              unreviewed,
+              reviewed,
+              talks,
             },
             accessToken,
           };
@@ -101,8 +103,9 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             socialData: { email, image, social },
             selling,
             buying,
-            bought,
-            chatRooms,
+            unreviewed,
+            reviewed,
+            talks,
           } = response.data;
 
           const payload: UserState = {
@@ -114,8 +117,9 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               email,
               selling,
               buying,
-              bought,
-              chatRooms,
+              unreviewed,
+              reviewed,
+              talks,
             },
             accessToken,
           };

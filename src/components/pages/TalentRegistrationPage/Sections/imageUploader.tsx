@@ -1,9 +1,8 @@
-import React from 'react';
-import Dropzone, { IDropzoneProps } from 'react-dropzone-uploader';
+import React, { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
-import 'react-dropzone-uploader/dist/styles.css';
 
-// import server from '../../../..//api/index'
+import server from '../../../../api/index';
 
 const CONTAINER = styled.div`
   display: grid;
@@ -14,56 +13,71 @@ const CONTAINER = styled.div`
 `;
 
 function imageUploader(): JSX.Element {
-  // const getUploadParams = async ({ meta: { name } }) => {
-  //     const { fields, uploadUrl, fileUrl } = await server.getPresignedUploadParams(name)
-  //     return { fields, meta: { fileUrl }, url: uploadUrl }
-  // }
+  const [images, setImages] = useState<any>([]);
 
-  const handleChangeStatus: IDropzoneProps['onChangeStatus'] = ({ meta }, status) => {
-    console.log(status, meta);
+  const imageUploadHandler = (acceptedFiles: any) => {
+    const formData = new FormData();
+    const config = {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    };
+
+    formData.append('file', acceptedFiles[0]);
+    server.post('/images/upload', formData, config).then((response) => {
+      if (response.data.succeess) {
+        setImages([...images, response.data.filePath]);
+      } else {
+        alert('이미지 저장에 실패했습니다.');
+      }
+    });
   };
 
-  const handleSubmit: IDropzoneProps['onSubmit'] = (files, allFiles) => {
-    console.log(files.map((f) => f.meta));
-    console.log(allFiles);
-    alert('파일이 업로드 되었습니다!');
-    // allFiles.forEach(f => f.remove())
-  };
+  // 테스트용
+  // const onDrop = (acceptedFiles: any) => {
+  //   formData.append('file', acceptedFiles[0]);
+  //   setImages([...(images || []), ...acceptedFiles]);
+  // };
+  // console.log(images);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*',
+    onDrop: imageUploadHandler,
+    maxFiles: 3,
+  });
 
   return (
     <CONTAINER>
-      <Dropzone
-        // getUploadParams={getUploadParams}
-        onChangeStatus={handleChangeStatus}
-        onSubmit={handleSubmit}
-        maxFiles={3}
-        autoUpload={false}
-        submitButtonContent="Upload"
-        inputContent=" + files "
-        inputWithFilesContent={(files) => `+ ${3 - files.length} More`}
-        styles={{
-          dropzone: {
-            width: 150,
-            height: 150,
-            borderWidth: 2,
-            borderRadius: 2,
-            borderColor: '#eeeeee',
-            borderStyle: 'dashed',
-            backgroundColor: '#fafafa',
-            color: '#bdbdbd',
-            outline: 'none',
-            transition: 'border .24s ease-in-out',
-          },
-          preview: {
-            justifyContent: 'center',
-            minHeight: 220,
-          },
-          previewImage: {
-            maxHeight: 150,
-            maxWidth: 150,
-          },
+      <div
+        style={{
+          width: 300,
+          height: 300,
+          maxWidth: 300,
+          border: '1px solid lightgray',
+          display: 'flex',
         }}
-      />
+        {...getRootProps({ className: 'dropzone' })}
+      >
+        <input {...getInputProps()} />
+        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', boxSizing: 'border-box' }}>
+          {images.length !== 0
+            ? images.map((file: string) => (
+                <p
+                  key={file}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    width: 146,
+                    height: 146,
+                    overflowX: 'scroll',
+                    border: '1px solid',
+                    position: 'relative',
+                  }}
+                >
+                  <img alt={file} src={URL.createObjectURL(file)} />
+                </p>
+              ))
+            : ''}
+        </div>
+      </div>
     </CONTAINER>
   );
 }
