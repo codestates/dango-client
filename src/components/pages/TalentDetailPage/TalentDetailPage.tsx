@@ -25,15 +25,15 @@ declare global {
 
 function TalentDetailPage(): JSX.Element {
   const { Kakao } = window;
-
   const [detailData, setDetailData] = useState<any>();
-  const [editDetail, setEditDetail] = useState<any>();
+  const [editDetail, setEditDetail] = useState<any>(); // 수정 가능한 데이터
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const input = useRef<HTMLInputElement | null>(null);
 
   const { talentId } = useParams<{ talentId: string }>();
   const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
 
+  // 렌더할 데이터 서버에서 불러오기
   useEffect(() => {
     server.get(`/talents/detail/${talentId}`).then((res) => {
       console.log(res.data);
@@ -42,15 +42,17 @@ function TalentDetailPage(): JSX.Element {
     });
   }, []);
 
+  // 카카오톡으로 공유하기
   useEffect(() => {
     Kakao.Link.createDefaultButton({
       container: '.create-kakao-link-btn', // 버튼 class name
       objectType: 'location',
-      address: detailData ? detailData.address : '경기 성남시 분당구 판교역로 235 에이치스퀘어 N동 8층', // required라서 없으면 에러 남.
+      address: detailData ? detailData.address : '경기 성남시 분당구 판교역로 235 에이치스퀘어 N동 8층', // required라서 없으면 에러가 난다.
       addressTitle: 'DANGO', // 지도에서 표시될 이름
       content: {
         title: `DANGO와 나누는 재능, ${detailData?.title}`,
         description: detailData?.description,
+        // 이미지 파일 url 형태로 올리거나 카카오 서버에 업로드된 이미지여야 한다.
         imageUrl: 'http://k.kakaocdn.net/dn/bSbH9w/btqgegaEDfW/vD9KKV0hEintg6bZT4v4WK/kakaolink40_original.png',
         link: {
           mobileWebUrl: `http://localhost:3000/detail/${talentId}`,
