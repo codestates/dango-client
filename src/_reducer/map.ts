@@ -8,6 +8,7 @@ export interface MapState {
   filter?: any;
   latLng?: number[];
   width?: number[];
+  clickedMarkerLatLng?: number[];
   talentData?: {
     id: string;
     title: string;
@@ -28,6 +29,7 @@ const initialState: MapState = {
   filter: [],
   latLng: [37.489455183958114, 126.722336451675],
   width: [37.46195123771726, 37.51695659436168],
+  clickedMarkerLatLng: [0, 0],
   talentData: [
     {
       id: '',
@@ -56,6 +58,10 @@ export const mapSlice = createSlice({
       state.latLng = latLng;
       state.width = width;
     },
+    setMarkerLatLng: (state, action: PayloadAction<MapState>) => {
+      console.log('들어온데이터', action);
+      state.clickedMarkerLatLng = action.payload.clickedMarkerLatLng;
+    },
     handleSort: (state, action: PayloadAction<MapState>) => {
       state.sort = action.payload.sort;
     },
@@ -65,5 +71,5 @@ export const mapSlice = createSlice({
   },
 });
 
-export const { postData, setMapConfig, handleSort, handleFilter } = mapSlice.actions;
+export const { postData, setMapConfig, handleSort, handleFilter, setMarkerLatLng } = mapSlice.actions;
 export default mapSlice.reducer;
