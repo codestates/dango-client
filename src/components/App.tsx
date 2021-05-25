@@ -9,8 +9,8 @@ import ChattingPage from './pages/ChattingPage/ChattingPage';
 import TalentRegister from './pages/TalentRegistrationPage/TalentRegistrationPage';
 import TalentDetailPage from './pages/TalentDetailPage/TalentDetailPage';
 import Mypage from './pages/MyPage/MyPage';
+import Google from './pages/SigninPage/google/GoogleSignin';
 import theme from '../styles/theme';
-import Modal from '../utils/modal';
 // import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
 
 // path뒤의 exact는 세부경로 페이지가 다른 라우트에 걸려있을때만 붙여준다.
@@ -36,7 +36,7 @@ function App(): JSX.Element {
               <Route path="/register" component={TalentRegister} />
               <Route path="/detail/:talentId" component={TalentDetailPage} />
               <Route path="/mypage" component={Mypage} />
-              <Route path="/modal" component={Modal} />
+              <Route path="/google" component={Google} />
             </Switch>
           </div>
         </Router>

@@ -58,7 +58,6 @@ export const mapSlice = createSlice({
       state.width = width;
     },
     setMarkerLatLng: (state, action: PayloadAction<MapState>) => {
-      console.log('들어온데이터', action);
       state.clickedMarkerLatLng = action.payload.clickedMarkerLatLng;
     },
     handleSort: (state, action: PayloadAction<MapState>) => {

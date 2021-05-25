@@ -21,6 +21,7 @@ module.exports = {
     'react/no-array-index-key': 0,
     'no-nested-ternary': 0,
     'jsx-a11y/click-events-have-key-events': 0,
+    'import/no-unresolved': 0,
     'jsx-a11y/no-static-element-interactions': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     'jsx-a11y/accessible-emoji': 0,

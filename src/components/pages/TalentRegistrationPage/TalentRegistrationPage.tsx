@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import server from '../../../api/index';
 import { RootState } from '../../../_reducer';
+import { openModal } from '../../../_reducer/modal';
 import ImageUploader from './Sections/imageUploader';
 import LocationSearch from './Sections/LocationSearch';
+import Modal from '../../../utils/modal';
 
 const CONTAINER = styled.div`
   display: grid;
@@ -29,6 +31,7 @@ const BUTTON = styled.button`
 const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
 
 export default function TalentRegistrationPage(): JSX.Element {
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const [location, setLocation] = useState<number[]>([]);
   const [address, setAddress] = useState<string>();
@@ -62,7 +65,7 @@ export default function TalentRegistrationPage(): JSX.Element {
 
   const handleFormSubmit = () => {
     if (!registerData.title || !registerData.description || !address) {
-      alert('정보를 모두 입력해주세요!');
+      dispatch(openModal({ type: 'error', text: '정보를 모두 입력해주세요!' }));
     } else {
       const body = {
         ...registerData,
@@ -74,7 +77,7 @@ export default function TalentRegistrationPage(): JSX.Element {
         .post('/talents/create', body)
         .then((res) => {
           console.log(res);
-          alert('재능 등록에 성공하였습니다!');
+          dispatch(openModal({ type: 'ok', text: '재능이 등록되었습니다!' }));
         })
         .catch((err) => console.log(err));
     }
@@ -82,6 +85,7 @@ export default function TalentRegistrationPage(): JSX.Element {
 
   return (
     <CONTAINER>
+      <Modal />
       <FORM>
         <LocationSearch setLocation={setLocation} setAddress={setAddress} />
         <label>글 제목</label>
