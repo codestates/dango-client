@@ -1,6 +1,7 @@
 import React from 'react';
 import 'dotenv/config';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import styled, { ThemeProvider } from 'styled-components';
 import GlobalStyles from './GlobalStyles';
 import Kakao from './pages/SigninPage/kakao';
 import MapPage from './pages/MapPage/MapPage';
@@ -8,6 +9,7 @@ import ChattingPage from './pages/ChattingPage/ChattingPage';
 import TalentRegister from './pages/TalentRegistrationPage/TalentRegistrationPage';
 import TalentDetailPage from './pages/TalentDetailPage/TalentDetailPage';
 import Mypage from './pages/MyPage/MyPage';
+import theme from '../styles/theme';
 // import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
 
 // path뒤의 exact는 세부경로 페이지가 다른 라우트에 걸려있을때만 붙여준다.
@@ -18,23 +20,25 @@ import Mypage from './pages/MyPage/MyPage';
 function App(): JSX.Element {
   return (
     <>
-      <GlobalStyles />
-      <Router>
-        <div className="App">
-          {/* NavBar */}
-          <Switch>
-            <Route path="/" exact>
-              Yummy Dango!
-            </Route>
-            <Route path="/kakao" component={Kakao} />
-            <Route path="/map" component={MapPage} />
-            <Route path="/chatting" component={ChattingPage} />
-            <Route path="/register" component={TalentRegister} />
-            <Route path="/detail/:talentId" component={TalentDetailPage} />
-            <Route path="/mypage" component={Mypage} />
-          </Switch>
-        </div>
-      </Router>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Router>
+          <div className="App">
+            {/* NavBar */}
+            <Switch>
+              <Route path="/" exact>
+                Yummy Dango!
+              </Route>
+              <Route path="/kakao" component={Kakao} />
+              <Route path="/map" component={MapPage} />
+              <Route path="/chatting" component={ChattingPage} />
+              <Route path="/register" component={TalentRegister} />
+              <Route path="/detail/:talentId" component={TalentDetailPage} />
+              <Route path="/mypage" component={Mypage} />
+            </Switch>
+          </div>
+        </Router>
+      </ThemeProvider>
     </>
   );
 }
