@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Checked {
-  _id: string | null;
-  confirmed: [string] | null;
+interface Chats {
+  roomId: string | null;
+  other: string | null;
+  count: number | null;
 }
 
 export interface UserState {
@@ -13,10 +14,10 @@ export interface UserState {
     image: string | undefined;
     email: string | undefined;
     selling: [string] | null;
-    buying: [Checked] | null;
+    buying: [string] | null;
     unreviewed: [string] | null;
     reviewed: [string] | null;
-    talks: [string] | null;
+    talks: [Chats] | null;
   } | null;
   accessToken: string | null;
   isSignin?: boolean;
