@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GoogleLogout } from 'react-google-login';
 import { signout } from '../../../_reducer/user';
+import { openModal } from '../../../_reducer/modal';
 import { RootState } from '../../../_reducer';
 import server from '../../../api';
 
@@ -21,7 +22,7 @@ function Signout(): JSX.Element {
       .post('/users/kakao/signout', null, config)
       .then(() => {
         dispatch(signout());
-        alert('로그아웃되었습니다.');
+        dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.' }));
       })
       .catch((err) => {
         // 토큰이 유효하지 않을 때에도 로그아웃시켜준다. 어차피 다시 로그인 해야하기 때문!

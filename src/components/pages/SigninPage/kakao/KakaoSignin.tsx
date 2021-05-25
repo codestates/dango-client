@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal } from '../../../../_reducer/modal';
 import server from '../../../../api';
 import Signup from '../Signup';
 import { signin, UserState } from '../../../../_reducer/user';
 
-function KakaoSignin({ Kakao }: any): JSX.Element {
+function KakaoSignin(): JSX.Element {
+  const { Kakao } = window;
   const dispatch = useDispatch();
-
   const [kakaoAccessToken, setKakaoAccessToken] = useState<string | null>(null);
   const [isUser, setIsUser] = useState<boolean>(true);
 
@@ -50,13 +51,19 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
               },
               accessToken,
             };
+
             dispatch(signin(payload));
-            alert('로그인되었습니다.');
+            dispatch(openModal({ type: 'ok', text: '로그인되었습니다.' }));
           })
           .catch((err) => {
             const { message } = err.response.data;
             if (message === '회원정보가 없습니다.') {
-              alert('회원정보가 없습니다. 닉네임을 입력하여 회원가입을 진행해주세요.');
+              dispatch(
+                openModal({
+                  type: 'error',
+                  text: '회원정보가 없습니다. \n닉네임을 입력하여 회원가입을 진행해주세요.',
+                }),
+              );
               setIsUser(false);
             }
           });

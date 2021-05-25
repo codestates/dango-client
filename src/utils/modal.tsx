@@ -8,26 +8,21 @@ import { ReactComponent as CheckSvg } from '../images/check.svg';
 import { ReactComponent as DangerSvg } from '../images/danger.svg';
 
 interface ModalProps {
-  okFunction: () => any;
-  cancleFunction: any;
+  callback?: () => any;
 }
-export default function Modal({ okFunction, cancleFunction = undefined }: ModalProps): JSX.Element {
+Modal.defaultProps = {
+  callback: undefined,
+};
+
+// 사용법
+// 페이지별 루트컴포넌트에 <Modal />을 불러오면 된다.
+// ok나 yes버튼을 눌렀을때 실행시키고싶은 함수가 있으면 Modal에 component로 callback={함수} 로 담아준다.
+// 하나의함수밖에 안넣어지기때문에
+// 모달이 닫히고 실행되도 되는거면, props로 callback내리지말고 그냥 dispatch하고 다음줄에 해당함수를 실행시키자.
+
+export default function Modal({ callback }: ModalProps): JSX.Element {
   const dispatch = useDispatch();
   const { open, type, text } = useSelector((state: RootState) => state.modal, shallowEqual);
-
-  const handleOpenClick = () => {
-    const payload: OpenPayload = {
-      type: 'danger',
-      text: '닉네임은 두글자 이상 작성해주세요.',
-    };
-    console.log('클릭전 open?', open);
-    dispatch(openModal(payload));
-  };
-  const handleCloseClick = () => {
-    console.log('클릭전 open?', open);
-
-    dispatch(closeModal());
-  };
 
   return (
     <>
@@ -50,7 +45,7 @@ export default function Modal({ okFunction, cancleFunction = undefined }: ModalP
               <>
                 <OKBUTTON
                   onClick={() => {
-                    okFunction();
+                    if (callback) callback();
                     dispatch(closeModal());
                   }}
                 >
@@ -58,7 +53,6 @@ export default function Modal({ okFunction, cancleFunction = undefined }: ModalP
                 </OKBUTTON>
                 <CANCLEBUTTON
                   onClick={() => {
-                    cancleFunction();
                     dispatch(closeModal());
                   }}
                 >
@@ -68,7 +62,7 @@ export default function Modal({ okFunction, cancleFunction = undefined }: ModalP
             ) : (
               <OKBUTTON
                 onClick={() => {
-                  okFunction();
+                  if (callback) callback();
                   dispatch(closeModal());
                 }}
               >
@@ -78,13 +72,6 @@ export default function Modal({ okFunction, cancleFunction = undefined }: ModalP
           </BUTTONBOX>
         </BODY>
       </MODAL>
-
-      <button type="button" onClick={handleOpenClick} style={{ zIndex: 1 }}>
-        open
-      </button>
-      <button type="button" onClick={handleCloseClick} style={{ zIndex: 1 }}>
-        close
-      </button>
     </>
   );
 }
@@ -128,7 +115,7 @@ const MODAL = styled.div<{ open: boolean }>`
   border: 1px solid #ab8ce4;
   border-radius: 5%;
   background-color: white;
-  z-index: 2;
+  z-index: 10;
   box-shadow: 4px 4px 2px 1px rgba(0, 0, 255, 0.2);
   overflow: hidden;
 `;
@@ -152,8 +139,10 @@ const BODY = styled.div`
   align-items: center;
   padding: 0px 10px;
 `;
-const TEXT = styled.div`
+const TEXT = styled.p`
   color: grey;
+  white-space: pre-wrap;
+  text-align: center;
 `;
 
 const BUTTONBOX = styled.div`
@@ -167,7 +156,7 @@ const OKBUTTON = styled.button`
   background-color: #ab8ce4;
   border: 1px solid #ab8ce4;
   border-radius: 7px;
-  width: 30%;
+  width: 35%;
   color: whitesmoke;
 `;
 const CANCLEBUTTON = styled(OKBUTTON)`
@@ -176,14 +165,14 @@ const CANCLEBUTTON = styled(OKBUTTON)`
 `;
 
 const CHECKSVG = styled(CheckSvg)`
-  width: 50%;
-  height: 50%;
+  width: 60%;
+  height: 60%;
 `;
 const CROSSSVG = styled(CrossSvg)`
-  width: 50%;
-  height: 50%;
+  width: 60%;
+  height: 60%;
 `;
 const DANGERSVG = styled(DangerSvg)`
-  width: 50%;
-  height: 50%;
+  width: 60%;
+  height: 60%;
 `;
