@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import styled, { css } from 'styled-components';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import { openModal } from '../../../../_reducer/modal';
 
 const CONTAINER = styled.div`
   display: grid;
@@ -25,15 +26,6 @@ interface LiType {
   'data-idx': number;
 }
 
-// const LI = styled.li<LiType>`
-//   ${(props) =>
-//     props['data-idx'] === 0
-//       ? css`
-//           background: blue;
-//           color: red;
-//         `
-//       : css``}
-// `;
 const LI = styled.li<LiType>`
   background: ${(props) => props['data-idx'] === 0 && '#DEDCEE'};
   cursor: pointer;
@@ -45,6 +37,7 @@ interface LocationSearchProps {
 }
 
 function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.Element {
+  const dispatch = useDispatch();
   const [locationList, setLocationList] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState<string | null>(null);
 
@@ -52,6 +45,7 @@ function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.E
   const addressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    inputRef.current?.focus();
     if (inputValue) {
       fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${inputValue}`, {
         method: 'GET',
@@ -102,11 +96,15 @@ function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.E
   };
 
   // 엔터키 입력 시, 가장 상위의 정보를 선택한다.
-  const handleEnterKey = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleEnterKey = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
-      event.preventDefault();
-      const { address, lat, lng } = locationList[0];
-      selectLocationData(address, lat, lng);
+      if (!inputValue || inputValue.length === 0 || locationList.length === 0) {
+        dispatch(openModal({ type: 'error', text: '거래할 지역을 입력해주세요.' }));
+      } else {
+        const { address, lat, lng } = locationList[0];
+        selectLocationData(address, lat, lng);
+        event.preventDefault();
+      }
     }
   };
 

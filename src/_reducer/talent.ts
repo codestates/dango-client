@@ -50,13 +50,6 @@ export const talentSlice = createSlice({
           break;
         }
       }
-      // const newState = state.reviews.map((review)=>{
-      //   if(review.reviewId === reviewId){
-      //     return {...review,reply:{replyDate,replyDescription}}
-      //   }
-      //   return
-      // })
-      // return newState;
     },
   },
 });

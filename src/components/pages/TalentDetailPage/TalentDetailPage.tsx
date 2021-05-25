@@ -6,6 +6,7 @@ import { RootState } from '../../../_reducer';
 import { postTalentData, TalentState } from '../../../_reducer/talent';
 import server from '../../../api';
 import { CONTAINER, SELLER, DETAIL, PHOTOS } from './TalentDetailPageStyle';
+import Modal from '../../../utils/modal';
 import dangoImage from '../../../images/dangoImage.jpeg';
 
 // 여기서 해당 글의 정보를 서버에서 받고, 리덕스에 저장한다.
@@ -40,30 +41,32 @@ function TalentDetailPage(): JSX.Element {
 
   // 렌더할 데이터 서버에서 불러오기
   useEffect(() => {
-    server.get(`/talents/detail/${talentId}`).then((res) => {
-      let userRole: 'normal' | 'seller' | 'reviewer' = 'normal';
+    server
+      .get(`/talents/detail/${talentId}`)
+      .then((res) => {
+        let userRole: 'normal' | 'seller' | 'reviewer' = 'normal';
 
-      console.log('탤런트 디테일 데이터', res.data);
-      // 작성자의 id와 유저의 id가 같으면 판매자
-      if (res.data.userInfo._id === userInfo?.id) {
-        userRole = 'seller';
-        // 유저의 unreviewed 에 해당 글의 id가있으면 리뷰작성가능자
-      } else if (userInfo?.unreviewed.find((id) => id === talentId)) {
-        userRole = 'reviewer';
-      }
+        // 작성자의 id와 유저의 id가 같으면 판매자
+        if (res.data.userInfo._id === userInfo?.id) {
+          userRole = 'seller';
+          // 유저의 unreviewed 에 해당 글의 id가있으면 리뷰작성가능자
+        } else if (userInfo?.unreviewed.indexOf(talentId) !== -1) {
+          userRole = 'reviewer';
+        }
 
-      const payload: TalentState = {
-        talentId,
-        sellerId: res.data.userInfo._id,
-        reviews: res.data.reviews,
-        userId: userInfo?.id,
-        userRole,
-      };
-      dispatch(postTalentData(payload));
+        const payload: TalentState = {
+          talentId,
+          sellerId: res.data.userInfo._id,
+          reviews: res.data.reviews,
+          userId: userInfo?.id,
+          userRole,
+        };
+        dispatch(postTalentData(payload));
 
-      setDetailData(res.data);
-      setEditDetail(res.data);
-    });
+        setDetailData(res.data);
+        setEditDetail(res.data);
+      })
+      .catch((err) => console.log(err));
   }, [userInfo]);
 
   // 카카오톡으로 공유하기
@@ -129,6 +132,7 @@ function TalentDetailPage(): JSX.Element {
 
   return (
     <CONTAINER>
+      <Modal />
       <SELLER>
         <img src={detailData?.userInfo.socialData.image} alt="프로필사진" />
         <div>{detailData?.userInfo.nickname}</div>

@@ -1,36 +1,11 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { REVIEWLIST } from './ReviewStyle';
 import OriginalReview from './OriginalReview';
-import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 
-const dummyReview = [
-  { nickname: '유저1', rating: 5, text: '좋아요좋아요좋아요좋아요좋아요좋아요좋아요좋아요', date: '2021년 5월 22일' },
-  {
-    nickname: '유저2',
-    rating: 4,
-    text: '그냥그랬어요',
-    date: '2021년 5월 21일',
-    reply: { text: '앞으로는 좀더 준비해서 만족시켜드리겠습니다.', date: '2021년 5월 23일' },
-  },
-  {
-    nickname: '유저3',
-    rating: 0,
-    text: '길게써보기길게써보기길게 써보기 안녕하세요? 길게 써보기 오늘오늘 토요일. 길게 써보기....길게...!써보기ㅇㅇ길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기길게써보기@@@@',
-    date: '2021년 5월 19일',
-  },
-  {
-    nickname: '유저4',
-    rating: 2,
-    text: '아무말아무말',
-    date: '2021년 5월 17일',
-  },
-];
-
-// useCallback으로 감싸기
 function ReviewList(): JSX.Element {
-  const reviews = useSelector((state: RootState) => state.talent.reviews);
+  const reviews = useSelector((state: RootState) => state.talent.reviews, shallowEqual);
 
   return (
     <REVIEWLIST>

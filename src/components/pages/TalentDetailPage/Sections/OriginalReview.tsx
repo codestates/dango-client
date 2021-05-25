@@ -103,7 +103,7 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
         {setEllipsis(review.review).isShowMore && more && createMoreOrCutBtn('더보기')}
         {more || createMoreOrCutBtn('접기')}
       </div>
-      {postReplyBox && <ReplyReview reviewId={review.reviewId} />}
+      {postReplyBox && <ReplyReview reviewId={review.reviewId} setPostReplyBox={setPostReplyBox} />}
       {replyBox && review.reply && (
         <REPLYBOX>
           <REPLY>

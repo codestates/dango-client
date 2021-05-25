@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { updateReview } from '../../../../_reducer/user';
+import { openModal } from '../../../../_reducer/modal';
 import { REVIEWCREATE } from './ReviewStyle';
 import StarScore from './StarScore';
 import getToday from '../../../../utils/getToday';
@@ -9,8 +10,8 @@ import server from '../../../../api';
 
 function ReviewCreate(): JSX.Element {
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state: RootState) => state.user);
-  const { talentId, userId } = useSelector((state: RootState) => state.talent);
+  const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
+  const { talentId, userId } = useSelector((state: RootState) => state.talent, shallowEqual);
 
   const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number>(0);
@@ -26,15 +27,7 @@ function ReviewCreate(): JSX.Element {
   const handleChangeText = (event: React.ChangeEvent<HTMLTextAreaElement>) => setReviewText(event.target.value);
 
   const handleSubmit = () => {
-    // 서버에 리뷰 데이터 업데이트하고, then으로 talents reducer에 값 갱신하기.
-    console.log('서버에 요청할 닉네임', userInfo?.nickname);
-    console.log('서버에 요청할 별점', rating);
-    console.log('서버에 요청할 리뷰내용', reviewText);
     const today = getToday();
-    console.log('서버에 요청할 작성날짜', today);
-
-    // TODO: 어차피 리뷰작성하면 이 컴포넌트는 안보이니까 아래는 지운다.
-    // api완성되면, 해당글에 내가 리뷰를 남겼다는 흔적을 줘야함. 그걸 기준으로 부모에서 이 컴포넌트를 랜더한다.
     const data = {
       talentId,
       userId,
@@ -43,14 +36,26 @@ function ReviewCreate(): JSX.Element {
       nickname: userInfo?.nickname,
       date: today,
     };
-
-    server.post('talents/review/', data).then((response) => {
-      console.log('리뷰작성됐나?', response.data);
-      dispatch(updateReview({ talentId }));
-    });
-    setRating(0);
-    if (textRef.current) {
-      textRef.current.value = '';
+    if (!reviewText || reviewText === '') {
+      dispatch(openModal({ type: 'error', text: '리뷰를 입력해주세요.' }));
+    } else {
+      server
+        .post('talents/review/', data)
+        .then(() => {
+          dispatch(updateReview({ talentId }));
+          dispatch(openModal({ type: 'ok', text: '리뷰가 등록되었습니다.' }));
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response?.data?.message) {
+            dispatch(openModal({ type: 'error', text: err.response.data.message }));
+          }
+        });
+      setRating(0);
+      setReviewText('');
+      if (textRef.current) {
+        textRef.current.value = '';
+      }
     }
   };
   return (

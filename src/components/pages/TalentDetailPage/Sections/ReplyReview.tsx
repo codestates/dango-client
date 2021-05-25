@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { updateReply } from '../../../../_reducer/talent';
+import { openModal } from '../../../../_reducer/modal';
 import getToday from '../../../../utils/getToday';
 import server from '../../../../api';
 
 interface ReplyReviewProps {
   reviewId: string;
+  setPostReplyBox: (bool: boolean) => void;
 }
 
-export default function ReplyReview({ reviewId }: ReplyReviewProps) {
+export default function ReplyReview({ reviewId, setPostReplyBox }: ReplyReviewProps) {
   const dispatch = useDispatch();
-  const { talentId, userId } = useSelector((state: RootState) => state.talent);
+  const { talentId, userId } = useSelector((state: RootState) => state.talent, shallowEqual);
   const [text, setText] = useState<string>('');
 
   const handleChangeText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -29,10 +31,23 @@ export default function ReplyReview({ reviewId }: ReplyReviewProps) {
       replyDescription: text,
       replyDate: today,
     };
-    server.post('/talents/reply', data).then((response) => {
-      console.log('리뷰답글등록response.data', response.data);
-      dispatch(updateReply({ reviewId, replyDescription: text, replyDate: today }));
-    });
+    if (!text || text === '') {
+      dispatch(openModal({ type: 'error', text: '답글을 작성해주세요.' }));
+    } else {
+      server
+        .post('/talents/reply', data)
+        .then(() => {
+          dispatch(updateReply({ reviewId, replyDescription: text, replyDate: today }));
+          dispatch(openModal({ type: 'ok', text: '리뷰 답글이 작성되었습니다.' }));
+          setPostReplyBox(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response?.data?.message) {
+            dispatch(openModal({ type: 'error', text: err.response.data.message }));
+          }
+        });
+    }
   };
 
   return (

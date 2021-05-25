@@ -45,6 +45,7 @@ export const userSlice = createSlice({
     signout: () => {
       return initialState;
     },
+    // 구매자가 리뷰를 등록하면 unreviewed에 있던 talentId를 reviewed로 옮겨준다.
     updateReview: (state, action: PayloadAction<UpdateReviewPayload>) => {
       const { talentId } = action.payload;
       if (state.userInfo) {
@@ -53,9 +54,13 @@ export const userSlice = createSlice({
         state.userInfo.reviewed.push(talentId);
       }
     },
+    // 테스트용
+    updateUnreviewed: (state, action: PayloadAction<{ talentId: string }>) => {
+      state.userInfo?.unreviewed.push(action.payload.talentId);
+    },
   },
 });
 
-export const { signin, signout, updateReview } = userSlice.actions;
+export const { signin, signout, updateReview, updateUnreviewed } = userSlice.actions;
 
 export default userSlice.reducer;
