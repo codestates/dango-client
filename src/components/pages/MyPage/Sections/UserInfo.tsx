@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { UserState } from '../../../../_reducer/user';
+import { openModal } from '../../../../_reducer/modal';
 import { USERINFO, WRAPIMG, PROFILEIMG } from '../MyPageStyle';
 import Withdrawal from '../../SigninPage/Withdrawal';
 
 // 로그인방식에 따라 카카오이미지 같은거 붙이기
 export default function UserInfo() {
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const [modify, setModify] = useState<boolean>(false);
   const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
@@ -24,7 +26,7 @@ export default function UserInfo() {
 
   const handleClickCheck = () => {
     if (inputRef.current && inputRef.current.value.length < 2) {
-      alert('2글자 이상의 닉네임을 작성해주세요.');
+      dispatch(openModal({ type: 'error', text: '2글자 이상의 닉네임을 작성해주세요.' }));
       inputRef.current.focus();
     } else {
       // TODO: 서버에 중복체크 요청
