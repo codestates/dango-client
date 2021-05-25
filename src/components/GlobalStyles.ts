@@ -12,14 +12,9 @@ const GlobalStyles = createGlobalStyle`
     }
     body{
         padding:0;
+        font-size: 1rem; // 16px
 
     }
-
-    h1{
-        font-size: 1.875rem;
-        
-    }
-    
     
 `;
 
