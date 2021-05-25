@@ -32,8 +32,9 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
               socialData: { email, image, social },
               selling,
               buying,
-              bought,
-              chatRooms,
+              unreviewed,
+              reviewed,
+              talks,
             } = response.data;
 
             const payload: UserState = {
@@ -45,8 +46,9 @@ function KakaoSignin({ Kakao }: any): JSX.Element {
                 email,
                 selling,
                 buying,
-                bought,
-                chatRooms,
+                unreviewed,
+                reviewed,
+                talks,
               },
               accessToken,
             };
