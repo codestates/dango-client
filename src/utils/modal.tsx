@@ -108,7 +108,7 @@ const MODAL = styled.div<{ open: boolean }>`
   align-items: center;
   animation: ${showModal} 0.5s forwards;
   width: 25vw;
-  min-width: 200px;
+  min-width: 30vh;
   height: 30vh;
   position: absolute;
   top: 50%;
