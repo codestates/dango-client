@@ -1,6 +1,7 @@
 import React from 'react';
 import 'dotenv/config';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './GlobalStyles';
 import Kakao from './pages/SigninPage/kakao';
 import MapPage from './pages/MapPage/MapPage';
@@ -8,6 +9,7 @@ import ChattingPage from './pages/ChattingPage/ChattingPage';
 import TalentRegister from './pages/TalentRegistrationPage/TalentRegistrationPage';
 import TalentDetailPage from './pages/TalentDetailPage/TalentDetailPage';
 import Mypage from './pages/MyPage/MyPage';
+import theme from '../styles/theme';
 import Modal from '../utils/modal';
 // import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
 
@@ -19,24 +21,26 @@ import Modal from '../utils/modal';
 function App(): JSX.Element {
   return (
     <>
-      <GlobalStyles />
-      <Router>
-        <div className="App">
-          {/* NavBar */}
-          <Switch>
-            <Route path="/" exact>
-              Yummy Dango!
-            </Route>
-            <Route path="/kakao" component={Kakao} />
-            <Route path="/map" component={MapPage} />
-            <Route path="/chatting" component={ChattingPage} />
-            <Route path="/register" component={TalentRegister} />
-            <Route path="/detail/:talentId" component={TalentDetailPage} />
-            <Route path="/mypage" component={Mypage} />
-            <Route path="/modal" component={Modal} />
-          </Switch>
-        </div>
-      </Router>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Router>
+          <div className="App">
+            {/* NavBar */}
+            <Switch>
+              <Route path="/" exact>
+                Yummy Dango!
+              </Route>
+              <Route path="/kakao" component={Kakao} />
+              <Route path="/map" component={MapPage} />
+              <Route path="/chatting" component={ChattingPage} />
+              <Route path="/register" component={TalentRegister} />
+              <Route path="/detail/:talentId" component={TalentDetailPage} />
+              <Route path="/mypage" component={Mypage} />
+              <Route path="/modal" component={Modal} />
+            </Switch>
+          </div>
+        </Router>
+      </ThemeProvider>
     </>
   );
 }

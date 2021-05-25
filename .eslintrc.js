@@ -45,6 +45,7 @@ module.exports = {
     'jsx-a11y/label-has-for': 'off',
     'react/jsx-boolean-value': 'off',
     'no-underscore-dangle': 'off',
+    'import/no-unresolved': 'off',
   },
   settings: {
     'import/resolver': {
