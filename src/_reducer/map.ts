@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import server from '../api';
 
 export interface MapState {
   markers?: any[];

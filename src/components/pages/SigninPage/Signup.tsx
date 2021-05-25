@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import server from '../../../api';
 import { signin, UserState } from '../../../_reducer/user';
+import { openModal } from '../../../_reducer/modal';
 
 interface SignupProps {
   social: string;
@@ -22,7 +23,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
   const handleNicknameSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!nickname || nickname.length < 2) {
-      alert('닉네임은 두글자 이상 적어주세요.');
+      dispatch(openModal({ type: 'error', text: '닉네임은 두글자 이상 적어주세요.' }));
       return;
     }
 
@@ -69,7 +70,12 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
-          alert('회원가입완료');
+          dispatch(
+            openModal({
+              type: 'ok',
+              text: '회원가입이 완료되었습니다.',
+            }),
+          );
         })
         .catch((err) => {
           const { message } = err.response?.data;

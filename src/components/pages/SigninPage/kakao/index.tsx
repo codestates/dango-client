@@ -4,6 +4,7 @@ import KakaoSignin from './KakaoSignin';
 import Signout from '../Signout';
 import Withdrawal from '../Withdrawal';
 import { RootState } from '../../../../_reducer';
+import Modal from '../../../../utils/modal';
 
 declare global {
   interface Window {
@@ -19,12 +20,12 @@ declare global {
 // true면 로그인을 시켜주고, false면 닉네임입력창(TODO:Signup.tsx)을 띄운다.
 // TODO:singout.tsx, withdrawal.tsx은 하나의버튼이므로 userInfo.social이 kakao인지 google인지에 따라 분기하여 함수를 실행시킨다.
 function KakaoSign(): JSX.Element {
-  const { Kakao } = window;
   const { isSignin } = useSelector((state: RootState) => state.user);
 
   return (
     <div>
-      {isSignin ? <Signout /> : <KakaoSignin Kakao={Kakao} />}
+      <Modal />
+      {isSignin ? <Signout /> : <KakaoSignin />}
       <Withdrawal />
     </div>
   );
