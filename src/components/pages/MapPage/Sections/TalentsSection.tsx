@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { handleSort, handleFilter, MapState, setMarkerLatLng } from '../../../../_reducer/map';
 import { filterData, sortData } from './data';
-import { ReactComponent as StarSvg } from '../../../../images/star.svg';
+import * as emoticons from './functions';
 import {
   CONTAINER,
   FILTERSECTION,
@@ -17,22 +17,12 @@ import {
   TITLE,
 } from './TalentsSectionStyle';
 
-/* TODO: 
- [ ] 5. 카테고리 이모지, 별점 범위로 렌더
- [ ] 6. sort 기본옵션? 거리순?
+/* FIXME: 
+ [ ] sort 기본옵션? 거리순?
+ [ ] Warning: You provided a `checked` prop to a form field without an `onChange` handler. 
+     This will render a read-only field. If the field should be mutable use `defaultChecked`. 
+     Otherwise, set either `onChange` or `readOnly`.
 */
-
-/**
- * 5. 카테고리 이모지
- 
- *
- * 별점 범위 설정
- * 받아온 별점 평균을 반올림처리한다.
- * 4.75 <= x <= 5.0 ==> 5.0 ==> ⭐️⭐️⭐️⭐️⭐️
- * 4.25 <= x < 4.75 ==> 4.5
- * 3.75 <= x < 4.25 ==> 4.0 ==> ⭐️⭐️⭐️⭐️
- * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
- */
 
 interface MapSectionProps {
   map: any;
@@ -116,94 +106,6 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
     }
   };
 
-  const handleCategory = (category: string) => {
-    switch (category) {
-      case '홈/리빙':
-        console.log('home');
-        return '🏠';
-      case '비즈니스':
-        return '📄';
-      case '개발/디자인':
-        return '💻';
-      case '건강':
-        return '💊';
-      case '레슨':
-        return '🧑🏻‍🏫';
-      case '반려동물':
-        return '🐶';
-      case '기타':
-        return '🤔';
-      default:
-        return '🍡';
-    }
-  };
-
-  const handleStarRatings = (ratings: any) => {
-    switch (ratings) {
-      case ratings >= 4.5: // 별 다섯 개
-        return (
-          <>
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-          </>
-        );
-      case ratings < 4.5 && ratings >= 3.5: // 별 네 개
-        return (
-          <>
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-          </>
-        );
-      case ratings < 3.5 && ratings >= 2.5: // 별 세 개
-        return (
-          <>
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-          </>
-        );
-      case ratings < 2.5 && ratings >= 1.5: // 별 두 개
-        return (
-          <>
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-          </>
-        );
-      case ratings < 1.5 && ratings >= 0.5: // 별 한 개
-        return (
-          <>
-            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-          </>
-        );
-      default:
-        // 별 0개 or 별점 없음
-        return (
-          <>
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
-          </>
-        );
-    }
-  };
-
   return (
     <CONTAINER>
       <FILTERSECTION>
@@ -229,11 +131,11 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
       <TALENTSLIST>
         {infoWindowGroup.map((talent) => (
           <TALENT onClick={() => handleInfoWindow(talent)} key={talent[0].id}>
-            <CATEGORY>카테고리: {handleCategory(talent[0].category)}</CATEGORY>
+            <CATEGORY>카테고리: {emoticons.handleCategory(talent[0].category)}</CATEGORY>
             <TITLE>제목: {talent[0].title}</TITLE>
             <PRICE>가격: {talent[0].price}</PRICE>
             <NICKNAME>닉네임: {talent[0].nickname}</NICKNAME>
-            <RATINGS>별점 평균: {handleStarRatings(talent[0].ratings[0])}</RATINGS>
+            <RATINGS>별점 평균: {emoticons.handleStarRatings(talent[0].ratings[0])}</RATINGS>
             <RATINGSCOUNT>리뷰 개수: {talent[0].ratings[1] ?? '리뷰 없음'}</RATINGSCOUNT>
           </TALENT>
         ))}
