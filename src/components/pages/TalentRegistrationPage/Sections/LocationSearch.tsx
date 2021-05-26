@@ -46,8 +46,8 @@ function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.E
 
   useEffect(() => {
     inputRef.current?.focus();
-    if (inputValue) {
-      fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${inputValue}`, {
+    if (inputValue && inputValue.length >= 2) {
+      fetch(`https://dapi.kakao.com/v2/local/search/address.json?analyze_type=exact&query=${inputValue}`, {
         method: 'GET',
         headers: {
           Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_RESTAPI_KEY}`,
@@ -71,10 +71,35 @@ function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.E
             console.log('locationDaTA::::::', locationData);
             setLocationList(locationData);
           } else {
-            setLocationList([]);
+            // 값이 없을경우 키워드검색으로 요청을 다시 보내본다.
+            fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?size=5&query=${inputValue}`, {
+              method: 'GET',
+              headers: {
+                Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_RESTAPI_KEY}`,
+              },
+            })
+              .then((res) => res.json())
+              .then((body) => {
+                // 검색결과 데이터가 있을 경우 지역이름,위도,경도가 담긴 정보를 배열형태로 locationList에 저장한다.
+                if (body.documents.length > 0) {
+                  const { documents } = body;
+
+                  const locationData = documents.map((document: any) => {
+                    const address = `${document.place_name} (${document.address_name})`;
+                    const { x: lng, y: lat } = document;
+                    return { address, lat, lng };
+                  });
+
+                  console.log('locationDaTA::::::', locationData);
+                  setLocationList(locationData);
+                } else {
+                  setLocationList([]);
+                }
+              })
+              .catch((err) => console.log('카카오맵 키워드검색 에러', err));
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log('카카오맵 지역명검색 에러', err));
     }
   }, [inputValue]);
 
