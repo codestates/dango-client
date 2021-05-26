@@ -12,9 +12,13 @@ import {
   CATEGORY,
   NICKNAME,
   RATINGS,
-  RATINGSCOUNT,
   PRICE,
   TITLE,
+  EMOJI,
+  TEXT,
+  STARNICK,
+  CHECKBOX,
+  RADIOBOX,
 } from './TalentsSectionStyle';
 
 /* FIXME: 
@@ -109,34 +113,46 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
   return (
     <CONTAINER>
       <FILTERSECTION>
-        {filterData.map((ele) => (
-          <div key={ele.id} onChange={() => handleCheckBox(ele.name)}>
-            <input
-              type="checkbox"
-              id={ele.value}
-              name={ele.value}
-              value={ele.value}
-              checked={filter.indexOf(ele.name) !== -1}
-            />
-            <label htmlFor={ele.value}>{ele.name}</label>
-          </div>
-        ))}
-        {sortData.map((ele) => (
-          <div key={ele.id} onChange={handleRadioBox}>
-            <input type="radio" id={ele.id} name="sort" value={ele.id} />
-            <label htmlFor={ele.id}>{ele.name}</label>
-          </div>
-        ))}
+        <CHECKBOX>
+          {filterData.map((ele) => (
+            <div key={ele.id} onChange={() => handleCheckBox(ele.name)}>
+              <input
+                type="checkbox"
+                id={ele.value}
+                name={ele.value}
+                value={ele.value}
+                checked={filter.indexOf(ele.name) !== -1}
+              />
+              <label htmlFor={ele.value}>{ele.name}</label>
+            </div>
+          ))}
+        </CHECKBOX>
+        <RADIOBOX>
+          {sortData.map((ele) => (
+            <div key={ele.id} onChange={handleRadioBox}>
+              <input type="radio" id={ele.id} name="sort" value={ele.id} />
+              <label htmlFor={ele.id}>{ele.name}</label>
+            </div>
+          ))}
+        </RADIOBOX>
       </FILTERSECTION>
       <TALENTSLIST>
         {infoWindowGroup.map((talent) => (
           <TALENT onClick={() => handleInfoWindow(talent)} key={talent[0].id}>
-            <CATEGORY>카테고리: {emoticons.handleCategory(talent[0].category)}</CATEGORY>
-            <TITLE>제목: {talent[0].title}</TITLE>
-            <PRICE>가격: {talent[0].price}</PRICE>
-            <NICKNAME>닉네임: {talent[0].nickname}</NICKNAME>
-            <RATINGS>별점 평균: {emoticons.handleStarRatings(talent[0].ratings[0])}</RATINGS>
-            <RATINGSCOUNT>리뷰 개수: {talent[0].ratings[1] ?? '리뷰 없음'}</RATINGSCOUNT>
+            <CATEGORY>
+              <EMOJI>{emoticons.handleCategory(talent[0].category)}</EMOJI>
+            </CATEGORY>
+            <TEXT>
+              <TITLE>{talent[0].title}</TITLE>
+              <PRICE>{talent[0].price}원</PRICE>
+              <STARNICK>
+                <RATINGS>
+                  {emoticons.handleStarRatings(talent[0].ratings[0])}
+                  {talent[0].ratings[1] ?? '(0)'}
+                </RATINGS>
+                <NICKNAME>{talent[0].nickname}</NICKNAME>
+              </STARNICK>
+            </TEXT>
           </TALENT>
         ))}
       </TALENTSLIST>

@@ -10,7 +10,7 @@ import server from '../../../api';
 const CONTAINER = styled.div`
   display: grid;
   height: 100vh;
-  grid-column-gap: 20px;
+  // grid-column-gap: 20px;
 `;
 
 function MapPage(): JSX.Element {
