@@ -87,7 +87,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
   const [location, setLocation] = useState<number[]>([]);
   const infowindowRef = useRef<any[]>([]);
 
-  // FIXME: panto함수로 이동시(부드럽게 이동시) 지도의 위치가 갱신이안됨.카카오 메소드가 인식을못함.
   useEffect(() => {
     // 검색창에 입력한 지역의 위도경도로 이동시킨다.
     if (location.length > 0) {

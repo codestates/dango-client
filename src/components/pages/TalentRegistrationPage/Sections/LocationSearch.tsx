@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, KeyboardEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { openModal } from '../../../../_reducer/modal';
@@ -7,23 +7,39 @@ const SEARCH = styled.div`
   border: 1px solid blue;
   grid-column: 1/2;
   width: 100%;
+  height: 100%;
+  position: relative;
 `;
 
 //
 interface LiType {
-  'data-idx': number;
+  idx: number;
+  liIdx: number;
 }
 
 const INPUT = styled.input`
-  all: 'unset';
-  cursor: 'text';
-  border: '1px solid';
-  min-width: '100%';
+  all: unset;
+  cursor: text;
+  border: 1px solid;
+  width: 100%;
+  height: 100%;
 `;
 
-const LI = styled.li<LiType>`
-  background: ${(props) => props['data-idx'] === 0 && '#DEDCEE'};
+const LIBOX = styled.div`
+  /* background-color: rgba(198, 191, 191, 0.1); */
   cursor: pointer;
+`;
+const LI = styled.li<LiType>`
+  background-color: rgba(198, 191, 191, 0.1);
+  background-color: ${(props) => props.idx === props.liIdx && '#DEDCEE'};
+  cursor: pointer;
+`;
+const SUBLI = styled.li<LiType>`
+  background-color: rgba(198, 191, 191, 0.1);
+  background-color: ${(props) => props.idx === props.liIdx && '#DEDCEE'};
+  cursor: pointer;
+  color: grey;
+  font-size: 0.8rem;
 `;
 
 interface LocationSearchProps {
@@ -40,13 +56,18 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
   const dispatch = useDispatch();
   const [locationList, setLocationList] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState<string | null>(null);
+  const [liIdx, setLiIdx] = useState(-2);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
+    // 검색창을 다 지울때마다 가장 위의 결과가 하이라이팅되도록 인덱스를 초기값으로 바꿔준다.
+    if (inputValue === '') {
+      setLiIdx(-2);
+    }
     if (inputValue && inputValue.length >= 2) {
-      fetch(`https://dapi.kakao.com/v2/local/search/address.json?analyze_type=exact&query=${inputValue}`, {
+      fetch(`https://dapi.kakao.com/v2/local/search/address.json?size=5&analyze_type=exact&query=${inputValue}`, {
         method: 'GET',
         headers: {
           Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_RESTAPI_KEY}`,
@@ -84,7 +105,8 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
                   const { documents } = body;
 
                   const locationData = documents.map((document: any) => {
-                    const address = `${document.place_name} (${document.address_name})`;
+                    // 키워드명으로 검색할때는 [키워드명, 주소명] 으로 넣어준다.
+                    const address = [document.place_name, document.address_name];
                     const { x: lng, y: lat } = document;
                     return { address, lat, lng };
                   });
@@ -105,43 +127,82 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
   // input내용이 바뀔때마다 inputValue를 갱신시킨다.
   const handleChangeLocation = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+    setLiIdx(-2);
   }, []);
 
   // 직접 클릭 시, 해당 정보를 선택하여 뿌린다.
-  const handleClickLocation = (event: React.MouseEvent<HTMLLIElement>) => {
-    const {
-      dataset: { lat, lng },
-      textContent: address,
-    } = event.currentTarget;
+  const handleClickLocation = (location: any) => {
+    const { address, lat, lng } = location;
 
     if (address && lat && lng) {
       selectLocationData(address, lat, lng);
     }
   };
 
-  // 엔터키 입력 시, 가장 상위의 정보를 선택한다.
+  // 엔터키 입력 시, 해당 인덱스의 값을 선택한다.
   const handleEnterKey = (event: React.KeyboardEvent) => {
+    console.log('엔터함수 event:::', event.key);
     if (event.key === 'Enter') {
       if (!inputValue || inputValue.length === 0 || locationList.length === 0) {
         dispatch(openModal({ type: 'error', text: '거래할 지역을 입력해주세요.' }));
       } else {
-        const { address, lat, lng } = locationList[0];
+        const index = liIdx < locationList.length ? liIdx : locationList.length - 1;
+        const { address, lat, lng } = locationList[index];
         selectLocationData(address, lat, lng);
+        setLiIdx(-2);
 
         event.preventDefault();
       }
     }
   };
 
-  // 클릭한 지역명,위도,경도를 부모한테 올려준다. 부모가 받아서 create 요청해야하기때문.
+  // 크롬브라우저의 문제로 한글로 끝나면 key down,up 이벤트가 2번눌림
+  //  검색어 끝이 한글이 아닌 숫자,영어로끝나면 이벤트가 1번발생함.
+  // 이를위한 임시방편으로 시작idx를 -2로두고, 검색어 끝에 숫자가 오면 그대로 idx를 2 증가시키고
+  // 검색어 끝에 한글이오면 2번실행되기때문에 1만증가시킨다. 영어는...
+  const handleKeyDown = (event: KeyboardEvent) => {
+    console.log('event.key::', event.key);
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      if (inputValue && event.key === 'ArrowDown' && liIdx < locationList.length - 1) {
+        const numberArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+        const lastStr = inputValue.slice(-1);
+        if (numberArr.indexOf(lastStr) !== -1 && liIdx === -2) {
+          setLiIdx((prevIdx) => prevIdx + 2);
+        } else {
+          setLiIdx((prevIdx) => prevIdx + 1);
+        }
+      } else if (event.key === 'ArrowUp' && liIdx > 0) {
+        setLiIdx((prevIdx) => prevIdx - 1);
+      }
+      event.preventDefault();
+    } else if (event.key === 'Escape' && inputRef.current) {
+      setInputValue('');
+      inputRef.current.value = '';
+      event.preventDefault();
+    }
+  };
+
+  // 클릭한 지역명,위도,경도를 부모한테 올려주는 함수.
+  // 서버에보내는 값이다. selectLocationData(지역명,위도,경도)로 호출하여 올려준다.
   const selectLocationData = useCallback(
-    (address?: string, lat?: string, lng?: string) => {
+    // address는 두가지일수 있다.
+    // 주소명으로 API를 보냈으면 단순 string이지만
+    // 키워드로 API를 보냈으면 [키워드명,주소명]이담긴 배열이다.
+    // 따라서 이를 분기하여 myAddress에 할당해주고 부모에 올려준다.
+    (address?: string | string[], lat?: string, lng?: string) => {
       setLocation([Number(lat), Number(lng)]);
+
       if (address && setAddress) {
-        setAddress(address);
+        let myAddress;
+        if (Array.isArray(address)) {
+          myAddress = `${address[0]} (${address[1]})`;
+        } else {
+          myAddress = address;
+        }
+        setAddress(myAddress);
         // 지역명을 div에 띄운다.
         if (addressRef?.current) {
-          addressRef.current.textContent = address;
+          addressRef.current.textContent = myAddress;
         }
       }
 
@@ -156,29 +217,36 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
 
   return (
     <SEARCH>
-      <input
-        style={{ all: 'unset', cursor: 'text', border: '1px solid', minWidth: '100%' }}
+      <INPUT
         type="text"
-        placeholder="예) 판교역로, 한빛로 13, 역삼동"
+        placeholder="예) 판교역로, 한빛로 13, 강남역, 역삼동"
         onChange={handleChangeLocation}
         onKeyPress={handleEnterKey}
+        onKeyDown={handleKeyDown}
         ref={inputRef}
       />
-      <ul style={{ position: 'absolute' }}>
-        {locationList.length > 0 &&
-          locationList.map((location, idx) => {
-            return (
-              <LI
-                key={idx}
-                onClick={handleClickLocation}
-                data-idx={idx}
-                data-lat={location.lat}
-                data-lng={location.lng}
-              >
-                {location.address}
-              </LI>
-            );
-          })}
+      <ul style={{ position: 'absolute', width: '100%' }}>
+        {locationList.length > 0 && inputValue && inputValue.length >= 1
+          ? locationList.map((location, idx) => {
+              if (Array.isArray(location.address)) {
+                return (
+                  <LIBOX key={idx}>
+                    <LI onClick={() => handleClickLocation(location)} idx={idx} liIdx={liIdx}>
+                      {location.address[0]}
+                    </LI>
+                    <SUBLI onClick={() => handleClickLocation(location)} idx={idx} liIdx={liIdx}>
+                      {location.address[1]}
+                    </SUBLI>
+                  </LIBOX>
+                );
+              }
+              return (
+                <LI key={idx} onClick={() => handleClickLocation(location)} idx={idx} liIdx={liIdx}>
+                  {location.address}
+                </LI>
+              );
+            })
+          : ''}
       </ul>
     </SEARCH>
   );

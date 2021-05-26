@@ -6,11 +6,13 @@ import { postData } from '../../../_reducer/map';
 import MapSection from './Sections/MapSection';
 import TalentsSection from './Sections/TalentsSection';
 import server from '../../../api';
+import Modal from '../../../utils/modal';
 
 const CONTAINER = styled.div`
   display: grid;
   height: 100vh;
   grid-column-gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
 `;
 
 function MapPage(): JSX.Element {
@@ -49,6 +51,7 @@ function MapPage(): JSX.Element {
 
   return (
     <CONTAINER>
+      <Modal />
       <MapSection map={map} setMap={setMap} infoWindowGroup={infoWindowGroup} setInfoWindowGroup={setInfoWindowGroup} />
       <TalentsSection
         map={map}
