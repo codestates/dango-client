@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { handleSort, handleFilter, MapState, setMarkerLatLng } from '../../../../_reducer/map';
 import { filterData, sortData } from './data';
+import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 import {
   CONTAINER,
   FILTERSECTION,
@@ -137,6 +138,72 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
     }
   };
 
+  const handleStarRatings = (ratings: any) => {
+    switch (ratings) {
+      case ratings >= 4.5: // 별 다섯 개
+        return (
+          <>
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+          </>
+        );
+      case ratings < 4.5 && ratings >= 3.5: // 별 네 개
+        return (
+          <>
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+          </>
+        );
+      case ratings < 3.5 && ratings >= 2.5: // 별 세 개
+        return (
+          <>
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+          </>
+        );
+      case ratings < 2.5 && ratings >= 1.5: // 별 두 개
+        return (
+          <>
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+          </>
+        );
+      case ratings < 1.5 && ratings >= 0.5: // 별 한 개
+        return (
+          <>
+            <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+          </>
+        );
+      default:
+        // 별 0개 or 별점 없음
+        return (
+          <>
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+            <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
+          </>
+        );
+    }
+  };
+
   return (
     <CONTAINER>
       <FILTERSECTION>
@@ -166,7 +233,7 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
             <TITLE>제목: {talent[0].title}</TITLE>
             <PRICE>가격: {talent[0].price}</PRICE>
             <NICKNAME>닉네임: {talent[0].nickname}</NICKNAME>
-            <RATINGS>별점 평균: {talent[0].ratings[0] ?? '별점 없음'}</RATINGS>
+            <RATINGS>별점 평균: {handleStarRatings(talent[0].ratings[0])}</RATINGS>
             <RATINGSCOUNT>리뷰 개수: {talent[0].ratings[1] ?? '리뷰 없음'}</RATINGSCOUNT>
           </TALENT>
         ))}
