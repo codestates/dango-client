@@ -19,6 +19,11 @@ import {
   STARNICK,
   CHECKBOX,
   RADIOBOX,
+  UL,
+  LI,
+  INPUT,
+  LABEL,
+  RADIOINPUT,
 } from './TalentsSectionStyle';
 
 /* FIXME: 
@@ -63,8 +68,6 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
       filter: newCheckBoxList,
     };
     dispatch(handleFilter(payload));
-
-    console.log(newCheckBoxList);
   };
 
   // radiobox(sort)
@@ -114,24 +117,28 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
     <CONTAINER>
       <FILTERSECTION>
         <CHECKBOX>
-          {filterData.map((ele) => (
-            <div key={ele.id} onChange={() => handleCheckBox(ele.name)}>
-              <input
-                type="checkbox"
-                id={ele.value}
-                name={ele.value}
-                value={ele.value}
-                checked={filter.indexOf(ele.name) !== -1}
-              />
-              <label htmlFor={ele.value}>{ele.name}</label>
-            </div>
-          ))}
+          <UL>
+            {filterData.map((ele) => (
+              <LI key={ele.id} onChange={() => handleCheckBox(ele.name)}>
+                <INPUT
+                  type="checkbox"
+                  id={ele.value}
+                  name={ele.value}
+                  value={ele.value}
+                  checked={filter.indexOf(ele.name) !== -1}
+                />
+                <LABEL htmlFor={ele.value}>✓ {ele.name}</LABEL>
+              </LI>
+            ))}
+          </UL>
         </CHECKBOX>
         <RADIOBOX>
+          <RADIOINPUT type="radio" id="default" name="default" value="default" checked />
+          <LABEL htmlFor="default">거리순</LABEL>
           {sortData.map((ele) => (
             <div key={ele.id} onChange={handleRadioBox}>
-              <input type="radio" id={ele.id} name="sort" value={ele.id} />
-              <label htmlFor={ele.id}>{ele.name}</label>
+              <RADIOINPUT type="radio" id={ele.id} name="sort" value={ele.id} />
+              <LABEL htmlFor={ele.id}>{ele.name}</LABEL>
             </div>
           ))}
         </RADIOBOX>

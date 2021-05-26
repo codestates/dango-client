@@ -10,6 +10,7 @@ import server from '../../../api';
 const CONTAINER = styled.div`
   display: grid;
   height: 100vh;
+  // grid-template-columns: repeat(6, 1fr);
   // grid-column-gap: 20px;
 `;
 

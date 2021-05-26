@@ -8,15 +8,82 @@ export const CONTAINER = styled.div`
 
 export const FILTERSECTION = styled.div`
   grid-row: 1/2;
-  height: 30vh;
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 `;
 
 export const CHECKBOX = styled.div`
-  border: 1px solid;
+  max-width: 640px;
+  // border: 1px solid;
+`;
+
+export const UL = styled.ul`
+  list-style: none;
+  padding: 20px;
+`;
+
+export const LI = styled.li`
+  display: inline;
+  margin-right: 0.5rem;
+`;
+
+export const LABEL = styled.label`
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(139, 139, 139, 0.3);
+  color: #adadad;
+  border-radius: 25px;
+  white-space: nowrap;
+  margin: 3px 0px;
+  padding: 8px 12px;
+  user-select: none;
+  cursor: pointer;
+  &:before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 6px 2px 2px;
+  }
+`;
+
+export const INPUT = styled.input`
+  display: absolute;
+  position: absolute;
+  opacity: 0;
+  &:checked + ${LABEL} {
+    //border: 2px solid #1bdbf8;
+    background-color: ${({ theme }) => theme.colors.yellow};
+    color: #fff;
+  }
 `;
 
 export const RADIOBOX = styled.div`
-  border: 1px solid;
+  width: 100%;
+  max-width: 400px;
+  // margin: 2rem auto;
+  background: white;
+  // border: 1px solid white;
+  border-radius: 3px;
+  text-align: left;
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+export const RADIOINPUT = styled.input`
+  display: absolute;
+  position: absolute;
+  opacity: 0;
+  &:checked + ${LABEL} {
+    border: 2px solid #b5808c;
+    background-color: #e0758f;
+    color: #fff;
+  }
 `;
 
 export const TALENTSLIST = styled.div`
@@ -31,10 +98,9 @@ export const TALENT = styled.div`
   align-items: center;
   margin-bottom: 0.5rem;
   box-shadow: 2px 2px 2px 2px ${({ theme }) => theme.colors.lightgray};
-  // border-bottom: 2px solid ${({ theme }) => theme.colors.purple};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.purple};
+    background-color: #835af1;
     color: white;
     cursor: pointer;
     box-shadow: 2px 2px 2px 2px ${({ theme }) => theme.colors.lightpurple};
@@ -42,12 +108,9 @@ export const TALENT = styled.div`
 `;
 
 export const CATEGORY = styled.div`
-  /* width: 80px; */
   height: 12vh;
-
   text-align: center;
   line-height: 12vh;
-  // margin-right: 1rem;
 `;
 
 export const EMOJI = styled.div`
@@ -63,7 +126,6 @@ export const TEXT = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
 `;
 
 export const TITLE = styled.div`
