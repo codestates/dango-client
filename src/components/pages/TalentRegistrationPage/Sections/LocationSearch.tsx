@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef, KeyboardEvent } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { openModal } from '../../../../_reducer/modal';
@@ -160,7 +160,7 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
   //  검색어 끝이 한글이 아닌 숫자,영어로끝나면 이벤트가 1번발생함.
   // 이를위한 임시방편으로 시작idx를 -2로두고, 검색어 끝에 숫자가 오면 그대로 idx를 2 증가시키고
   // 검색어 끝에 한글이오면 2번실행되기때문에 1만증가시킨다. 영어는...
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
     console.log('event.key::', event.key);
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       if (inputValue && event.key === 'ArrowDown' && liIdx < locationList.length - 1) {
