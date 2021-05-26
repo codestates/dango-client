@@ -13,6 +13,13 @@ const CONTAINER = styled.div`
   grid-column-gap: 20px;
 `;
 
+const SEARCH = styled.div`
+  display: absolute;
+  top: 20;
+  right: 20;
+  width: 200px;
+`;
+
 function MapPage(): JSX.Element {
   const dispatch = useDispatch();
   const { latLng, width, sort = null, filter = null } = useSelector((state: RootState) => state.map);

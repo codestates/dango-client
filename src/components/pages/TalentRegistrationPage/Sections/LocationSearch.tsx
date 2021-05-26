@@ -3,22 +3,10 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { openModal } from '../../../../_reducer/modal';
 
-const CONTAINER = styled.div`
-  display: grid;
-  justify-items: start;
-  align-items: center;
-  border: 1px solid black;
-  width: 100%;
-`;
-
 const SEARCH = styled.div`
   border: 1px solid blue;
   grid-column: 1/2;
-`;
-
-const ADDRESS = styled.div`
-  border: 1px solid red;
-  grid-column: 2/3;
+  width: 100%;
 `;
 
 //
@@ -33,16 +21,22 @@ const LI = styled.li<LiType>`
 
 interface LocationSearchProps {
   setLocation: (latLng: number[]) => void;
-  setAddress: (address: string) => void;
+  setAddress?: (address: string) => void;
+  addressRef?: any;
+  callback?: any;
 }
+LocationSearch.defaultProps = {
+  addressRef: undefined,
+  setAddress: undefined,
+  callback: undefined,
+};
 
-function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.Element {
+function LocationSearch({ setLocation, setAddress, addressRef, callback }: LocationSearchProps): JSX.Element {
   const dispatch = useDispatch();
   const [locationList, setLocationList] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const addressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -117,6 +111,9 @@ function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.E
 
     if (address && lat && lng) {
       selectLocationData(address, lat, lng);
+      if (callback) {
+        callback();
+      }
     }
   };
 
@@ -128,6 +125,9 @@ function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.E
       } else {
         const { address, lat, lng } = locationList[0];
         selectLocationData(address, lat, lng);
+        if (callback) {
+          callback();
+        }
         event.preventDefault();
       }
     }
@@ -137,10 +137,10 @@ function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.E
   const selectLocationData = useCallback(
     (address?: string, lat?: string, lng?: string) => {
       setLocation([Number(lat), Number(lng)]);
-      if (address) {
+      if (address && setAddress) {
         setAddress(address);
         // 지역명을 div에 띄운다.
-        if (addressRef.current) {
+        if (addressRef?.current) {
           addressRef.current.textContent = address;
         }
       }
@@ -155,34 +155,32 @@ function LocationSearch({ setLocation, setAddress }: LocationSearchProps): JSX.E
   );
 
   return (
-    <CONTAINER>
-      <SEARCH>
-        <input
-          type="text"
-          placeholder="예) 판교역로, 한빛로 13, 역삼동"
-          onChange={handleChangeLocation}
-          onKeyPress={handleEnterKey}
-          ref={inputRef}
-        />
-        <ul style={{ position: 'absolute' }}>
-          {locationList.length > 0 &&
-            locationList.map((location, idx) => {
-              return (
-                <LI
-                  key={idx}
-                  onClick={handleClickLocation}
-                  data-idx={idx}
-                  data-lat={location.lat}
-                  data-lng={location.lng}
-                >
-                  {location.address}
-                </LI>
-              );
-            })}
-        </ul>
-      </SEARCH>
-      <ADDRESS ref={addressRef} />
-    </CONTAINER>
+    <SEARCH>
+      <input
+        style={{ all: 'unset', cursor: 'text', border: '1px solid', minWidth: '100%' }}
+        type="text"
+        placeholder="예) 판교역로, 한빛로 13, 역삼동"
+        onChange={handleChangeLocation}
+        onKeyPress={handleEnterKey}
+        ref={inputRef}
+      />
+      <ul style={{ position: 'absolute' }}>
+        {locationList.length > 0 &&
+          locationList.map((location, idx) => {
+            return (
+              <LI
+                key={idx}
+                onClick={handleClickLocation}
+                data-idx={idx}
+                data-lat={location.lat}
+                data-lng={location.lng}
+              >
+                {location.address}
+              </LI>
+            );
+          })}
+      </ul>
+    </SEARCH>
   );
 }
 

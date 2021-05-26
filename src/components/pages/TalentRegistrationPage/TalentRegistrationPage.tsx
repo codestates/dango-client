@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import server from '../../../api/index';
@@ -12,6 +12,21 @@ const CONTAINER = styled.div`
   display: grid;
   height: 100vh;
   gap: 20px;
+`;
+
+const SEARCHBOX = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: start;
+  align-items: center;
+  border: 1px solid black;
+  width: 100%;
+`;
+const ADDRESS = styled.div`
+  border: 1px solid red;
+  grid-column: 2/3;
+  width: 100%;
+  height: 100%;
 `;
 
 const FORM = styled.form`
@@ -43,6 +58,7 @@ export default function TalentRegistrationPage(): JSX.Element {
     title: '',
     userId: userInfo?.id,
   });
+  const addressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     console.log('location::::', location);
@@ -87,7 +103,10 @@ export default function TalentRegistrationPage(): JSX.Element {
     <CONTAINER>
       <Modal />
       <FORM>
-        <LocationSearch setLocation={setLocation} setAddress={setAddress} />
+        <SEARCHBOX>
+          <LocationSearch setLocation={setLocation} setAddress={setAddress} addressRef={addressRef} />
+          <ADDRESS ref={addressRef} />
+        </SEARCHBOX>
         <label>글 제목</label>
         <input onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" />
         <label>카테고리 선택</label>
