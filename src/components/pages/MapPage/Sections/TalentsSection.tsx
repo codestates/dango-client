@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { handleSort, handleFilter, MapState, setMarkerLatLng } from '../../../../_reducer/map';
-import LocationSearch from '../../TalentRegistrationPage/Sections/LocationSearch';
 
 import { filterData, sortData } from './data';
 import {
   CONTAINER,
-  SEARCH,
   FILTERSECTION,
   TALENTSLIST,
   TALENT,
@@ -45,8 +43,6 @@ interface TalentsSectionProps {
 function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: TalentsSectionProps): JSX.Element {
   const dispatch = useDispatch();
   const { filter, talentData } = useSelector((state: RootState) => state.map);
-  const [location, setLocation] = useState<number[]>([]);
-  const [address, setAddress] = useState<string>();
 
   // checkbox(filter)
   const handleCheckBox = (currentValue: any) => {
@@ -121,9 +117,6 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
 
   return (
     <CONTAINER>
-      <SEARCH>
-        <LocationSearch setLocation={setLocation} setAddress={setAddress} />
-      </SEARCH>
       <FILTERSECTION>
         {filterData.map((ele) => (
           <div key={ele.id} onChange={() => handleCheckBox(ele.name)}>

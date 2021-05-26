@@ -14,6 +14,13 @@ interface LiType {
   'data-idx': number;
 }
 
+const INPUT = styled.input`
+  all: 'unset';
+  cursor: 'text';
+  border: '1px solid';
+  min-width: '100%';
+`;
+
 const LI = styled.li<LiType>`
   background: ${(props) => props['data-idx'] === 0 && '#DEDCEE'};
   cursor: pointer;
@@ -23,15 +30,13 @@ interface LocationSearchProps {
   setLocation: (latLng: number[]) => void;
   setAddress?: (address: string) => void;
   addressRef?: any;
-  callback?: any;
 }
 LocationSearch.defaultProps = {
   addressRef: undefined,
   setAddress: undefined,
-  callback: undefined,
 };
 
-function LocationSearch({ setLocation, setAddress, addressRef, callback }: LocationSearchProps): JSX.Element {
+function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchProps): JSX.Element {
   const dispatch = useDispatch();
   const [locationList, setLocationList] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState<string | null>(null);
@@ -111,9 +116,6 @@ function LocationSearch({ setLocation, setAddress, addressRef, callback }: Locat
 
     if (address && lat && lng) {
       selectLocationData(address, lat, lng);
-      if (callback) {
-        callback();
-      }
     }
   };
 
@@ -125,9 +127,7 @@ function LocationSearch({ setLocation, setAddress, addressRef, callback }: Locat
       } else {
         const { address, lat, lng } = locationList[0];
         selectLocationData(address, lat, lng);
-        if (callback) {
-          callback();
-        }
+
         event.preventDefault();
       }
     }

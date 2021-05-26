@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef, useCallback, SetStateAction } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
-import { setMapConfig, setMarkerLatLng } from '../../../../_reducer/map';
+import { setMapConfig, SetMapconfigPayload, setMarkerLatLng } from '../../../../_reducer/map';
+import LocationSearch from '../../TalentRegistrationPage/Sections/LocationSearch';
 
 declare global {
   interface Window {
@@ -13,6 +14,16 @@ declare global {
 const CONTAINER = styled.div`
   grid-column: 1/5;
   border: 1px solid black;
+`;
+
+const SEARCH = styled.div`
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  width: 200px;
+  border: 1px solid;
+  z-index: 2;
+  background-color: rgba(198, 191, 191, 0.5);
 `;
 
 // -------------------------------LOGIC ------------------------------------------
@@ -60,18 +71,34 @@ const CONTAINER = styled.div`
 
 interface MapSectionProps {
   map: any;
-  setMap: (map: any) => void;
+  setMap: SetStateAction<any>;
   infoWindowGroup: any[];
   setInfoWindowGroup: (infoWindowGroup: any) => void;
 }
 
 function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
-  const dispatch = useDispatch();
-  const { mapLevel, latLng, talentData, clickedMarkerLatLng } = useSelector((state: RootState) => state.map);
-  const [markers, setMarkers] = useState<any[]>([]);
-  const infowindowRef = useRef<any[]>([]);
   const { kakao } = window;
+  const dispatch = useDispatch();
+  const { mapLevel, latLng, talentData, clickedMarkerLatLng } = useSelector(
+    (state: RootState) => state.map,
+    shallowEqual,
+  );
+  const [markers, setMarkers] = useState<any[]>([]);
+  const [location, setLocation] = useState<number[]>([]);
+  const infowindowRef = useRef<any[]>([]);
 
+  useEffect(() => {
+    console.log('location::::::::::', location);
+
+    if (location.length > 0) {
+      const [lat, lng] = location;
+
+      const moveLatLon = new kakao.maps.LatLng(lat, lng);
+      map.panTo(moveLatLon);
+
+      renewMapConfig(map);
+    }
+  }, [location]);
   // 렌더 초기 맵생성 및 지도 이벤트 등록
   useEffect(() => {
     const container = document.querySelector('.kakaoMap');
@@ -257,6 +284,12 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
   //   const moveLatLon = new kakao.maps.LatLng(lat, lng);
   //   map.panTo(moveLatLon);
   // };
-  return <CONTAINER className="kakaoMap" />;
+  return (
+    <CONTAINER className="kakaoMap">
+      <SEARCH>
+        <LocationSearch setLocation={setLocation} />
+      </SEARCH>
+    </CONTAINER>
+  );
 }
 export default MapSection;

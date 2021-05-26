@@ -7,14 +7,6 @@ export const CONTAINER = styled.div`
   border: 1px solid black;
 `;
 
-export const SEARCH = styled.div`
-  position: absolute;
-  top: 1%;
-  right: 1%;
-  width: 200px;
-  border: 1px solid;
-`;
-
 export const FILTERSECTION = styled.div`
   grid-row: 1/2;
   border: 1px solid black;

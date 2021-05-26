@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../../_reducer';
 import { postData } from '../../../_reducer/map';
@@ -13,16 +13,9 @@ const CONTAINER = styled.div`
   grid-column-gap: 20px;
 `;
 
-const SEARCH = styled.div`
-  display: absolute;
-  top: 20;
-  right: 20;
-  width: 200px;
-`;
-
 function MapPage(): JSX.Element {
   const dispatch = useDispatch();
-  const { latLng, width, sort = null, filter = null } = useSelector((state: RootState) => state.map);
+  const { latLng, width, sort = null, filter = null } = useSelector((state: RootState) => state.map, shallowEqual);
 
   const [map, setMap] = useState<any>();
   // infoWindowGroup구조 = [[talentData, infowindow, marker]]

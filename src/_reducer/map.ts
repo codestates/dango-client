@@ -44,6 +44,12 @@ const initialState: MapState = {
   ],
 };
 
+export interface SetMapconfigPayload {
+  mapLevel: number;
+  latLng: number[];
+  width: number[];
+}
+
 export const mapSlice = createSlice({
   name: 'map',
   initialState,
@@ -51,7 +57,7 @@ export const mapSlice = createSlice({
     postData: (state, action: PayloadAction<MapState>) => {
       state.talentData = action.payload.talentData;
     },
-    setMapConfig: (state, action: PayloadAction<MapState>) => {
+    setMapConfig: (state, action: PayloadAction<SetMapconfigPayload>) => {
       const { mapLevel, latLng, width } = action.payload;
       state.mapLevel = mapLevel;
       state.latLng = latLng;
