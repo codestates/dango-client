@@ -23,7 +23,8 @@ import {
 
 /**
  * 5. 카테고리 이모지
- * 데이터에 따라 들어오는 카테고리가 다 다르다. 그것에 맞춰 렌더하는데, 이모지로 치환해서..
+ 
+ *
  * 별점 범위 설정
  * 받아온 별점 평균을 반올림처리한다.
  * 4.75 <= x <= 5.0 ==> 5.0 ==> ⭐️⭐️⭐️⭐️⭐️
@@ -114,6 +115,28 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
     }
   };
 
+  const handleCategory = (category: string) => {
+    switch (category) {
+      case '홈/리빙':
+        console.log('home');
+        return '🏠';
+      case '비즈니스':
+        return '📄';
+      case '개발/디자인':
+        return '💻';
+      case '건강':
+        return '💊';
+      case '레슨':
+        return '🧑🏻‍🏫';
+      case '반려동물':
+        return '🐶';
+      case '기타':
+        return '🤔';
+      default:
+        return '🍡';
+    }
+  };
+
   return (
     <CONTAINER>
       <FILTERSECTION>
@@ -139,7 +162,7 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
       <TALENTSLIST>
         {infoWindowGroup.map((talent) => (
           <TALENT onClick={() => handleInfoWindow(talent)} key={talent[0].id}>
-            <CATEGORY>카테고리: {talent[0].category}</CATEGORY>
+            <CATEGORY>카테고리: {handleCategory(talent[0].category)}</CATEGORY>
             <TITLE>제목: {talent[0].title}</TITLE>
             <PRICE>가격: {talent[0].price}</PRICE>
             <NICKNAME>닉네임: {talent[0].nickname}</NICKNAME>
