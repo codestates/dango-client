@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
-
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../../../_reducer/modal';
 import server from '../../../../api/index';
 
 const CONTAINER = styled.div`
@@ -13,6 +14,7 @@ const CONTAINER = styled.div`
 `;
 
 function imageUploader(): JSX.Element {
+  const dispatch = useDispatch();
   const [images, setImages] = useState<any>([]);
 
   const imageUploadHandler = (acceptedFiles: any) => {
@@ -26,7 +28,7 @@ function imageUploader(): JSX.Element {
       if (response.data.succeess) {
         setImages([...images, response.data.filePath]);
       } else {
-        alert('이미지 저장에 실패했습니다.');
+        dispatch(openModal({ type: 'error', text: '이미지 저장에 실패했습니다.' }));
       }
     });
   };

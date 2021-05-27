@@ -39,6 +39,7 @@ function Signout(): JSX.Element {
 
   const handleGoogleSignout = () => {
     console.log('-----logout success!-----');
+    dispatch(signout());
     alert('로그아웃되었습니다.');
   };
 

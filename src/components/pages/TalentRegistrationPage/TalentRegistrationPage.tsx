@@ -1,15 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import server from '../../../api/index';
 import { RootState } from '../../../_reducer';
+import { openModal } from '../../../_reducer/modal';
 import ImageUploader from './Sections/imageUploader';
 import LocationSearch from './Sections/LocationSearch';
+import Modal from '../../../utils/modal';
 
 const CONTAINER = styled.div`
   display: grid;
   height: 100vh;
   gap: 20px;
+`;
+
+const SEARCHBOX = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: start;
+  align-items: center;
+  border: 1px solid black;
+  width: 100%;
+`;
+const ADDRESS = styled.div`
+  border: 1px solid red;
+  grid-column: 2/3;
+  width: 100%;
+  height: 100%;
 `;
 
 const FORM = styled.form`
@@ -29,6 +46,7 @@ const BUTTON = styled.button`
 const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
 
 export default function TalentRegistrationPage(): JSX.Element {
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const [location, setLocation] = useState<number[]>([]);
   const [address, setAddress] = useState<string>();
@@ -40,6 +58,7 @@ export default function TalentRegistrationPage(): JSX.Element {
     title: '',
     userId: userInfo?.id,
   });
+  const addressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     console.log('location::::', location);
@@ -62,7 +81,7 @@ export default function TalentRegistrationPage(): JSX.Element {
 
   const handleFormSubmit = () => {
     if (!registerData.title || !registerData.description || !address) {
-      alert('정보를 모두 입력해주세요!');
+      dispatch(openModal({ type: 'error', text: '정보를 모두 입력해주세요!' }));
     } else {
       const body = {
         ...registerData,
@@ -74,7 +93,7 @@ export default function TalentRegistrationPage(): JSX.Element {
         .post('/talents/create', body)
         .then((res) => {
           console.log(res);
-          alert('재능 등록에 성공하였습니다!');
+          dispatch(openModal({ type: 'ok', text: '재능이 등록되었습니다!' }));
         })
         .catch((err) => console.log(err));
     }
@@ -82,8 +101,12 @@ export default function TalentRegistrationPage(): JSX.Element {
 
   return (
     <CONTAINER>
+      <Modal />
       <FORM>
-        <LocationSearch setLocation={setLocation} setAddress={setAddress} />
+        <SEARCHBOX>
+          <LocationSearch setLocation={setLocation} setAddress={setAddress} addressRef={addressRef} />
+          <ADDRESS ref={addressRef} />
+        </SEARCHBOX>
         <label>글 제목</label>
         <input onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" />
         <label>카테고리 선택</label>

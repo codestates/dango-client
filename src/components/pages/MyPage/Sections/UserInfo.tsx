@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../_reducer';
-import { UserState } from '../../../../_reducer/user';
 import { openModal } from '../../../../_reducer/modal';
 import { USERINFO, WRAPIMG, PROFILEIMG } from '../MyPageStyle';
 import Withdrawal from '../../SigninPage/Withdrawal';
@@ -37,10 +36,11 @@ export default function UserInfo() {
 
   const handleClickChangeNickname = () => {
     if (!nicknameCheck) {
-      alert('닉네임 중복을 확인해주세요.');
+      dispatch(openModal({ type: 'error', text: '닉네임 중복을 확인해주세요.' }));
     } else {
       // TODO:서버에 닉네임수정 요청
-      alert('닉네임이 변경되었습니다.');
+      dispatch(openModal({ type: 'ok', text: '닉네임이 변경되었습니다.' }));
+
       setModify(false);
     }
   };
@@ -52,7 +52,7 @@ export default function UserInfo() {
       </WRAPIMG>
       <div>
         <div>
-          <span>닉네임:</span>{' '}
+          <span>닉네임:</span>
           {modify ? (
             <span>
               <input type="text" ref={inputRef} />

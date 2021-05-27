@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 import { RootState } from '../_reducer';
-import { OpenPayload, ModalState, openModal, closeModal } from '../_reducer/modal';
+import { closeModal } from '../_reducer/modal';
 import { ReactComponent as CrossSvg } from '../images/cross.svg';
 import { ReactComponent as CheckSvg } from '../images/check.svg';
 import { ReactComponent as DangerSvg } from '../images/danger.svg';
@@ -26,9 +26,10 @@ export default function Modal({ callback }: ModalProps): JSX.Element {
 
   return (
     <>
-      <MODALBACKGROUND open={open} />
+      <MODALBACKGROUND open={open} onClick={() => dispatch(closeModal())} />
 
       <MODAL open={open}>
+        <ESCAPE onClick={() => dispatch(closeModal())}>✕</ESCAPE>
         <HEADER>
           {type === 'ok' ? (
             <CHECKSVG fill="white" />
@@ -97,6 +98,7 @@ const MODALBACKGROUND = styled.div<{ open: boolean }>`
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: 9;
 `;
 
 const MODAL = styled.div<{ open: boolean }>`
@@ -106,7 +108,7 @@ const MODAL = styled.div<{ open: boolean }>`
   align-items: center;
   animation: ${showModal} 0.5s forwards;
   width: 25vw;
-  min-width: 200px;
+  min-width: 30vh;
   height: 30vh;
   position: absolute;
   top: 50%;
@@ -129,6 +131,15 @@ const HEADER = styled.div`
   overflow: hidden;
   width: 100%;
   flex: 1;
+`;
+
+const ESCAPE = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: whitesmoke;
+  font-size: 1.2rem;
+  cursor: pointer;
 `;
 
 const BODY = styled.div`
