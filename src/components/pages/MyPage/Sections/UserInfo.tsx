@@ -3,12 +3,12 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { modifyNickname } from '../../../../_reducer/user';
 import { openModal } from '../../../../_reducer/modal';
-import { USERINFO, WRAPIMG, PROFILEIMG } from './UserInfoStyle';
 import Withdrawal from '../../SigninPage/Withdrawal';
 import server from '../../../../api';
+import { USERINFO, WRAPIMG, PROFILEIMG, INFO } from './UserInfoStyle';
 
 // 로그인방식에 따라 카카오이미지 같은거 붙이기
-export default function UserInfo() {
+export default function UserInfo(): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo, accessToken } = useSelector((state: RootState) => state.user, shallowEqual);
   const [modifyMode, setModifyMode] = useState<boolean>(false);
@@ -96,7 +96,7 @@ export default function UserInfo() {
       <WRAPIMG>
         <PROFILEIMG alt="prifileImage" src={userInfo?.image} />
       </WRAPIMG>
-      <div>
+      <INFO>
         <div>
           <span>닉네임:</span>
 
@@ -118,9 +118,9 @@ export default function UserInfo() {
                 </button>
               </span>
             ) : (
-              <button type="button" onClick={handleClickModify}>
-                닉네임변경
-              </button>
+              <span style={{ height: '100%' }} onClick={handleClickModify}>
+                <img style={{ height: '1rem' }} alt="nicknameEdit" src="/images/edit.png" />
+              </span>
             )}
           </span>
         </div>
@@ -138,7 +138,7 @@ export default function UserInfo() {
         <div>
           <Withdrawal />
         </div>
-      </div>
+      </INFO>
     </USERINFO>
   );
 }
