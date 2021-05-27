@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Chats {
-  roomId: string | null;
-  other: string | null;
-  count: number | null;
-}
+// interface Chats {
 
 export interface UserState {
   userInfo: {
@@ -13,11 +9,11 @@ export interface UserState {
     nickname: string;
     image: string | undefined;
     email: string | undefined;
-    selling: [string] | null;
-    buying: [string] | null;
-    unreviewed: [string] | null;
-    reviewed: [string] | null;
-    talks: [Chats] | null;
+    selling: any;
+    buying: any;
+    unreviewed: any;
+    reviewed: any;
+    chatRooms: any;
   } | null;
   accessToken: string | null;
   isSignin?: boolean;
@@ -37,6 +33,7 @@ export const userSlice = createSlice({
       state.userInfo = action.payload.userInfo;
       state.isSignin = true;
       state.accessToken = action.payload.accessToken;
+      console.log('유저 정보', state.userInfo);
     },
     signout: () => {
       return initialState;

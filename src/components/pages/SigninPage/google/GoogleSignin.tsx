@@ -37,7 +37,7 @@ function GoogleSignin() {
             buying,
             unreviewed,
             reviewed,
-            talks,
+            chatRooms,
           } = response.data;
 
           const payload: UserState = {
@@ -51,11 +51,12 @@ function GoogleSignin() {
               buying,
               unreviewed,
               reviewed,
-              talks,
+              chatRooms,
             },
             accessToken,
           };
           dispatch(signin(payload));
+          localStorage.setItem('id', response.data.id);
           alert('로그인되었습니다.');
         })
         .catch((err) => {
