@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { openModal } from '../../../../_reducer/modal';
 
 const SEARCH = styled.div`
-  border: 1px solid blue;
-  grid-column: 1/2;
-  width: 100%;
+  // border: 1px solid blue;
+  // grid-column: 1/2;
+  width: 400px;
   height: 100%;
-  position: relative;
+  // position: relative;
 `;
 
 //
@@ -20,26 +20,45 @@ interface LiType {
 const INPUT = styled.input`
   all: unset;
   cursor: text;
-  border: 1px solid;
-  width: 100%;
+  // border: 1px solid;
+  width: 368px;
   height: 100%;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  &:focus {
+    // border-bottom: 2px solid #835af1;
+    box-shadow: 1px 1px 3px 1px #835af1;
+  }
+  padding: 0 1rem;
+`;
+
+const UL = styled.li`
+  list-style: none;
+  margin-top: 0.2rem;
+  position: absolute;
+  width: 400px;
 `;
 
 const LIBOX = styled.div`
-  /* background-color: rgba(198, 191, 191, 0.1); */
+  background-color: ${({ theme }) => theme.colors.lightgray};
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 `;
 const LI = styled.li<LiType>`
-  background-color: rgba(198, 191, 191, 0.1);
-  background-color: ${(props) => props.idx === props.liIdx && '#DEDCEE'};
+  // background-color: rgba(198, 191, 191, 0.1);
+  // background-color: ${(props) => props.idx === props.liIdx && '#835af1'};
+  color: ${(props) => props.idx === props.liIdx && '#835af1'};
   cursor: pointer;
+  padding: 0.5rem;
 `;
 const SUBLI = styled.li<LiType>`
-  background-color: rgba(198, 191, 191, 0.1);
-  background-color: ${(props) => props.idx === props.liIdx && '#DEDCEE'};
-  cursor: pointer;
+  // background-color: rgba(198, 191, 191, 0.1);
+  // background-color: ${(props) => props.idx === props.liIdx && '#DEDCEE'};
   color: grey;
+  color: ${(props) => props.idx === props.liIdx && '#835af1'};
+  cursor: pointer;
   font-size: 0.8rem;
+  padding: 0.5rem;
 `;
 
 interface LocationSearchProps {
@@ -225,7 +244,7 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
         onKeyDown={handleKeyDown}
         ref={inputRef}
       />
-      <ul style={{ position: 'absolute', width: '100%' }}>
+      <UL>
         {locationList.length > 0 && inputValue && inputValue.length >= 1
           ? locationList.map((location, idx) => {
               if (Array.isArray(location.address)) {
@@ -241,13 +260,15 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
                 );
               }
               return (
-                <LI key={idx} onClick={() => handleClickLocation(location)} idx={idx} liIdx={liIdx}>
-                  {location.address}
-                </LI>
+                <LIBOX key={idx}>
+                  <LI onClick={() => handleClickLocation(location)} idx={idx} liIdx={liIdx}>
+                    {location.address}
+                  </LI>
+                </LIBOX>
               );
             })
           : ''}
-      </ul>
+      </UL>
     </SEARCH>
   );
 }

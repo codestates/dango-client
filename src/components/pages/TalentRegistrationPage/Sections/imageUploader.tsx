@@ -10,15 +10,16 @@ const CONTAINER = styled.div`
   place-items: center;
   grid-column: 10/13;
   grid-row: 3/12;
-  border: 1px solid blue;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  margin-right: 1rem;
 `;
 
 function imageUploader(): JSX.Element {
   const dispatch = useDispatch();
   const [images, setImages] = useState<any>([]);
 
+  const formData = new FormData();
   const imageUploadHandler = (acceptedFiles: any) => {
-    const formData = new FormData();
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
     };
@@ -34,15 +35,15 @@ function imageUploader(): JSX.Element {
   };
 
   // 테스트용
-  // const onDrop = (acceptedFiles: any) => {
-  //   formData.append('file', acceptedFiles[0]);
-  //   setImages([...(images || []), ...acceptedFiles]);
-  // };
-  // console.log(images);
+  const onDrop = (acceptedFiles: any) => {
+    formData.append('file', acceptedFiles[0]);
+    setImages([...(images || []), ...acceptedFiles]);
+  };
+  console.log(images);
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
-    onDrop: imageUploadHandler,
+    onDrop,
     maxFiles: 3,
   });
 
