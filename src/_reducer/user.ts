@@ -58,9 +58,15 @@ export const userSlice = createSlice({
     updateUnreviewed: (state, action: PayloadAction<{ talentId: string }>) => {
       state.userInfo?.unreviewed.push(action.payload.talentId);
     },
+
+    modifyNickname: (state, action: PayloadAction<{ nickname: string }>) => {
+      if (state.userInfo) {
+        state.userInfo.nickname = action.payload.nickname;
+      }
+    },
   },
 });
 
-export const { signin, signout, updateReview, updateUnreviewed } = userSlice.actions;
+export const { signin, signout, updateReview, updateUnreviewed, modifyNickname } = userSlice.actions;
 
 export default userSlice.reducer;
