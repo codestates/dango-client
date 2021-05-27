@@ -30,6 +30,7 @@ export default function UserInfo() {
         authorization: `Bearer ${accessToken}`,
       },
     };
+    // 본인이 맞는지 확인
     server
       .post('/users/validate', data, config)
       .then(() => setModifyMode(true))
@@ -46,7 +47,7 @@ export default function UserInfo() {
       dispatch(openModal({ type: 'error', text: '2글자 이상, 8글자 이하의 닉네임을 작성해주세요.' }));
       inputRef.current.focus();
     } else {
-      // TODO: 서버에 닉네임 중복체크 요청
+      // 서버에 닉네임 중복체크 요청
       const data = { nickname: inputRef.current?.value };
       server
         .post('/users/doublecheck', data)
@@ -69,7 +70,7 @@ export default function UserInfo() {
     if (!nicknameCheck) {
       dispatch(openModal({ type: 'error', text: '유효한 닉네임을 입력해주세요.' }));
     } else {
-      // TODO:서버에 닉네임수정 요청
+      // 서버에 닉네임수정 요청
       const data = { userId: userInfo?.id, nickname: inputRef.current?.value };
       server
         .post('/users/edit', data)
@@ -98,24 +99,30 @@ export default function UserInfo() {
       <div>
         <div>
           <span>닉네임:</span>
-          {modifyMode ? (
-            <span>
-              <input type="text" ref={inputRef} />
-              <button type="button" onClick={handleNicknameCheck}>
-                중복확인
-              </button>
-              <button type="button" onClick={handleClickChangeNickname}>
-                수정완료
-              </button>
-            </span>
-          ) : (
-            <span>
-              {userInfo?.nickname}
+
+          <span>
+            <input
+              type="text"
+              ref={inputRef}
+              disabled={!modifyMode}
+              defaultValue={userInfo?.nickname}
+              style={{ all: 'unset' }}
+            />
+            {modifyMode ? (
+              <span>
+                <button type="button" onClick={handleNicknameCheck}>
+                  중복확인
+                </button>
+                <button type="button" onClick={handleClickChangeNickname}>
+                  수정완료
+                </button>
+              </span>
+            ) : (
               <button type="button" onClick={handleClickModify}>
                 닉네임변경
               </button>
-            </span>
-          )}
+            )}
+          </span>
         </div>
         <div>
           <span>email:</span>
