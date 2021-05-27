@@ -4,11 +4,12 @@ export const CONTAINER = styled.div`
   display: grid;
   grid-column: 5/6;
   width: 30vw;
+  // min-width: 400px;
 `;
 
 export const FILTERSECTION = styled.div`
   grid-row: 1/2;
-  height: 25vh;
+  height: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,7 +38,7 @@ export const LABEL = styled.label`
   color: #adadad;
   border-radius: 25px;
   white-space: nowrap;
-  margin: 3px 0px;
+  margin-bottom: 3px;
   padding: 8px 12px;
   user-select: none;
   cursor: pointer;
@@ -57,8 +58,8 @@ export const INPUT = styled.input`
   position: absolute;
   opacity: 0;
   &:checked + ${LABEL} {
-    //border: 2px solid #1bdbf8;
-    background-color: ${({ theme }) => theme.colors.yellow};
+    border: 2px solid #978bb5;
+    background-color: #835af1;
     color: #fff;
   }
 `;
@@ -80,8 +81,7 @@ export const RADIOINPUT = styled.input`
   position: absolute;
   opacity: 0;
   &:checked + ${LABEL} {
-    border: 2px solid #b5808c;
-    background-color: #e0758f;
+    background-color: ${({ theme }) => theme.colors.yellow};
     color: #fff;
   }
 `;
@@ -89,19 +89,24 @@ export const RADIOINPUT = styled.input`
 export const TALENTSLIST = styled.div`
   grid-row: 2/4;
   height: 70vh;
+  border-top: 1.5px solid rgba(0, 0, 0, 0.09);
+  overflow: auto; // 내용이 넘칠 때 스크롤바 생김.
 `;
 
 export const TALENT = styled.div`
   height: 12vh;
   display: flex;
   /* justify-content: center; */
+  color: #787878;
   align-items: center;
   margin-bottom: 0.5rem;
   box-shadow: 2px 2px 2px 2px ${({ theme }) => theme.colors.lightgray};
 
-  &:hover {
-    background-color: #835af1;
-    color: white;
+  &:hover,
+  &:focus,
+  &:active {
+    // background-color: #835af1;
+    color: #835af1;
     cursor: pointer;
     box-shadow: 2px 2px 2px 2px ${({ theme }) => theme.colors.lightpurple};
   }
@@ -157,4 +162,5 @@ export const NICKNAME = styled.div`
   display: flex;
   align-items: center;
   padding: 0.4rem;
+  margin-right: 1rem;
 `;

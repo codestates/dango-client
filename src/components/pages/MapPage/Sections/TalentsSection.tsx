@@ -133,8 +133,8 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
           </UL>
         </CHECKBOX>
         <RADIOBOX>
-          <RADIOINPUT type="radio" id="default" name="default" value="default" checked />
-          <LABEL htmlFor="default">거리순</LABEL>
+          {/* <RADIOINPUT type="radio" id="default" name="default" value="default" checked />
+          <LABEL htmlFor="default">거리순</LABEL> */}
           {sortData.map((ele) => (
             <div key={ele.id} onChange={handleRadioBox}>
               <RADIOINPUT type="radio" id={ele.id} name="sort" value={ele.id} />
