@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { handleSort, handleFilter, MapState, setMarkerLatLng } from '../../../../_reducer/map';
+
 import { filterData, sortData } from './data';
+import * as emoticons from './functions';
 import {
   CONTAINER,
   FILTERSECTION,
@@ -11,35 +13,35 @@ import {
   CATEGORY,
   NICKNAME,
   RATINGS,
-  RATINGSCOUNT,
   PRICE,
   TITLE,
+  EMOJI,
+  TEXT,
+  STARNICK,
+  CHECKBOX,
+  RADIOBOX,
+  UL,
+  LI,
+  INPUT,
+  LABEL,
+  RADIOINPUT,
 } from './TalentsSectionStyle';
 
-/* TODO: 
- [ ] 5. 카테고리 이모지, 별점 범위로 렌더
- [ ] 6. sort 기본옵션? 거리순?
+/* FIXME: 
+ [ ] sort 기본옵션? 거리순?
+ [ ] Warning: You provided a `checked` prop to a form field without an `onChange` handler. 
+     This will render a read-only field. If the field should be mutable use `defaultChecked`. 
+     Otherwise, set either `onChange` or `readOnly`.
 */
 
-/**
- * 5. 카테고리 이모지
- * 데이터에 따라 들어오는 카테고리가 다 다르다. 그것에 맞춰 렌더하는데, 이모지로 치환해서..
- * 별점 범위 설정
- * 받아온 별점 평균을 반올림처리한다.
- * 4.75 <= x <= 5.0 ==> 5.0 ==> ⭐️⭐️⭐️⭐️⭐️
- * 4.25 <= x < 4.75 ==> 4.5
- * 3.75 <= x < 4.25 ==> 4.0 ==> ⭐️⭐️⭐️⭐️
- * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
- */
-
-interface MapSectionProps {
+interface TalentsSectionProps {
   map: any;
   setMap: (map: any) => void;
   infoWindowGroup: any[];
   setInfoWindowGroup: (infoWindowGroup: any) => void;
 }
 
-function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
+function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: TalentsSectionProps): JSX.Element {
   const dispatch = useDispatch();
   const { filter, talentData } = useSelector((state: RootState) => state.map);
 
@@ -67,8 +69,6 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
       filter: newCheckBoxList,
     };
     dispatch(handleFilter(payload));
-
-    console.log(newCheckBoxList);
   };
 
   // radiobox(sort)
@@ -117,34 +117,50 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ma
   return (
     <CONTAINER>
       <FILTERSECTION>
-        {filterData.map((ele) => (
-          <div key={ele.id} onChange={() => handleCheckBox(ele.name)}>
-            <input
-              type="checkbox"
-              id={ele.value}
-              name={ele.value}
-              value={ele.value}
-              checked={filter.indexOf(ele.name) !== -1}
-            />
-            <label htmlFor={ele.value}>{ele.name}</label>
-          </div>
-        ))}
-        {sortData.map((ele) => (
-          <div key={ele.id} onChange={handleRadioBox}>
-            <input type="radio" id={ele.id} name="sort" value={ele.id} />
-            <label htmlFor={ele.id}>{ele.name}</label>
-          </div>
-        ))}
+        <CHECKBOX>
+          <UL>
+            {filterData.map((ele) => (
+              <LI key={ele.id} onChange={() => handleCheckBox(ele.name)}>
+                <INPUT
+                  type="checkbox"
+                  id={ele.value}
+                  name={ele.value}
+                  value={ele.value}
+                  checked={filter.indexOf(ele.name) !== -1}
+                />
+                <LABEL htmlFor={ele.value}>✓ {ele.name}</LABEL>
+              </LI>
+            ))}
+          </UL>
+        </CHECKBOX>
+        <RADIOBOX>
+          {/* <RADIOINPUT type="radio" id="default" name="default" value="default" checked />
+          <LABEL htmlFor="default">거리순</LABEL> */}
+          {sortData.map((ele) => (
+            <div key={ele.id} onChange={handleRadioBox}>
+              <RADIOINPUT type="radio" id={ele.id} name="sort" value={ele.id} />
+              <LABEL htmlFor={ele.id}>{ele.name}</LABEL>
+            </div>
+          ))}
+        </RADIOBOX>
       </FILTERSECTION>
       <TALENTSLIST>
         {infoWindowGroup.map((talent) => (
           <TALENT onClick={() => handleInfoWindow(talent)} key={talent[0].id}>
-            <CATEGORY>카테고리: {talent[0].category}</CATEGORY>
-            <TITLE>제목: {talent[0].title}</TITLE>
-            <PRICE>가격: {talent[0].price}</PRICE>
-            <NICKNAME>닉네임: {talent[0].nickname}</NICKNAME>
-            <RATINGS>별점 평균: {talent[0].ratings[0] ?? '별점 없음'}</RATINGS>
-            <RATINGSCOUNT>리뷰 개수: {talent[0].ratings[1] ?? '리뷰 없음'}</RATINGSCOUNT>
+            <CATEGORY>
+              <EMOJI>{emoticons.handleCategory(talent[0].category)}</EMOJI>
+            </CATEGORY>
+            <TEXT>
+              <TITLE>{talent[0].title}</TITLE>
+              <PRICE>{talent[0].price}원</PRICE>
+              <STARNICK>
+                <RATINGS>
+                  {emoticons.handleStarRatings(talent[0].ratings[0])}
+                  {talent[0].ratings[1] ?? '(0)'}
+                </RATINGS>
+                <NICKNAME>{talent[0].nickname}</NICKNAME>
+              </STARNICK>
+            </TEXT>
           </TALENT>
         ))}
       </TALENTSLIST>

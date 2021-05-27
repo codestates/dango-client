@@ -38,6 +38,11 @@ const filterData = [
 
 const sortData = [
   {
+    id: 'distance',
+    name: '거리순',
+  },
+
+  {
     id: 'price',
     name: '가격낮은순',
   },

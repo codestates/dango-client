@@ -61,6 +61,10 @@ function KakaoSignin(): JSX.Element {
             dispatch(openModal({ type: 'ok', text: '로그인되었습니다.' }));
           })
           .catch((err) => {
+            if (!err.response) {
+              console.log(err);
+              return;
+            }
             const { message } = err.response.data;
             if (message === '회원정보가 없습니다.') {
               dispatch(

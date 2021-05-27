@@ -19,6 +19,10 @@ export interface UserState {
   isSignin?: boolean;
 }
 
+export interface UpdateReviewPayload {
+  talentId: string;
+}
+
 const initialState: UserState = {
   userInfo: null,
   accessToken: null,
@@ -38,9 +42,28 @@ export const userSlice = createSlice({
     signout: () => {
       return initialState;
     },
+    // 구매자가 리뷰를 등록하면 unreviewed에 있던 talentId를 reviewed로 옮겨준다.
+    updateReview: (state, action: PayloadAction<UpdateReviewPayload>) => {
+      const { talentId } = action.payload;
+      if (state.userInfo) {
+        const index = state.userInfo.unreviewed.indexOf(talentId);
+        state.userInfo?.unreviewed.splice(index, 1);
+        state.userInfo.reviewed.push(talentId);
+      }
+    },
+    // 테스트용
+    updateUnreviewed: (state, action: PayloadAction<{ talentId: string }>) => {
+      state.userInfo?.unreviewed.push(action.payload.talentId);
+    },
+
+    modifyNickname: (state, action: PayloadAction<{ nickname: string }>) => {
+      if (state.userInfo) {
+        state.userInfo.nickname = action.payload.nickname;
+      }
+    },
   },
 });
 
-export const { signin, signout } = userSlice.actions;
+export const { signin, signout, updateReview, updateUnreviewed, modifyNickname } = userSlice.actions;
 
 export default userSlice.reducer;
