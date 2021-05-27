@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef, useCallback, SetStateAction } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
-import { setMapConfig, setMarkerLatLng } from '../../../../_reducer/map';
+import { setMapConfig, SetMapconfigPayload, setMarkerLatLng } from '../../../../_reducer/map';
+import LocationSearch from '../../TalentRegistrationPage/Sections/LocationSearch';
 
 declare global {
   interface Window {
@@ -13,6 +14,16 @@ declare global {
 const CONTAINER = styled.div`
   grid-column: 1/5;
   border: 1px solid black;
+`;
+
+const SEARCH = styled.div`
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  width: 200px;
+  border: 1px solid;
+  z-index: 2;
+  background-color: rgba(198, 191, 191, 0.5);
 `;
 
 // -------------------------------LOGIC ------------------------------------------
@@ -60,17 +71,33 @@ const CONTAINER = styled.div`
 
 interface MapSectionProps {
   map: any;
-  setMap: (map: any) => void;
+  setMap: SetStateAction<any>;
   infoWindowGroup: any[];
   setInfoWindowGroup: (infoWindowGroup: any) => void;
 }
 
 function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
-  const dispatch = useDispatch();
-  const { mapLevel, latLng, talentData, clickedMarkerLatLng } = useSelector((state: RootState) => state.map);
-  const [markers, setMarkers] = useState<any[]>([]);
-  const infowindowRef = useRef<any[]>([]);
   const { kakao } = window;
+  const dispatch = useDispatch();
+  const { mapLevel, latLng, talentData, clickedMarkerLatLng } = useSelector(
+    (state: RootState) => state.map,
+    shallowEqual,
+  );
+  const [markers, setMarkers] = useState<any[]>([]);
+  const [location, setLocation] = useState<number[]>([]);
+  const infowindowRef = useRef<any[]>([]);
+
+  useEffect(() => {
+    // 검색창에 입력한 지역의 위도경도로 이동시킨다.
+    if (location.length > 0) {
+      const [lat, lng] = location;
+      const moveLatLon = new kakao.maps.LatLng(lat, lng);
+      // map.panTo(moveLatLon);
+      map.setCenter(moveLatLon);
+
+      renewMapConfig(map);
+    }
+  }, [location]);
 
   // 렌더 초기 맵생성 및 지도 이벤트 등록
   useEffect(() => {
@@ -94,6 +121,7 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
       infowindowRef.current.forEach((infowindow) => {
         infowindow[1].close();
       });
+
       renewMapConfig(map);
     });
 
@@ -108,13 +136,13 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
       // const moveLatLon = new kakao.maps.LatLng(latlng.getLat(), latlng.getLng());
       // map.panTo(moveLatLon);
     });
+
     // 지도를 만들었으니 지도범위 상태를 갱신시킨다.
     renewMapConfig(map);
   }, []);
 
   // talentData가 갱신될때마다 마커를 새로만들어준다.
   useEffect(() => {
-    console.log('바뀐 talentData', talentData);
     deleteMarker();
     if (talentData && talentData.length > 0 && talentData[0].id !== '') {
       makeMarker();
@@ -134,9 +162,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
       offset: new window.kakao.maps.Point(19, 45),
     });
 
-    // const hoverImage = new kakao.maps.MarkerImage(`/images/markerPurple.png`, new window.kakao.maps.Size(62, 74), {
-    //   offset: new window.kakao.maps.Point(20, 74),
-    // });
     if (talentData && mapLevel && mapLevel <= 10) {
       const newMarkers = [];
       for (let i = 0; i < talentData.length; i++) {
@@ -187,16 +212,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
             map.panTo(moveLatLon);
           });
 
-          // kakao.maps.event.addListener(marker, 'mouseover', function () {
-          //   marker.setImage(null);
-          //   marker.setImage(hoverImage);
-          // });
-
-          // // 마커에 mouseout 이벤트 등록
-          // kakao.maps.event.addListener(marker, 'mouseout', function () {
-          //   marker.setImage(markerImage);
-          // });
-
           newMarkers.push(marker);
 
           // useRef는 랜더링과 상관없이 값이 계속쌓이므로 데이터만큼저장한뒤에 또 중복저장하지않도록 범위를 설정해준다.
@@ -207,7 +222,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
       }
       setInfoWindowGroup(infowindowRef.current);
       setMarkers(newMarkers);
-      console.log('마커만들었음');
     }
   };
 
@@ -215,8 +229,6 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
   const deleteMarker = () => {
     setInfoWindowGroup([]);
     markers?.forEach((marker) => marker.setMap(null));
-
-    console.log('마커삭제함');
   };
 
   const renewMapConfig = useCallback(
@@ -231,32 +243,18 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
           latLng: [center.getLat(), center.getLng()], // 지도중심의 [위도,경도]
           width: [bounds.qa, bounds.pa], // 지도범위의 [남,북]
         };
-
         dispatch(setMapConfig(payload));
       }
     },
     [map],
   );
 
-  // const handleButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   console.log('btn;;;;;;;;;;;', event.currentTarget.textContent);
-  //   const talentId = event.currentTarget.dataset.id;
-  //   const infowindow = infowindowRef.current.find((infowindow) => {
-  //     return infowindow[0].id === talentId;
-  //   });
-  //   console.log('타겟 인포윈도우 그룹::::::::::', infowindow); // [id,infowindow,marker]
-
-  //   // 인포윈도우 모두 끄고
-  //   infowindowRef.current.forEach((infowindow) => infowindow[1].close());
-  //   // 다시 킨다.
-  //   infowindow[1].open(map, infowindow[2]);
-
-  //   // 클릭시 해당 마커위치로 지도위치 이동
-  //   // ->근데 이렇게 이동하면 지도범위 안불러와짐. 드래그나 휠로 지도를 움직였을때만 지도범위에 해당하는 데이터를 요청한다.
-  //   const [lng, lat] = infowindow[0].location;
-  //   const moveLatLon = new kakao.maps.LatLng(lat, lng);
-  //   map.panTo(moveLatLon);
-  // };
-  return <CONTAINER className="kakaoMap" />;
+  return (
+    <CONTAINER className="kakaoMap">
+      <SEARCH>
+        <LocationSearch setLocation={setLocation} />
+      </SEARCH>
+    </CONTAINER>
+  );
 }
 export default MapSection;

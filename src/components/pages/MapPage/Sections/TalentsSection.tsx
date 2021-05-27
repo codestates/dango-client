@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { handleSort, handleFilter, MapState, setMarkerLatLng } from '../../../../_reducer/map';
+
 import { filterData, sortData } from './data';
 import {
   CONTAINER,
@@ -32,14 +33,14 @@ import {
  * State 하나 새로 만들어서 바꿔줘야하나? 별 이모지 자체는 여기서만 쓴다
  */
 
-interface MapSectionProps {
+interface TalentsSectionProps {
   map: any;
   setMap: (map: any) => void;
   infoWindowGroup: any[];
   setInfoWindowGroup: (infoWindowGroup: any) => void;
 }
 
-function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSectionProps): JSX.Element {
+function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: TalentsSectionProps): JSX.Element {
   const dispatch = useDispatch();
   const { filter, talentData } = useSelector((state: RootState) => state.map);
 
