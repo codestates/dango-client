@@ -118,7 +118,7 @@ export default function UserInfo() {
           )}
         </div>
         <div>
-          <span style={{ fontSize: '1rem' }}>email:</span>
+          <span>email:</span>
           <span>
             <img
               alt="loginTypeImage"
@@ -126,7 +126,7 @@ export default function UserInfo() {
               style={{ width: '1rem', marginRight: '4px' }}
             />
           </span>
-          <span style={{ fontSize: '1rem' }}>{userInfo?.email}</span>
+          <span>{userInfo?.email}</span>
         </div>
         <div>
           <Withdrawal />
