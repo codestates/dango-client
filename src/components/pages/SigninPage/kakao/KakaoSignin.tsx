@@ -35,8 +35,9 @@ function KakaoSignin(): JSX.Element {
               buying,
               unreviewed,
               reviewed,
-              talks,
+              chatRooms,
             } = response.data;
+            console.log(response.data);
 
             const payload: UserState = {
               userInfo: {
@@ -49,12 +50,14 @@ function KakaoSignin(): JSX.Element {
                 buying,
                 unreviewed,
                 reviewed,
-                talks,
+                chatRooms,
               },
               accessToken,
             };
 
             dispatch(signin(payload));
+            localStorage.setItem('id', response.data.id);
+            console.log(payload);
             dispatch(openModal({ type: 'ok', text: '로그인되었습니다.' }));
           })
           .catch((err) => {
