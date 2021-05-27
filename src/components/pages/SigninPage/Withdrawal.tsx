@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { signout } from '../../../_reducer/user';
 import { RootState } from '../../../_reducer';
+import { signout } from '../../../_reducer/user';
+import { openModal } from '../../../_reducer/modal';
 import server from '../../../api';
 
 function Withdrawal(): JSX.Element {
@@ -26,20 +27,7 @@ function Withdrawal(): JSX.Element {
     Kakao.API.request({
       url: '/v1/user/unlink',
       success: function () {
-        server
-          .delete(withdrawalURL, config)
-          .then(() => {
-            dispatch(signout());
-            alert('회원탈퇴가 완료되었습니다.');
-            history.push('/');
-          })
-          .catch((err) => {
-            if (err.response) {
-              alert(err.response.data.message);
-            } else {
-              console.log(err);
-            }
-          });
+        handleGoogleWitherawal();
       },
       fail: function (err: any) {
         console.log(err);
@@ -52,15 +40,14 @@ function Withdrawal(): JSX.Element {
       .delete(withdrawalURL, config)
       .then(() => {
         dispatch(signout());
-        alert('회원탈퇴가 완료되었습니다.');
-        history.push('/');
+        dispatch(openModal({ type: 'ok', text: '회원탈퇴가 완료되었습니다.', callbackName: 'withdrawal' }));
       })
       .catch((err) => {
-        if (err.response) {
-          alert(err.response.data.message);
-        } else {
+        if (!err.response) {
           console.log(err);
+          return;
         }
+        dispatch(openModal({ type: 'error', text: err.response.data.message }));
       });
   };
 

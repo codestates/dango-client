@@ -78,7 +78,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           );
         })
         .catch((err) => {
-          const { message } = err.response?.data;
+          const { message } = err?.response?.data;
           alert(message);
         });
     }
@@ -128,7 +128,11 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           alert('회원가입완료');
         })
         .catch((err) => {
-          const { message } = err.response?.data;
+          if (!err.response) {
+            console.log(err);
+            return;
+          }
+          const { message } = err.response.data;
           alert(message);
         });
     }
