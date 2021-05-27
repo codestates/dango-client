@@ -13,6 +13,7 @@ declare global {
 
 const CONTAINER = styled.div`
   grid-column: 1/5;
+  width: 67vw;
   border: 1px solid black;
 `;
 
