@@ -50,7 +50,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             buying,
             unreviewed,
             reviewed,
-            talks,
+            chatRooms,
           } = response.data;
 
           const payload: UserState = {
@@ -64,12 +64,13 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               buying,
               unreviewed,
               reviewed,
-              talks,
+              chatRooms,
             },
             accessToken,
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
+          localStorage.setItem('id', response.data.id);
           dispatch(
             openModal({
               type: 'ok',
@@ -78,7 +79,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           );
         })
         .catch((err) => {
-          const { message } = err.response?.data;
+          const { message } = err?.response?.data;
           alert(message);
         });
     }
@@ -105,7 +106,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             buying,
             unreviewed,
             reviewed,
-            talks,
+            chatRooms,
           } = response.data;
 
           const payload: UserState = {
@@ -119,16 +120,21 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               buying,
               unreviewed,
               reviewed,
-              talks,
+              chatRooms,
             },
             accessToken,
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
+          localStorage.setItem('id', response.data.id);
           alert('회원가입완료');
         })
         .catch((err) => {
-          const { message } = err.response?.data;
+          if (!err.response) {
+            console.log(err);
+            return;
+          }
+          const { message } = err.response.data;
           alert(message);
         });
     }

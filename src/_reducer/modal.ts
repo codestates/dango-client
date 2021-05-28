@@ -4,11 +4,15 @@ export interface ModalState {
   type: 'ok' | 'error' | 'danger';
   open: boolean;
   text: string;
+  callbackName?: string;
+  callbackData?: any;
 }
 
 export interface OpenPayload {
   type: 'ok' | 'error' | 'danger';
   text: string;
+  callbackName?: string;
+  callbackData?: any;
 }
 
 const initialState: ModalState = {
@@ -21,7 +25,8 @@ export const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    // 사용: dispatch(openModal({type: 'ok', text:'에러메시지입니다.'}))
+    // 사용: dispatch(openModal({type: 'ok', text:'확인되었습니다.'}))
+    // 콜백넣고싶을때 :  dispatch(openModal({type: 'error', text:'에러메시지입니다.',callbackName:'loginError'}))
     openModal: (state, action: PayloadAction<OpenPayload>) => {
       console.log('open');
       const newState = { ...action.payload, open: true };
