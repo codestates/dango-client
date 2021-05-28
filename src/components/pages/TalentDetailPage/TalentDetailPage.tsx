@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import Review from './Sections/Review';
 import { RootState } from '../../../_reducer';
 import { postTalentData, TalentState } from '../../../_reducer/talent';
+import { updateChatRooms } from '../../../_reducer/user';
 import server from '../../../api';
 import { CONTAINER, SELLER, DETAIL, PHOTOS } from './TalentDetailPageStyle';
 import Modal from '../../../utils/modal';
-import dangoImage from '../../../images/dangoImage.jpeg';
 
 // 여기서 해당 글의 정보를 서버에서 받고, 리덕스에 저장한다.
 // 서버요청의 useEffect의 deps배열안에는 변할수 있는 상태를 넣어준다.
@@ -30,7 +30,9 @@ declare global {
 function TalentDetailPage(): JSX.Element {
   const { Kakao } = window;
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
+
   const dispatch = useDispatch();
+  const history = useHistory();
   const [detailData, setDetailData] = useState<any>();
   const [editDetail, setEditDetail] = useState<any>(); // 수정 가능한 데이터
   const [isClicked, setIsClicked] = useState<boolean>(false);
@@ -132,7 +134,6 @@ function TalentDetailPage(): JSX.Element {
   };
 
   // [채팅으로 거래하기] 버튼 눌렀을 때 새로운 채팅방 만들어주기
-  // 이 요청 응답으로 roomId를 받으면 이것도 userinfo에 넣어야하는데..? 그 뒤에 업데이트 된 userinfo를 받아와야함.
   const handleFirstChat = () => {
     const body = {
       userId: userInfo?.id, // buyer id (동네 이웃 id)
@@ -141,7 +142,22 @@ function TalentDetailPage(): JSX.Element {
     };
     server
       .post('/chats/createchat', body)
-      .then((response) => console.log('res:::', response))
+      .then((res) => {
+        const payload = {
+          chatRooms: [
+            ...userInfo?.chatRooms,
+            {
+              roomId: res.data.roomId,
+              other: detailData.userInfo._id,
+              count: 0,
+            },
+          ],
+        };
+        dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
+      })
+      .then(() => {
+        history.push('/chatting');
+      })
       .catch((err) => console.log(err));
   };
 
@@ -154,11 +170,9 @@ function TalentDetailPage(): JSX.Element {
         <div>{detailData?.address}</div>
         <div>별점 평균 : {detailData?.ratings[0] ?? '별점 없음'}</div>
         <div>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</div>
-        <Link to="/chatting">
-          <button onClick={handleFirstChat} type="button">
-            채팅으로 거래하기
-          </button>
-        </Link>
+        <button onClick={handleFirstChat} type="button">
+          채팅으로 거래하기
+        </button>
       </SELLER>
       <DETAIL>
         {isClicked ? (

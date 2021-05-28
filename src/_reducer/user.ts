@@ -23,6 +23,10 @@ export interface UpdateReviewPayload {
   talentId: string;
 }
 
+export interface UpdateChatRoomsPayload {
+  chatRooms: any;
+}
+
 const initialState: UserState = {
   userInfo: null,
   accessToken: null,
@@ -61,9 +65,15 @@ export const userSlice = createSlice({
         state.userInfo.nickname = action.payload.nickname;
       }
     },
+
+    updateChatRooms: (state, action: PayloadAction<UpdateChatRoomsPayload>) => {
+      if (state.userInfo) {
+        state.userInfo.chatRooms = action.payload.chatRooms;
+      }
+    },
   },
 });
 
-export const { signin, signout, updateReview, updateUnreviewed, modifyNickname } = userSlice.actions;
+export const { signin, signout, updateReview, updateUnreviewed, modifyNickname, updateChatRooms } = userSlice.actions;
 
 export default userSlice.reducer;
