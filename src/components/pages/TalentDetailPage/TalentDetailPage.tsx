@@ -31,6 +31,7 @@ declare global {
 function TalentDetailPage(): JSX.Element {
   const { Kakao } = window;
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
+  const { isFromDetail, isFirstChat } = useSelector((state: RootState) => state.chattings);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -134,33 +135,40 @@ function TalentDetailPage(): JSX.Element {
     }
   };
 
-  // [채팅으로 거래하기] 버튼 눌렀을 때 새로운 채팅방 만들어주기
-  const handleFirstChat = () => {
-    const body = {
-      userId: userInfo?.id, // buyer id (동네 이웃 id)
-      otherId: detailData.userInfo._id, // seller id (동네 고수 id)
-      talentId,
-    };
-    server
-      .post('/chats/createchat', body)
-      .then((res) => {
-        const payload = {
-          chatRooms: [
-            ...userInfo?.chatRooms,
-            {
-              roomId: res.data.roomId,
-              other: detailData.userInfo._id,
-              count: 0,
-            },
-          ],
-        };
-        dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
-        dispatch(setIsFirstChat({ isFirstChat: true }));
-      })
-      .then(() => {
-        history.push('/chatting');
-      })
-      .catch((err) => console.log(err));
+  // [채팅으로 거래하기] 버튼 눌렀을 때
+  const handleChat = () => {
+    // 처음 누르면 새로운 채팅방 만들어주기
+    if (isFirstChat) {
+      const body = {
+        userId: userInfo?.id, // buyer id (동네 이웃 id)
+        otherId: detailData.userInfo._id, // seller id (동네 고수 id)
+        talentId,
+      };
+      server
+        .post('/chats/createchat', body)
+        .then((res) => {
+          const payload = {
+            chatRooms: [
+              ...userInfo?.chatRooms,
+              {
+                roomId: res.data.roomId,
+                other: detailData.userInfo._id,
+                count: 0,
+              },
+            ],
+          };
+          dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
+          dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: true, talentId }));
+        })
+        .then(() => {
+          history.push('/chatting');
+        })
+        .catch((err) => console.log(err));
+    } else {
+      // 두번째부터는 기존 채팅방으로 이동
+      dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: false, talentId }));
+      history.push('/chatting');
+    }
   };
 
   return (
@@ -172,7 +180,7 @@ function TalentDetailPage(): JSX.Element {
         <div>{detailData?.address}</div>
         <div>별점 평균 : {detailData?.ratings[0] ?? '별점 없음'}</div>
         <div>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</div>
-        <button onClick={handleFirstChat} type="button">
+        <button onClick={handleChat} type="button">
           채팅으로 거래하기
         </button>
       </SELLER>

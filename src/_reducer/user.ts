@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// interface Chats {
-
 export interface UserState {
   userInfo: {
     id: string;

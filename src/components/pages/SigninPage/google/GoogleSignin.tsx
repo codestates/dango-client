@@ -56,7 +56,7 @@ function GoogleSignin() {
             accessToken,
           };
           dispatch(signin(payload));
-          localStorage.setItem('id', response.data.id);
+          localStorage.setItem('id', response.data._id);
           alert('로그인되었습니다.');
         })
         .catch((err) => {

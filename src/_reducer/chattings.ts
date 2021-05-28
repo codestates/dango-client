@@ -1,11 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ChattingsState {
+  isFromDetail: boolean;
   isFirstChat: boolean;
+  talentId: string;
 }
 
 const initialState: ChattingsState = {
-  isFirstChat: false,
+  isFromDetail: false,
+  isFirstChat: true,
+  talentId: '',
 };
 
 export const chattingsSlice = createSlice({
@@ -13,7 +17,9 @@ export const chattingsSlice = createSlice({
   initialState,
   reducers: {
     setIsFirstChat: (state, action: PayloadAction<ChattingsState>) => {
+      state.isFromDetail = action.payload.isFromDetail;
       state.isFirstChat = action.payload.isFirstChat;
+      state.talentId = action.payload.talentId;
     },
   },
 });
