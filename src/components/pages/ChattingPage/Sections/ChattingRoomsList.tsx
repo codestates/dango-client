@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
+import { setIsFirstChat } from '../../../../_reducer/chattings';
 
 import ChattingRoom from './ChattingRoom';
 
@@ -32,8 +33,19 @@ interface RoomType {
   count: number;
 }
 
+/**
+ * roomId: string;
+  otherId: string;
+  otherNickname: string;
+  count: number;
+  talentId: string;
+  profileImage: string;
+ */
+
 function ChattingRoomsList(): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
+  const { isFirstChat } = useSelector((state: RootState) => state.chattings);
+  const dispatch = useDispatch();
   const [curOtherId, setCurOtherId] = useState<string>('');
   const [curRoomId, setCurRoomId] = useState<string>('');
   const [connectSocket, setConnectSocket] = useState<any>();
@@ -50,6 +62,16 @@ function ChattingRoomsList(): JSX.Element {
       console.log('connectSocket', socket.id);
     });
     setConnectSocket(connect);
+
+    // 첫 채팅일 경우, 채팅방을 바로 열어주고 isFirstChat 변경
+    if (isFirstChat) {
+      setCurOtherId(otherList[otherList.length - 1]);
+      setCurRoomId(roomIdList[roomIdList.length - 1]);
+      dispatch(setIsFirstChat({ isFirstChat: false }));
+    }
+
+    // 같은 유저가 채팅으로 거래하기 버튼을 또 누르면?? 해당 채팅방 이동
+    // 상세 페이지에서 왔다는 리듀서를 추가해야하나?
   }, [userInfo]);
 
   console.log('채팅방 목록: ', userInfo?.chatRooms);
@@ -65,7 +87,7 @@ function ChattingRoomsList(): JSX.Element {
       <CHATLIST>
         {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
           <div key={chatRoom.roomId} onClick={() => changeRoom(index)}>
-            {chatRoom.other}안 읽음 메시지{chatRoom.count}
+            상대방 id: {chatRoom.other}, 안 읽은 메시지: {chatRoom.count}
           </div>
         ))}
       </CHATLIST>

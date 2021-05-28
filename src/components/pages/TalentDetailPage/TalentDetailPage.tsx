@@ -5,6 +5,7 @@ import Review from './Sections/Review';
 import { RootState } from '../../../_reducer';
 import { postTalentData, TalentState } from '../../../_reducer/talent';
 import { updateChatRooms } from '../../../_reducer/user';
+import { setIsFirstChat } from '../../../_reducer/chattings';
 import server from '../../../api';
 import { CONTAINER, SELLER, DETAIL, PHOTOS } from './TalentDetailPageStyle';
 import Modal from '../../../utils/modal';
@@ -154,6 +155,7 @@ function TalentDetailPage(): JSX.Element {
           ],
         };
         dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
+        dispatch(setIsFirstChat({ isFirstChat: true }));
       })
       .then(() => {
         history.push('/chatting');
