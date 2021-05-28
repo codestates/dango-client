@@ -4,15 +4,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../../../_reducer/modal';
 import server from '../../../../api/index';
-
-const CONTAINER = styled.div`
-  display: grid;
-  place-items: center;
-  grid-column: 10/13;
-  grid-row: 3/12;
-  box-shadow: 1px 1px 3px 1px #dadce0;
-  margin-right: 1rem;
-`;
+import { CONTAINER, IMAGEBIGDIV, IMAGEDIV, IMAGEP, PLUS, SPAN, IMAGESPAN } from './imageUploaderStyle';
 
 function imageUploader(): JSX.Element {
   const dispatch = useDispatch();
@@ -49,38 +41,22 @@ function imageUploader(): JSX.Element {
 
   return (
     <CONTAINER>
-      <div
-        style={{
-          width: 300,
-          height: 300,
-          maxWidth: 300,
-          border: '1px solid lightgray',
-          display: 'flex',
-        }}
-        {...getRootProps({ className: 'dropzone' })}
-      >
+      <IMAGESPAN>이미지 업로드 (최대 3장)</IMAGESPAN>
+      <IMAGEBIGDIV {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
-        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', boxSizing: 'border-box' }}>
+        <IMAGEDIV>
           {images.length !== 0
             ? images.map((file: string) => (
-                <p
-                  key={file}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    width: 146,
-                    height: 146,
-                    overflowX: 'scroll',
-                    border: '1px solid',
-                    position: 'relative',
-                  }}
-                >
+                <IMAGEP key={file}>
                   <img alt={file} src={URL.createObjectURL(file)} />
-                </p>
+                </IMAGEP>
               ))
             : ''}
-        </div>
-      </div>
+        </IMAGEDIV>
+        <PLUS>
+          <SPAN>+</SPAN>
+        </PLUS>
+      </IMAGEBIGDIV>
     </CONTAINER>
   );
 }

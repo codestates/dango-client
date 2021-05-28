@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const CONTAINER = styled.div`
   display: grid;
+  // grid-template-columns: 3fr 1fr;
   height: 100vh;
   gap: 20px;
   // font-size: 1.5rem;
@@ -53,7 +54,7 @@ export const ADDRESS = styled.div`
   width: 60%;
   height: 100%;
   ${({ theme }) => theme.common.flexCenter}
-  box-shadow: 1px 1px 3px 1px #dadce0;
+  // box-shadow: 1px 1px 3px 1px #dadce0;
   max-width: 600px;
 `;
 
@@ -155,6 +156,10 @@ export const BUTTONDIV = styled.div`
   grid-column: 10/13;
   grid-row: 12/13;
   ${({ theme }) => theme.common.flexCenter}
+  @media screen and (max-width: 850px) {
+    grid-column: 1/10;
+    grid-row: 16/17;
+  }
 `;
 
 export const BUTTON = styled.button`

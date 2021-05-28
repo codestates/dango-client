@@ -43,6 +43,9 @@ const LIBOX = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: space-between;
+  &:hover {
+    color: ${({ theme }) => theme.colors.purple};
+  }
 `;
 const LI = styled.li<LiType>`
   // background-color: rgba(198, 191, 191, 0.1);
@@ -54,8 +57,8 @@ const LI = styled.li<LiType>`
 const SUBLI = styled.li<LiType>`
   // background-color: rgba(198, 191, 191, 0.1);
   // background-color: ${(props) => props.idx === props.liIdx && '#DEDCEE'};
-  color: grey;
   color: ${(props) => props.idx === props.liIdx && '#835af1'};
+  // color: grey;
   cursor: pointer;
   font-size: 0.8rem;
   padding: 0.5rem;

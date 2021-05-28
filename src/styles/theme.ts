@@ -9,8 +9,6 @@ const colors = {
   lightpurple: '#DEDCEE',
   lightgray: '#F6F6F6',
   yellow: '#fbd14b',
-  black: '#000000',
-  white: '#ffffff',
 };
 
 // 반응형 디자인을 위한 픽셀 컨버팅 함수
