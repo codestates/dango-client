@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Review from './Sections/Review';
 import { RootState } from '../../../_reducer';
 import { postTalentData, TalentState } from '../../../_reducer/talent';
@@ -103,6 +103,7 @@ function TalentDetailPage(): JSX.Element {
     });
   }, [detailData]);
 
+  // Edit 버튼 클릭
   const handleClick = (): void => {
     setIsClicked(true);
   };
@@ -130,6 +131,20 @@ function TalentDetailPage(): JSX.Element {
     }
   };
 
+  // [채팅으로 거래하기] 버튼 눌렀을 때 새로운 채팅방 만들어주기
+  // 이 요청 응답으로 roomId를 받으면 이것도 userinfo에 넣어야하는데..? 그 뒤에 업데이트 된 userinfo를 받아와야함.
+  const handleFirstChat = () => {
+    const body = {
+      userId: userInfo?.id, // buyer id (동네 이웃 id)
+      otherId: detailData.userInfo._id, // seller id (동네 고수 id)
+      talentId,
+    };
+    server
+      .post('/chats/createchat', body)
+      .then((response) => console.log('res:::', response))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <CONTAINER>
       <Modal />
@@ -139,7 +154,11 @@ function TalentDetailPage(): JSX.Element {
         <div>{detailData?.address}</div>
         <div>별점 평균 : {detailData?.ratings[0] ?? '별점 없음'}</div>
         <div>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</div>
-        <button type="button">채팅으로 거래하기</button>
+        <Link to="/chatting">
+          <button onClick={handleFirstChat} type="button">
+            채팅으로 거래하기
+          </button>
+        </Link>
       </SELLER>
       <DETAIL>
         {isClicked ? (
