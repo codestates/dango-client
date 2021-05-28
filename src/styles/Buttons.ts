@@ -10,7 +10,7 @@ export const LBUTTON = styled.button`
   cursor: pointer;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin: 1rem; // 삭제
+  // margin: 1rem; // 삭제
 
   /* 색상 */
   background: ${({ theme }) => theme.colors.purple};
@@ -40,7 +40,7 @@ export const MBUTTON = styled.button`
   cursor: pointer;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin: 1rem; // 삭제
+  // margin: 1rem; // 삭제
 
   /* 색상 */
   background: ${({ theme }) => theme.colors.purple};
@@ -70,7 +70,7 @@ export const SBUTTON = styled.button`
   cursor: pointer;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin: 1rem; // 삭제
+  // margin: 1rem; // 삭제
 
   /* 색상 */
   background: ${({ theme }) => theme.colors.purple};
