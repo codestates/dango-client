@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 
@@ -11,49 +11,59 @@ interface BodyType {
   page: number;
 }
 
+// limit (10상수)* page(더보기누를때마다 1씩증가) + skip(실시간메시지받을때마다 +1)
+// skip은 skip+실시간채팅수 (= chatsLists.length)
+// 이렇게 계산하고 서버에 보내서, 데이터를 받았으면 chatsLists는 초기화되어야한다.
 function ChatsListLanding({ chatsLists, curRoomId }: any): JSX.Element {
   // 더보기 버튼
   const [render, setRender] = useState<any>([]);
-  const [Skip, setSkip] = useState<number>(chatsLists.length || 10);
-  const [Limit, setLimit] = useState<number>(10);
-  const [Page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  // const [body, setBody] = useState<BodyType>();
 
   const { userInfo } = useSelector((state: RootState) => state.user);
+  const chattingRoomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const body = {
-      id: userInfo?.id,
-      skip: Skip,
-      limit: Limit,
-      page: Page,
-    };
-    getChats(body);
-    setPage(Page + 1);
+    getChats();
+    console.log('curRoomId', curRoomId);
   }, [curRoomId]);
 
-  const getChats = async (body: BodyType) => {
-    await server
+  useEffect(() => {
+    getChats(page);
+  }, [page]);
 
+  useEffect(() => {
+    if (chattingRoomRef.current) {
+      console.log('첫랜딩시 스크롤 맨아래로');
+      chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
+    }
+  }, [render]);
+
+  const getChats = (page = 1) => {
+    const body = {
+      id: userInfo?.id,
+      skip: chatsLists.length,
+      limit: 10,
+      page,
+    };
+
+    server
       .post(`/chats/${curRoomId}`, body)
       .then((response) => {
-        setRender([...response.data.data, ...render]);
+        console.log('response.data.data', response.data.data);
+        setRender([...render, ...response.data.data]);
       })
       .catch(() => '');
   };
 
   const loadMoreHandler = (): void => {
-    const skip = Skip + Limit;
-    setPage(Page + 1);
-    const body = {
-      id: userInfo?.id,
-      skip: Skip,
-      limit: Limit,
-      page: Page,
-    };
-    getChats(body);
-    setSkip(skip);
+    setPage((page) => page + 1);
   };
 
+  // 처음에 10개의메시지를받는다. 이때 10개 === limit : 받아올갯수 제한 : 페이지당 몇개
+  // limit * page가
+  // 예시 _ 10개받고 5개더받는다.  이때 5개 === skip: 실시간으로받아온갯수
+  // skip limit page  혼동중
   return (
     <div>
       <div>

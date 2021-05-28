@@ -9,21 +9,27 @@ import ChattingRoom from './ChattingRoom';
 const CONTAINER = styled.div`
   display: grid;
   height: 85vh;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 20px;
-  margin: 100px 20px 20px 20px;
+  margin: 1rem;
 `;
 
 const CHATLIST = styled.div`
-  grid-column: 1/3;
+  grid-column: 2/5;
+  grid-row: 2/11;
   border: 1px solid black;
 `;
 
 const CHAT = styled.div`
-  grid-column: 3/7;
+  grid-column: 5/10;
+  grid-row: 2/11;
+  display: flex;
+  flex-direction: column;
   border: 1px solid black;
-  overflow: auto;
+  /* overflow: auto;
   transform: rotate(180deg);
-  direction: rtl;
+  direction: rtl; */
 `;
 
 interface RoomType {
@@ -31,6 +37,14 @@ interface RoomType {
   other: string;
   count: number;
 }
+/* interface RoomType {
+  roomId: string;
+  otherId: string;
+  otherNickname: string;
+  count: number;
+  talentId: string;
+  profileImage: string;
+} */
 
 function ChattingRoomsList(): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
@@ -55,7 +69,7 @@ function ChattingRoomsList(): JSX.Element {
   console.log('채팅방 목록: ', userInfo?.chatRooms);
 
   const changeRoom = (index: number): void => {
-    console.log('클릭!');
+    console.log('클릭된 idx::', index);
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
   };
@@ -71,6 +85,8 @@ function ChattingRoomsList(): JSX.Element {
       </CHATLIST>
       <CHAT>
         {curRoomId ? <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> : ''}
+        {/* 임시개발용 */}
+        {/*         <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> */}
       </CHAT>
     </CONTAINER>
   );
