@@ -58,7 +58,11 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
     // 모든 메세지(내가 보낸거 + 상대방이 보낸거)를 받아온 뒤 렌더링 할 수 있게 state를 바꿔준다.
     // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchats에 넣는다.
     connectSocket.on('messageFromOther', (receivedChats: any) => {
+<<<<<<< HEAD
       console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
+=======
+      console.log('receivedChats:::', receivedChats);
+>>>>>>> 25eb29cec3ed5e73ac6e8f02c04a446e52fc92f6
       setLastChats(receivedChats.message);
       if (chattingRoomRef.current) {
         console.log('chattingRoom scrollTop');

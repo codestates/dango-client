@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
+import { setIsFirstChat } from '../../../../_reducer/chattings';
 
 import ChattingRoom from './ChattingRoom';
 
@@ -34,8 +35,11 @@ const CHAT = styled.div`
 
 interface RoomType {
   roomId: string;
-  other: string;
+  otherId: string;
+  otherNickname: string;
   count: number;
+  talentId: string;
+  profileImage: string;
 }
 /* interface RoomType {
   roomId: string;
@@ -48,11 +52,14 @@ interface RoomType {
 
 function ChattingRoomsList(): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
+  const { isFromDetail, isFirstChat, talentId } = useSelector((state: RootState) => state.chattings);
+  const dispatch = useDispatch();
   const [curOtherId, setCurOtherId] = useState<string>('');
   const [curRoomId, setCurRoomId] = useState<string>('');
   const [connectSocket, setConnectSocket] = useState<any>();
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
-  const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.other);
+  const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
+  const talentIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.talentId);
 
   useEffect(() => {
     const socket = io(`${process.env.REACT_APP_API_URL}/?clientId=${userInfo?.id}`, {
@@ -64,6 +71,25 @@ function ChattingRoomsList(): JSX.Element {
       console.log('connectSocket', socket.id);
     });
     setConnectSocket(connect);
+
+    // 상세페이지에서 [채팅으로 거래하기] 버튼을 통해 들어온 경우
+    if (isFromDetail) {
+      // 첫 채팅일 경우, 채팅방을 바로 열어주고 isFirstChat 변경
+      if (isFirstChat) {
+        console.log('첫 채팅방');
+        setCurOtherId(otherList[otherList.length - 1]);
+        setCurRoomId(roomIdList[roomIdList.length - 1]);
+        dispatch(setIsFirstChat({ isFromDetail: false, isFirstChat: false, talentId }));
+      } else {
+        // 기존 채팅방이 있으면, 그 채팅방을 열어준다.
+        // chatRooms에서 해당 talentId에 해당하는 인덱스를 알아내서 roomID를 찾는다.
+        console.log('talentIdList', talentIdList);
+        console.log('index::::', talentIdList.indexOf(talentId));
+        const chatIndex = talentIdList.indexOf(talentId);
+        setCurOtherId(otherList[chatIndex]);
+        setCurRoomId(roomIdList[chatIndex]);
+      }
+    }
   }, [userInfo]);
 
   console.log('채팅방 목록: ', userInfo?.chatRooms);
@@ -79,7 +105,8 @@ function ChattingRoomsList(): JSX.Element {
       <CHATLIST>
         {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
           <div key={chatRoom.roomId} onClick={() => changeRoom(index)}>
-            {chatRoom.other}안 읽음 메시지{chatRoom.count}
+            <img src={chatRoom.profileImage} alt="상대방 프사," />
+            상대방 닉네임: {chatRoom.otherNickname}, 안 읽은 메시지: {chatRoom.count}
           </div>
         ))}
       </CHATLIST>
