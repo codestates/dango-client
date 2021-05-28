@@ -14,18 +14,24 @@ interface BodyType {
 // limit (10상수)* page(더보기누를때마다 1씩증가) + skip(실시간메시지받을때마다 +1)
 // skip은 skip+실시간채팅수 (= chatsLists.length)
 // 이렇게 계산하고 서버에 보내서, 데이터를 받았으면 chatsLists는 초기화되어야한다.
-function ChatsListLanding({ chatsLists, curRoomId }: any): JSX.Element {
+function ChatsListLanding({ chatsLists, setChatsLists, curRoomId }: any): JSX.Element {
   // 더보기 버튼
   const [render, setRender] = useState<any>([]);
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
   // const [body, setBody] = useState<BodyType>();
 
   const { userInfo } = useSelector((state: RootState) => state.user);
   const chattingRoomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getChats();
     console.log('curRoomId', curRoomId);
+    console.log('첫랜더할때 chatsLists', chatsLists);
+    getChats();
+    return () => {
+      console.log('청소청소청소청소');
+      setRender([]);
+      setChatsLists([]);
+    };
   }, [curRoomId]);
 
   useEffect(() => {
@@ -33,25 +39,29 @@ function ChatsListLanding({ chatsLists, curRoomId }: any): JSX.Element {
   }, [page]);
 
   useEffect(() => {
+    console.log('render대상', render);
     if (chattingRoomRef.current) {
       console.log('첫랜딩시 스크롤 맨아래로');
       chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
     }
   }, [render]);
 
-  const getChats = (page = 1) => {
+  const getChats = (page = 0) => {
+    console.log('getChats실행될 때 chatlist', chatsLists);
     const body = {
       id: userInfo?.id,
       skip: chatsLists.length,
       limit: 10,
       page,
     };
+    console.log('서버에보내는body', body);
+    console.log('서버에보내는roomId', curRoomId);
 
     server
       .post(`/chats/${curRoomId}`, body)
       .then((response) => {
         console.log('response.data.data', response.data.data);
-        setRender([...render, ...response.data.data]);
+        setRender([...response.data.data, ...render]);
       })
       .catch(() => '');
   };

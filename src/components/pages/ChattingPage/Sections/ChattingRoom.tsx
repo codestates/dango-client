@@ -58,11 +58,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
     // 모든 메세지(내가 보낸거 + 상대방이 보낸거)를 받아온 뒤 렌더링 할 수 있게 state를 바꿔준다.
     // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchats에 넣는다.
     connectSocket.on('messageFromOther', (receivedChats: any) => {
-<<<<<<< HEAD
       console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
-=======
-      console.log('receivedChats:::', receivedChats);
->>>>>>> 25eb29cec3ed5e73ac6e8f02c04a446e52fc92f6
       setLastChats(receivedChats.message);
       if (chattingRoomRef.current) {
         console.log('chattingRoom scrollTop');
@@ -79,7 +75,9 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
   // lastChats가 바뀔 때 함수 실행
   // TODO: 3. 메시지를 보내서 lastChats이바뀔때마다 creatNewChats을 실행시킨다.
   useEffect(() => {
-    createNewChats(lastChats);
+    if (lastChats !== '') {
+      createNewChats(lastChats);
+    }
   }, [lastChats]);
   // 렌더링 하는 부분에서 똑같이 roomId를 활용해서 api 요청을 보내야하기 때문에 props로 내려주고
   // 메세지 박스에서 바뀐 메세지를 서버 소켓쪽으로 보내줘야하기 때문에 callback 함수를 props로 내려준다
@@ -88,7 +86,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
     <>
       <CHATLENDING ref={chattingRoomRef}>
         <ChattingOption />
-        <ChatsListLanding chatsLists={chatsLists} curRoomId={curRoomId} />
+        <ChatsListLanding chatsLists={chatsLists} setChatsLists={setChatsLists} curRoomId={curRoomId} />
       </CHATLENDING>
       <CHATINPUT>
         <MessageInput callback={callback} />
@@ -96,4 +94,4 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
     </>
   );
 }
-export default memo(ChattingRoom);
+export default ChattingRoom;
