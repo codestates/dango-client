@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
-import { setIsFirstChat } from '../../../../_reducer/chattings';
+import { setIsFirstChat, newChattingRoom } from '../../../../_reducer/chattings';
+import ChattingOption from './ChattingOption';
 
 import ChattingRoom from './ChattingRoom';
 
@@ -98,19 +99,21 @@ function ChattingRoomsList(): JSX.Element {
     console.log('클릭된 idx::', index);
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
+    dispatch(newChattingRoom());
   };
 
   return (
     <CONTAINER>
       <CHATLIST>
         {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
-          <div key={chatRoom.roomId} onClick={() => changeRoom(index)}>
+          <div style={{ cursor: 'pointer' }} key={chatRoom.roomId} onClick={() => changeRoom(index)}>
             <img src={chatRoom.profileImage} alt="상대방 프사," />
             상대방 닉네임: {chatRoom.otherNickname}, 안 읽은 메시지: {chatRoom.count}
           </div>
         ))}
       </CHATLIST>
       <CHAT>
+        <ChattingOption />
         {curRoomId ? <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> : ''}
         {/* 임시개발용 */}
         {/*         <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> */}

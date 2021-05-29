@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
 import MessageInput from './MessageInput';
 import ChatsListLanding from './ChatsListLanding';
-import ChattingOption from './ChattingOption';
 
 // 실제로 기능구현이 되는 컴포넌트
 
@@ -18,7 +17,7 @@ const CHATLENDING = styled.div`
 `;
 
 const CHATINPUT = styled.div`
-  flex: 2;
+  flex: 1;
   border: 1px solid black;
   /*   transform: rotate(180deg);
   direction: ltr; */
@@ -34,7 +33,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
   const now = new Date();
 
   // TODO: 4. 메시지와 시간,이미지를 담아서 chatsLists 배열안에 넣는다.
-  const createNewChats = (message: string): void => {
+  const createNewChats = async (message: string) => {
     const newChats = {
       time: `${now.getHours() < 12 ? '오전' : '오후'} ${
         now.getHours() === 0 ? `12` : now.getHours() > 12 ? `${now.getHours() - 12}` : `${now.getHours()}`
@@ -42,7 +41,11 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
       chats: message,
       image: userInfo?.image,
     };
-    setChatsLists([...chatsLists, newChats]);
+    await setChatsLists([...chatsLists, newChats]);
+
+    if (chattingRoomRef.current) {
+      chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
+    }
   };
   // 실제 사용 로직
   useEffect(() => {
@@ -60,10 +63,6 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
     connectSocket.on('messageFromOther', (receivedChats: any) => {
       console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
       setLastChats(receivedChats.message);
-      if (chattingRoomRef.current) {
-        console.log('chattingRoom scrollTop');
-        chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
-      }
     });
   }, []);
   // 바뀐 state를 활용해서 메세지를 보낸다.(상대방 아이디, 메세지, 상대방과 함께 들어가 있는 roomId)
@@ -85,8 +84,12 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
   return (
     <>
       <CHATLENDING ref={chattingRoomRef}>
-        <ChattingOption />
-        <ChatsListLanding chatsLists={chatsLists} setChatsLists={setChatsLists} curRoomId={curRoomId} />
+        <ChatsListLanding
+          chatsLists={chatsLists}
+          setChatsLists={setChatsLists}
+          curRoomId={curRoomId}
+          chattingRoomRef={chattingRoomRef}
+        />
       </CHATLENDING>
       <CHATINPUT>
         <MessageInput callback={callback} />
@@ -94,4 +97,4 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
     </>
   );
 }
-export default ChattingRoom;
+export default memo(ChattingRoom);
