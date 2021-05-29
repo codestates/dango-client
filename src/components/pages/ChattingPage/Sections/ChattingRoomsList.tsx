@@ -93,13 +93,20 @@ function ChattingRoomsList(): JSX.Element {
     }
   }, [userInfo]);
 
-  console.log('채팅방 목록: ', userInfo?.chatRooms);
+  useEffect(() => {
+    if (curRoomId === '') {
+      return;
+    }
+
+    dispatch(newChattingRoom());
+  }, [curRoomId]);
 
   const changeRoom = (index: number): void => {
     console.log('클릭된 idx::', index);
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
-    dispatch(newChattingRoom());
+    // 이렇게하면 똑같은방을 클릭했을때 curRoomId가 변하지않아서 빈채팅방이 랜더된다.
+    // dispatch(newChattingRoom());
   };
 
   return (

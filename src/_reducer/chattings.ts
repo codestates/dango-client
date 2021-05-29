@@ -38,7 +38,7 @@ export const chattingsSlice = createSlice({
       state.page++;
     },
     getChattingData: (state, action: PayloadAction<{ data: any[] }>) => {
-      const newState = { ...state, render: [...state.render, ...action.payload.data] };
+      const newState = { ...state, render: [...action.payload.data, ...state.render] };
       return newState;
     },
   },
