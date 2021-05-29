@@ -42,22 +42,22 @@ export interface RoomType {
   talentId: string;
   profileImage: string;
 }
-/* interface RoomType {
-  roomId: string;
+interface RoomInfo {
+  userId: string | undefined;
+  chatRoomId: string;
   otherId: string;
-  otherNickname: string;
-  count: number;
   talentId: string;
-  profileImage: string;
-} */
+}
 
 function ChattingRoomsList(): JSX.Element {
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const { isFromDetail, isFirstChat, talentId } = useSelector((state: RootState) => state.chattings);
-  const dispatch = useDispatch();
   const [curOtherId, setCurOtherId] = useState<string>('');
   const [curRoomId, setCurRoomId] = useState<string>('');
   const [connectSocket, setConnectSocket] = useState<any>();
+  const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
+
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
   const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
   const talentIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.talentId);
@@ -91,15 +91,33 @@ function ChattingRoomsList(): JSX.Element {
         setCurRoomId(roomIdList[chatIndex]);
       }
     }
+
+    // 유저정보가 바뀌었을때도(거래완료를 눌렀다거나) roomInfo를 갱신해준다.
+    if (curRoomId !== '') {
+      setRoomInfo(getRoomInfo());
+    }
   }, [userInfo]);
 
+  // 채팅방을 클릭할때마다 실행된다.
   useEffect(() => {
     if (curRoomId === '') {
       return;
     }
-
+    // 해당채팅룸의 render와 page를 초기화시킨다.
     dispatch(newChattingRoom());
+    // room의 정보를 ChattingOption에 전달해주기위한 함수
+    setRoomInfo(getRoomInfo());
   }, [curRoomId]);
+
+  const getRoomInfo = () => {
+    const currentRoomInfo = userInfo?.chatRooms.find((room: RoomType) => room.roomId === curRoomId);
+    return {
+      userId: userInfo?.id,
+      chatRoomId: curRoomId,
+      otherId: currentRoomInfo.otherId,
+      talentId: currentRoomInfo.talentId,
+    };
+  };
 
   const changeRoom = (index: number): void => {
     console.log('클릭된 idx::', index);
@@ -120,7 +138,7 @@ function ChattingRoomsList(): JSX.Element {
         ))}
       </CHATLIST>
       <CHAT>
-        {curRoomId !== '' && <ChattingOption roomId={curRoomId} />}
+        {curRoomId !== '' && <ChattingOption roomInfo={roomInfo} setCurRoomId={setCurRoomId} />}
         {curRoomId ? <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> : ''}
         {/* 임시개발용 */}
         {/*         <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> */}

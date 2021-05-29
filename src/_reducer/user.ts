@@ -49,7 +49,7 @@ export const userSlice = createSlice({
       const { talentId } = action.payload;
       if (state.userInfo) {
         const index = state.userInfo.unreviewed.indexOf(talentId);
-        state.userInfo?.unreviewed.splice(index, 1);
+        state.userInfo.unreviewed.splice(index, 1);
         state.userInfo.reviewed.push(talentId);
       }
     },
@@ -69,9 +69,42 @@ export const userSlice = createSlice({
         state.userInfo.chatRooms = action.payload.chatRooms;
       }
     },
+
+    purchaseComplete: (state, action: PayloadAction<{ talentId: string }>) => {
+      const { talentId } = action.payload;
+      if (state.userInfo) {
+        // 구매완료를 눌렀으므로
+        // FIXME: 구매완료눌러도 buying에 있어야겠다.
+        const index = state.userInfo.buying.indexOf(talentId);
+        state.userInfo.buying.splice(index, 1);
+        state.userInfo.unreviewed.push(talentId);
+      }
+    },
+
+    escapeRoom: (state, action: PayloadAction<{ talentId: string }>) => {
+      const { talentId } = action.payload;
+      if (state.userInfo) {
+        // 나간 방과 일치하는 구매중목록의 talentId를 없애준다.
+        const buyingIndex = state.userInfo.buying.indexOf(talentId);
+        state.userInfo.buying.splice(buyingIndex, 1);
+
+        // 나간 방과 일치하는 방을 chatRooms배열에서 없애준다.
+        const chatRoomsIndex = state.userInfo.chatRooms.findIndex((room: any) => room.talentId === talentId);
+        state.userInfo.chatRooms.splice(chatRoomsIndex, 1);
+      }
+    },
   },
 });
 
-export const { signin, signout, updateReview, updateUnreviewed, modifyNickname, updateChatRooms } = userSlice.actions;
+export const {
+  signin,
+  signout,
+  updateReview,
+  updateUnreviewed,
+  modifyNickname,
+  updateChatRooms,
+  purchaseComplete,
+  escapeRoom,
+} = userSlice.actions;
 
 export default userSlice.reducer;

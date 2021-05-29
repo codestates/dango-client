@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SetStateAction } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
 import { openModal } from '../../../../_reducer/modal';
-import { RoomType } from './ChattingRoomsList';
+import { purchaseComplete, escapeRoom } from '../../../../_reducer/user';
 import server from '../../../../api';
 
 const CHATTINGOPTION = styled.div`
@@ -25,37 +26,24 @@ const ESCAPEBTN = styled.button`
 `;
 
 interface ChattingOptionProps {
-  roomId: string;
-}
-interface RoomInfo {
-  userId: string | undefined;
-  chatRoomId: string;
-  otherId: string;
-  talentId: string;
+  roomInfo: {
+    userId: string | undefined;
+    chatRoomId: string;
+    otherId: string;
+    talentId: string;
+  } | null;
+  setCurRoomId: (roomId: string) => void;
 }
 
-export default function ChattingOption({ roomId }: ChattingOptionProps): JSX.Element {
+export default function ChattingOption({ roomInfo, setCurRoomId }: ChattingOptionProps): JSX.Element {
   const dispatch = useDispatch();
-  const chatRooms = useSelector((state: RootState) => state.user.userInfo?.chatRooms);
-  const userId = useSelector((state: RootState) => state.user.userInfo?.id);
-  const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
-
+  const history = useHistory();
+  const buying = useSelector((state: RootState) => state.user.userInfo?.buying);
+  const selling = useSelector((state: RootState) => state.user.userInfo?.selling);
+  const [sellingOrBuying, setSellingOrBuying] = useState(false);
   useEffect(() => {
-    if (!roomId) {
-      return;
-    }
-    setRoomInfo(getRoomInfo());
-  }, [roomId]);
-
-  const getRoomInfo = () => {
-    const currentRoomInfo = chatRooms.find((room: RoomType) => room.roomId === roomId);
-    return {
-      userId,
-      chatRoomId: roomId,
-      otherId: currentRoomInfo.otherId,
-      talentId: currentRoomInfo.talentId,
-    };
-  };
+    setSellingOrBuying(checkSellingOrBuying());
+  }, [roomInfo]);
 
   const handleComplete = () => {
     const data = {
@@ -66,7 +54,51 @@ export default function ChattingOption({ roomId }: ChattingOptionProps): JSX.Ele
     server
       .post('/users/confirm', data)
       .then(() => {
+        if (roomInfo?.talentId) {
+          dispatch(purchaseComplete({ talentId: roomInfo.talentId }));
+        }
         dispatch(openModal({ type: 'ok', text: '거래완료 신청이 성공적으로 접수되었습니다!' }));
+      })
+      .catch((err) => {
+        if (!err.response) {
+          console.log(err);
+          return;
+        }
+        dispatch(openModal({ type: 'error', text: err.response.data.message }));
+      });
+  };
+
+  // 현재유저가 해당채팅방에서 구매중/판매중인사람인지 거래가 끝난사람인지 확인
+  // FIXME: confirmed에 접근해서 내유저정보가있는지확인
+  const checkSellingOrBuying = (): boolean => {
+    const isBuying = buying.indexOf(roomInfo?.talentId) !== -1;
+    const isSelling = selling.indexOf(roomInfo?.talentId) !== -1;
+
+    // 판매중도 아니고 구매중도 아니면 거래가 끝난 것이므로 false를 리턴한다.
+    if (!isBuying && !isSelling) {
+      return false;
+    }
+    return true;
+  };
+
+  // 채팅방나가기누르면 user정보에서 buying에서 지워주고, chatRooms에서도 지워줘야함.
+  // const { userId, otherId, chatRoomId } = req.body;
+  const handleEscape = () => {
+    const config = {
+      data: {
+        userId: roomInfo?.userId,
+        otherId: roomInfo?.otherId,
+        chatRoomId: roomInfo?.chatRoomId,
+      },
+    };
+    server
+      .delete('/chats/delete', config)
+      .then(() => setCurRoomId('')) // 방을 나갔으므로 curRoomId도 초기값으로 초기화해준다.
+      .then(() => {
+        if (roomInfo?.talentId) {
+          dispatch(escapeRoom({ talentId: roomInfo.talentId }));
+        }
+        dispatch(openModal({ type: 'ok', text: '채팅방 나가기 완료' }));
       })
       .catch((err) => {
         if (!err.response) {
@@ -80,7 +112,8 @@ export default function ChattingOption({ roomId }: ChattingOptionProps): JSX.Ele
   return (
     <CHATTINGOPTION>
       <OPTIONBOX>
-        <COMPLETEBTN>거래완료</COMPLETEBTN> <ESCAPEBTN>나가기</ESCAPEBTN>
+        {sellingOrBuying ? <COMPLETEBTN onClick={handleComplete}>거래완료</COMPLETEBTN> : '거래가끝난채팅방입니다.'}
+        <ESCAPEBTN onClick={handleEscape}>나가기</ESCAPEBTN>
       </OPTIONBOX>
     </CHATTINGOPTION>
   );
