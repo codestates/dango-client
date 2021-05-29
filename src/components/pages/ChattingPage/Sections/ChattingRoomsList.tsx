@@ -34,7 +34,7 @@ const CHAT = styled.div`
   direction: rtl; */
 `;
 
-interface RoomType {
+export interface RoomType {
   roomId: string;
   otherId: string;
   otherNickname: string;
@@ -120,7 +120,7 @@ function ChattingRoomsList(): JSX.Element {
         ))}
       </CHATLIST>
       <CHAT>
-        <ChattingOption />
+        {curRoomId !== '' && <ChattingOption roomId={curRoomId} />}
         {curRoomId ? <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> : ''}
         {/* 임시개발용 */}
         {/*         <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> */}
