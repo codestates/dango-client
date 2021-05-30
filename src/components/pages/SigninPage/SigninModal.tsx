@@ -1,13 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
 import GoogleSignin from './google/GoogleSignin';
 import KakaoSignin from './kakao/KakaoSignin';
+import Modal from '../../../utils/modal';
 
-function SigninModal() {
+const DIV = styled.div`
+  padding-top: 70px;
+`;
+
+function SigninModal(): JSX.Element {
   return (
-    <div>
+    <DIV>
+      <Modal />
       <GoogleSignin />
       <KakaoSignin />
-    </div>
+    </DIV>
   );
 }
 
