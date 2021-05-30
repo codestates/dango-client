@@ -168,7 +168,14 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
       if (!inputValue || inputValue.length === 0 || locationList.length === 0) {
         dispatch(openModal({ type: 'error', text: '거래할 지역을 입력해주세요.' }));
       } else {
-        const index = liIdx < locationList.length ? liIdx : locationList.length - 1;
+        let index;
+        if (liIdx < 0) {
+          index = 0;
+        } else if (liIdx >= locationList.length) {
+          index = locationList.length - 1;
+        } else {
+          index = liIdx;
+        }
         const { address, lat, lng } = locationList[index];
         selectLocationData(address, lat, lng);
         setLiIdx(-2);
