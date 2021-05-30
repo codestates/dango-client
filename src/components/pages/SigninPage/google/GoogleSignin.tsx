@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
+import { openModal } from '../../../../_reducer/modal';
 import server from '../../../../api/index';
 import Signup from '../Signup';
 import { signin, UserState } from '../../../../_reducer/user';
 
-function GoogleSignin() {
+function GoogleSignin(): JSX.Element {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [googleIdToken, setGoogleIdToken] = useState<string | null>(null);
   const [isUser, setIsUser] = useState<boolean>(true);
 
@@ -56,13 +59,18 @@ function GoogleSignin() {
             accessToken,
           };
           dispatch(signin(payload));
-          localStorage.setItem('id', response.data.id);
-          alert('로그인되었습니다.');
+          dispatch(openModal({ type: 'ok', text: '로그인되었습니다.' }));
+          history.push('/');
         })
         .catch((err) => {
           const { message } = err.response.data;
           if (message === '등록된 회원이 아닙니다.') {
-            alert('회원정보가 없습니다. 닉네임을 입력하여 회원가입을 진행해주세요.');
+            dispatch(
+              openModal({
+                type: 'error',
+                text: '회원정보가 없습니다. \n닉네임을 입력하여 회원가입을 진행해주세요.',
+              }),
+            );
             setIsUser(false);
           }
         });
