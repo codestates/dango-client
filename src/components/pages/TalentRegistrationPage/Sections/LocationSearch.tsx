@@ -31,7 +31,7 @@ const INPUT = styled.input`
   padding: 0 1rem;
 `;
 
-const UL = styled.li`
+const UL = styled.ul`
   list-style: none;
   margin-top: 0.2rem;
   position: absolute;
@@ -51,6 +51,8 @@ const LI = styled.li<LiType>`
   // background-color: rgba(198, 191, 191, 0.1);
   // background-color: ${(props) => props.idx === props.liIdx && '#835af1'};
   color: ${(props) => props.idx === props.liIdx && '#835af1'};
+  color: ${(props) => props.idx === 0 && props.liIdx === -2 && '#835af1'};
+
   cursor: pointer;
   padding: 0.5rem;
 `;
@@ -58,6 +60,7 @@ const SUBLI = styled.li<LiType>`
   // background-color: rgba(198, 191, 191, 0.1);
   // background-color: ${(props) => props.idx === props.liIdx && '#DEDCEE'};
   color: ${(props) => props.idx === props.liIdx && '#835af1'};
+  color: ${(props) => props.idx === 0 && props.liIdx === -2 && '#835af1'};
   // color: grey;
   cursor: pointer;
   font-size: 0.8rem;
@@ -83,7 +86,6 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current?.focus();
     // 검색창을 다 지울때마다 가장 위의 결과가 하이라이팅되도록 인덱스를 초기값으로 바꿔준다.
     if (inputValue === '') {
       setLiIdx(-2);
@@ -179,13 +181,13 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
         const { address, lat, lng } = locationList[index];
         selectLocationData(address, lat, lng);
         setLiIdx(-2);
-
+        inputRef.current?.blur();
         event.preventDefault();
       }
     }
   };
 
-  // 크롬브라우저의 문제로 한글로 끝나면 key down,up 이벤트가 2번눌림
+  // 크롬브라우저의 문제로 한글로 끝나면 key down,up 이벤트가 맨처음에 2번발생함
   //  검색어 끝이 한글이 아닌 숫자,영어로끝나면 이벤트가 1번발생함.
   // 이를위한 임시방편으로 시작idx를 -2로두고, 검색어 끝에 숫자가 오면 그대로 idx를 2 증가시키고
   // 검색어 끝에 한글이오면 2번실행되기때문에 1만증가시킨다. 영어는...
@@ -195,8 +197,14 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
       if (inputValue && event.key === 'ArrowDown' && liIdx < locationList.length - 1) {
         const numberArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
         const lastStr = inputValue.slice(-1);
-        if (numberArr.indexOf(lastStr) !== -1 && liIdx === -2) {
-          setLiIdx((prevIdx) => prevIdx + 2);
+        // 검색직후에는 가장맨위의 지역이 선택되어있는 상태이니까 아래키를 눌렀을때 1씩 더더해준다.
+        if (liIdx === -2) {
+          // 마지막글자가 숫자면 이벤트가 1번실행되므로 1을 더더해준다.
+          if (numberArr.indexOf(lastStr) !== -1) {
+            setLiIdx((prevIdx) => prevIdx + 3);
+          } else {
+            setLiIdx((prevIdx) => prevIdx + 2);
+          }
         } else {
           setLiIdx((prevIdx) => prevIdx + 1);
         }

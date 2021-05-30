@@ -4,7 +4,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import Review from './Sections/Review';
 import { RootState } from '../../../_reducer';
 import { postTalentData, TalentState } from '../../../_reducer/talent';
-import { updateChatRooms } from '../../../_reducer/user';
+import { updateChatRooms, UpdateChatRoomsPayload } from '../../../_reducer/user';
 import { setIsFirstChat } from '../../../_reducer/chattings';
 import server from '../../../api';
 import { CONTAINER, SELLER, DETAIL, PHOTOS } from './TalentDetailPageStyle';
@@ -48,6 +48,7 @@ function TalentDetailPage(): JSX.Element {
     server
       .get(`/talents/detail/${talentId}`)
       .then((res) => {
+        console.log('dfdfdfdfdfdfdfdfdfdfdfdfdfdf', res.data);
         let userRole: 'normal' | 'seller' | 'reviewer' = 'normal';
 
         // 작성자의 id와 유저의 id가 같으면 판매자
@@ -147,15 +148,16 @@ function TalentDetailPage(): JSX.Element {
       server
         .post('/chats/createchat', body)
         .then((res) => {
-          const payload = {
-            chatRooms: [
-              ...userInfo?.chatRooms,
-              {
-                roomId: res.data.roomId,
-                other: detailData.userInfo._id,
-                count: 0,
-              },
-            ],
+          const payload: UpdateChatRoomsPayload = {
+            chatRooms: {
+              talentId,
+              roomId: res.data.roomId,
+              count: 0,
+              otherId: detailData.userInfo._id,
+              otherNickname: detailData.userInfo.nickname,
+              profileImage: detailData.userInfo.socialData.image,
+              clickPurchase: false,
+            },
           };
           dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
           dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: true, talentId }));

@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
-import server from '../../../../api/index';
 import { newChattingRoom, clickMoreBtn, getChattingData } from '../../../../_reducer/chattings';
+import server from '../../../../api/index';
+import getChatTime from '../../../../utils/getChatTime';
 
 // TODO: 프로필 이미지를 읽어오기전에 채팅이 랜더되면서 뒤늦게 이미지가 나타나서 스크롤이 위로 밀린다.
 // image의 onLoad에 함수를 넣어 상태를 바꾼뒤에 랜더시키는 방법이있는것같은데 일단 나중에..
-function ChatsListLanding({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: any): JSX.Element {
+function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: any): JSX.Element {
   const dispatch = useDispatch();
   const { page, render } = useSelector((state: RootState) => state.chattings, shallowEqual);
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
@@ -14,6 +15,7 @@ function ChatsListLanding({ chatsLists, setChatsLists, curRoomId, chattingRoomRe
   // const [imageLoad, setImageLoad] = useState(false);
 
   useEffect(() => {
+    console.log('render:::::::::', render);
     if (page === 0) {
       setChatsLists([]);
     }
@@ -63,23 +65,12 @@ function ChatsListLanding({ chatsLists, setChatsLists, curRoomId, chattingRoomRe
         <>
           <div>
             <button type="button" onClick={loadMoreHandler}>
-              {' '}
-              더보기{' '}
+              더보기
             </button>
             <div>
               {render.map((chat: any) => (
                 <div key={Math.random()}>
-                  <div>{`${new Date(chat.createdAt).getHours() < 12 ? '오전' : '오후'} ${
-                    new Date(chat.createdAt).getHours() === 0
-                      ? `12`
-                      : new Date(chat.createdAt).getHours() > 12
-                      ? `${new Date(chat.createdAt).getHours() - 12}`
-                      : `${new Date(chat.createdAt).getHours()}`
-                  } : ${
-                    new Date(chat.createdAt).getMinutes() < 10
-                      ? `0${new Date(chat.createdAt).getMinutes()}`
-                      : new Date(chat.createdAt).getMinutes()
-                  }`}</div>
+                  <div>{getChatTime(chat.createdAt)}</div>
                   <div>{chat.message}</div>
                   <img alt={chat.postedBy.image} src={chat.postedBy.image} />
                 </div>
@@ -104,4 +95,4 @@ function ChatsListLanding({ chatsLists, setChatsLists, curRoomId, chattingRoomRe
   );
 }
 
-export default ChatsListLanding;
+export default Chats;

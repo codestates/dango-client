@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '../../../../_reducer';
+import getChatTime from '../../../../utils/getChatTime';
 import MessageInput from './MessageInput';
-import ChatsListLanding from './ChatsListLanding';
+import Chats from './Chats';
 
 // 실제로 기능구현이 되는 컴포넌트
 
@@ -30,14 +31,11 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
   const { userInfo } = useSelector((state: RootState) => state.user);
   const chattingRoomRef = useRef<HTMLDivElement>(null);
 
-  const now = new Date();
-
   // TODO: 4. 메시지와 시간,이미지를 담아서 chatsLists 배열안에 넣는다.
   const createNewChats = async (message: string) => {
+    const now = new Date();
     const newChats = {
-      time: `${now.getHours() < 12 ? '오전' : '오후'} ${
-        now.getHours() === 0 ? `12` : now.getHours() > 12 ? `${now.getHours() - 12}` : `${now.getHours()}`
-      } : ${now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes()}`,
+      time: getChatTime(now.toString()),
       chats: message,
       image: userInfo?.image,
     };
@@ -84,7 +82,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
   return (
     <>
       <CHATLENDING ref={chattingRoomRef}>
-        <ChatsListLanding
+        <Chats
           chatsLists={chatsLists}
           setChatsLists={setChatsLists}
           curRoomId={curRoomId}

@@ -47,6 +47,7 @@ interface RoomInfo {
   chatRoomId: string;
   otherId: string;
   talentId: string;
+  clickPurchase: boolean;
 }
 
 function ChattingRoomsList(): JSX.Element {
@@ -116,6 +117,7 @@ function ChattingRoomsList(): JSX.Element {
       chatRoomId: curRoomId,
       otherId: currentRoomInfo.otherId,
       talentId: currentRoomInfo.talentId,
+      clickPurchase: currentRoomInfo.clickPurchase,
     };
   };
 
@@ -138,10 +140,8 @@ function ChattingRoomsList(): JSX.Element {
         ))}
       </CHATLIST>
       <CHAT>
-        {curRoomId !== '' && <ChattingOption roomInfo={roomInfo} setCurRoomId={setCurRoomId} />}
-        {curRoomId ? <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> : ''}
-        {/* 임시개발용 */}
-        {/*         <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} /> */}
+        {curRoomId && <ChattingOption roomInfo={roomInfo} setCurRoomId={setCurRoomId} />}
+        {curRoomId && <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} />}
       </CHAT>
     </CONTAINER>
   );
