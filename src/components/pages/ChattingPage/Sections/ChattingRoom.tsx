@@ -24,10 +24,17 @@ const CHATINPUT = styled.div`
   direction: ltr; */
   /* overflow: auto; */
 `;
-// 채팅룸 안에서
-function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Element {
-  const [lastChats, setLastChats] = useState<string>('');
-  const [chatsLists, setChatsLists] = useState<[] | any>([]);
+
+interface ChattingRoomProps {
+  curOtherId: string;
+  curRoomId: string;
+  connectSocket: any;
+  lastChat: string;
+  setLastChat: (lastChat: string) => void;
+}
+
+function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastChat }: ChattingRoomProps): JSX.Element {
+  const [chatsLists, setChatsLists] = useState<any[]>([]);
   const { userInfo } = useSelector((state: RootState) => state.user);
   const chattingRoomRef = useRef<HTMLDivElement>(null);
 
@@ -57,10 +64,10 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
     });
 
     // 모든 메세지(내가 보낸거 + 상대방이 보낸거)를 받아온 뒤 렌더링 할 수 있게 state를 바꿔준다.
-    // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchats에 넣는다.
+    // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
     connectSocket.on('messageFromOther', (receivedChats: any) => {
       console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
-      setLastChats(receivedChats.message);
+      setLastChat(receivedChats.message);
     });
   }, []);
   // 바뀐 state를 활용해서 메세지를 보낸다.(상대방 아이디, 메세지, 상대방과 함께 들어가 있는 roomId)
@@ -69,13 +76,13 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
     connectSocket.emit('messageToOther', curOtherId, message, curRoomId);
   };
 
-  // lastChats가 바뀔 때 함수 실행
-  // TODO: 3. 메시지를 보내서 lastChats이바뀔때마다 creatNewChats을 실행시킨다.
+  // lastChat가 바뀔 때 함수 실행
+  // TODO: 3. 메시지를 보내서 lastChat이바뀔때마다 creatNewChats을 실행시킨다.
   useEffect(() => {
-    if (lastChats !== '') {
-      createNewChats(lastChats);
+    if (lastChat !== '') {
+      createNewChats(lastChat);
     }
-  }, [lastChats]);
+  }, [lastChat]);
   // 렌더링 하는 부분에서 똑같이 roomId를 활용해서 api 요청을 보내야하기 때문에 props로 내려주고
   // 메세지 박스에서 바뀐 메세지를 서버 소켓쪽으로 보내줘야하기 때문에 callback 함수를 props로 내려준다
 

@@ -58,6 +58,7 @@ function ChattingRoomsList(): JSX.Element {
   const [curRoomId, setCurRoomId] = useState<string>('');
   const [connectSocket, setConnectSocket] = useState<any>();
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
+  const [lastChat, setLastChat] = useState<string>('');
 
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
   const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
@@ -140,8 +141,23 @@ function ChattingRoomsList(): JSX.Element {
         ))}
       </CHATLIST>
       <CHAT>
-        {curRoomId && <ChattingOption roomInfo={roomInfo} setCurRoomId={setCurRoomId} />}
-        {curRoomId && <ChattingRoom curOtherId={curOtherId} curRoomId={curRoomId} connectSocket={connectSocket} />}
+        {curRoomId && (
+          <ChattingOption
+            roomInfo={roomInfo}
+            setCurRoomId={setCurRoomId}
+            lastChat={lastChat}
+            setLastChat={setLastChat}
+          />
+        )}
+        {curRoomId && (
+          <ChattingRoom
+            curOtherId={curOtherId}
+            curRoomId={curRoomId}
+            connectSocket={connectSocket}
+            lastChat={lastChat}
+            setLastChat={setLastChat}
+          />
+        )}
       </CHAT>
     </CONTAINER>
   );

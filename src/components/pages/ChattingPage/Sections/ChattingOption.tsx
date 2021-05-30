@@ -37,9 +37,16 @@ interface ChattingOptionProps {
     clickPurchase: boolean[];
   } | null;
   setCurRoomId: (roomId: string) => void;
+  lastChat: string;
+  setLastChat: (lastChat: string) => void;
 }
 
-export default function ChattingOption({ roomInfo, setCurRoomId }: ChattingOptionProps): JSX.Element {
+export default function ChattingOption({
+  roomInfo,
+  setCurRoomId,
+  lastChat,
+  setLastChat,
+}: ChattingOptionProps): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
 
