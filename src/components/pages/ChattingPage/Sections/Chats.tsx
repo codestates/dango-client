@@ -4,6 +4,7 @@ import { RootState } from '../../../../_reducer';
 import { newChattingRoom, clickMoreBtn, getChattingData } from '../../../../_reducer/chattings';
 import server from '../../../../api/index';
 import getChatTime from '../../../../utils/getChatTime';
+import { RENDER, MOREBTNBOX, MOREBTN, CHAT } from './ChatsStyle';
 
 // TODO: 프로필 이미지를 읽어오기전에 채팅이 랜더되면서 뒤늦게 이미지가 나타나서 스크롤이 위로 밀린다.
 // image의 onLoad에 함수를 넣어 상태를 바꾼뒤에 랜더시키는 방법이있는것같은데 일단 나중에..
@@ -60,38 +61,36 @@ function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: any): 
   }, [page]);
 
   return (
-    <div>
+    <RENDER>
       {!loading /* && imageLoad  */ ? (
-        <>
-          <div>
-            <button type="button" onClick={loadMoreHandler}>
+        <RENDER>
+          <MOREBTNBOX>
+            <MOREBTN type="button" onClick={loadMoreHandler}>
               더보기
-            </button>
-            <div>
-              {render.map((chat: any) => (
-                <div key={Math.random()}>
-                  <div>{getChatTime(chat.createdAt)}</div>
-                  <div>{chat.message}</div>
-                  <img alt={chat.postedBy.image} src={chat.postedBy.image} />
-                </div>
-              ))}
-            </div>
-          </div>
-
+            </MOREBTN>
+          </MOREBTNBOX>
           <div>
-            {chatsLists.map((chatList: any) => (
-              <div key={Math.random()}>
+            {render.map((chat: any, idx) => (
+              <CHAT key={idx} postedUserId={chat.postedBy._id} userId={userInfo?.id}>
+                <div>{getChatTime(chat.createdAt)}</div>
+                <div>{chat.message}</div>
+                <img alt={chat.postedBy.image} src={chat.postedBy.image} />
+              </CHAT>
+            ))}
+            {chatsLists.map((chatList: any, idx: number) => (
+              <CHAT key={idx}>
+                <div>chatLists에서 온거임</div>
                 <div>{chatList.time}</div>
                 <div>{chatList.chats}</div>
                 <img alt={chatsLists.image} src={chatList.image} />
-              </div>
+              </CHAT>
             ))}
           </div>
-        </>
+        </RENDER>
       ) : (
         '로딩중'
       )}
-    </div>
+    </RENDER>
   );
 }
 

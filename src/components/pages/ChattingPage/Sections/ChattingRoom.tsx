@@ -9,7 +9,7 @@ import Chats from './Chats';
 
 // 실제로 기능구현이 되는 컴포넌트
 
-const CHATLENDING = styled.div`
+const CHATLANDING = styled.div`
   flex: 8;
   border: 1px solid pink;
   overflow: auto;
@@ -81,14 +81,14 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket }: any): JSX.Elemen
 
   return (
     <>
-      <CHATLENDING ref={chattingRoomRef}>
+      <CHATLANDING ref={chattingRoomRef}>
         <Chats
           chatsLists={chatsLists}
           setChatsLists={setChatsLists}
           curRoomId={curRoomId}
           chattingRoomRef={chattingRoomRef}
         />
-      </CHATLENDING>
+      </CHATLANDING>
       <CHATINPUT>
         <MessageInput callback={callback} />
       </CHATINPUT>

@@ -21,6 +21,9 @@ const OPTIONBOX = styled.div`
 const COMPLETEBTN = styled.button`
   flex: 1;
 `;
+const COMPLETED = styled.div`
+  flex: 1;
+`;
 const ESCAPEBTN = styled.button`
   flex: 1;
 `;
@@ -31,7 +34,7 @@ interface ChattingOptionProps {
     chatRoomId: string;
     otherId: string;
     talentId: string;
-    clickPurchase: boolean;
+    clickPurchase: boolean[];
   } | null;
   setCurRoomId: (roomId: string) => void;
 }
@@ -104,10 +107,20 @@ export default function ChattingOption({ roomInfo, setCurRoomId }: ChattingOptio
       });
   };
 
+  const checkPurchase = () => {
+    if (roomInfo?.clickPurchase[0] === false) {
+      return <COMPLETEBTN onClick={handleComplete}>거래완료</COMPLETEBTN>;
+    }
+    if (roomInfo?.clickPurchase[1] === false) {
+      return <COMPLETED>상대방의 구매결정을 기다리는중..</COMPLETED>;
+    }
+    return <COMPLETED>구매가 완료된 채팅방입니다.</COMPLETED>;
+  };
+
   return (
     <CHATTINGOPTION>
       <OPTIONBOX>
-        {!roomInfo?.clickPurchase ? <COMPLETEBTN onClick={handleComplete}>거래완료</COMPLETEBTN> : '거래완료누름'}
+        {roomInfo && checkPurchase()}
         <ESCAPEBTN onClick={handleEscape}>나가기</ESCAPEBTN>
       </OPTIONBOX>
     </CHATTINGOPTION>

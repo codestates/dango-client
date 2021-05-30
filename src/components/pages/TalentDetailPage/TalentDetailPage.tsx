@@ -156,7 +156,7 @@ function TalentDetailPage(): JSX.Element {
               otherId: detailData.userInfo._id,
               otherNickname: detailData.userInfo.nickname,
               profileImage: detailData.userInfo.socialData.image,
-              clickPurchase: false,
+              clickPurchase: [false, false],
             },
           };
           dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가

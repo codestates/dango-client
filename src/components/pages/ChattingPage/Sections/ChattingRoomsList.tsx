@@ -47,7 +47,7 @@ interface RoomInfo {
   chatRoomId: string;
   otherId: string;
   talentId: string;
-  clickPurchase: boolean;
+  clickPurchase: boolean[];
 }
 
 function ChattingRoomsList(): JSX.Element {
