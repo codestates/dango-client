@@ -29,6 +29,7 @@ const CHAT = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid black;
+  background-color: #f2f7f8;
   /* overflow: auto;
   transform: rotate(180deg);
   direction: rtl; */
@@ -50,6 +51,18 @@ interface RoomInfo {
   clickPurchase: boolean[];
 }
 
+interface ChatInfo {
+  createdAt: string;
+  message: string;
+  postedBy: {
+    image: string;
+    nickname: string;
+    _id: string;
+  };
+  type: 'text' | 'confirm';
+  _id: string;
+}
+
 function ChattingRoomsList(): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
@@ -58,7 +71,7 @@ function ChattingRoomsList(): JSX.Element {
   const [curRoomId, setCurRoomId] = useState<string>('');
   const [connectSocket, setConnectSocket] = useState<any>();
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
-  const [lastChat, setLastChat] = useState<string>('');
+  const [lastChat, setLastChat] = useState<ChatInfo | null>(null);
 
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
   const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);

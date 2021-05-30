@@ -8,9 +8,15 @@ import MessageInput from './MessageInput';
 import Chats from './Chats';
 
 // 실제로 기능구현이 되는 컴포넌트
-
+const CHATTINGROOM = styled.div`
+  flex: 9;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
 const CHATLANDING = styled.div`
-  flex: 8;
+  flex: 9;
   border: 1px solid pink;
   overflow: auto;
   /*   transform: rotate(180deg);
@@ -29,24 +35,46 @@ interface ChattingRoomProps {
   curOtherId: string;
   curRoomId: string;
   connectSocket: any;
-  lastChat: string;
-  setLastChat: (lastChat: string) => void;
+  lastChat: ChatInfo | null;
+  setLastChat: (lastChat: ChatInfo) => void;
+}
+
+export interface ChatInfo {
+  createdAt: string;
+  message: string;
+  postedBy: {
+    image: string;
+    nickname: string;
+    _id: string;
+  };
+  type: 'text' | 'confirm';
+  _id: string;
+}
+
+export interface ChatsLists {
+  id: string;
+  type: 'text' | 'confirm';
+  time: string;
+  message: string;
+  image: string;
 }
 
 function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastChat }: ChattingRoomProps): JSX.Element {
-  const [chatsLists, setChatsLists] = useState<any[]>([]);
+  const [chatsLists, setChatsLists] = useState<ChatsLists[]>([]);
   const { userInfo } = useSelector((state: RootState) => state.user);
   const chattingRoomRef = useRef<HTMLDivElement>(null);
 
   // TODO: 4. 메시지와 시간,이미지를 담아서 chatsLists 배열안에 넣는다.
-  const createNewChats = async (message: string) => {
+  const createNewChats = async (lastChat: ChatInfo) => {
     const now = new Date();
-    const newChats = {
-      time: getChatTime(now.toString()),
-      chats: message,
-      image: userInfo?.image,
+    const newChat = {
+      id: lastChat.postedBy._id,
+      type: lastChat.type,
+      time: getChatTime(lastChat.createdAt),
+      message: lastChat.message,
+      image: lastChat.postedBy.image,
     };
-    await setChatsLists([...chatsLists, newChats]);
+    await setChatsLists([...chatsLists, newChat]);
 
     if (chattingRoomRef.current) {
       chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
@@ -65,9 +93,9 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
 
     // 모든 메세지(내가 보낸거 + 상대방이 보낸거)를 받아온 뒤 렌더링 할 수 있게 state를 바꿔준다.
     // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
-    connectSocket.on('messageFromOther', (receivedChats: any) => {
+    connectSocket.on('messageFromOther', (receivedChats: ChatInfo) => {
       console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
-      setLastChat(receivedChats.message);
+      setLastChat(receivedChats);
     });
   }, []);
   // 바뀐 state를 활용해서 메세지를 보낸다.(상대방 아이디, 메세지, 상대방과 함께 들어가 있는 roomId)
@@ -79,7 +107,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
   // lastChat가 바뀔 때 함수 실행
   // TODO: 3. 메시지를 보내서 lastChat이바뀔때마다 creatNewChats을 실행시킨다.
   useEffect(() => {
-    if (lastChat !== '') {
+    if (lastChat) {
       createNewChats(lastChat);
     }
   }, [lastChat]);
@@ -87,7 +115,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
   // 메세지 박스에서 바뀐 메세지를 서버 소켓쪽으로 보내줘야하기 때문에 callback 함수를 props로 내려준다
 
   return (
-    <>
+    <CHATTINGROOM>
       <CHATLANDING ref={chattingRoomRef}>
         <Chats
           chatsLists={chatsLists}
@@ -99,7 +127,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
       <CHATINPUT>
         <MessageInput callback={callback} />
       </CHATINPUT>
-    </>
+    </CHATTINGROOM>
   );
 }
 export default memo(ChattingRoom);

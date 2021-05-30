@@ -2,6 +2,7 @@ import React, { useState, useEffect, SetStateAction } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { ChatInfo } from './ChattingRoom';
 import { RootState } from '../../../../_reducer';
 import { openModal } from '../../../../_reducer/modal';
 import { purchaseComplete, escapeRoom } from '../../../../_reducer/user';
@@ -37,8 +38,8 @@ interface ChattingOptionProps {
     clickPurchase: boolean[];
   } | null;
   setCurRoomId: (roomId: string) => void;
-  lastChat: string;
-  setLastChat: (lastChat: string) => void;
+  lastChat: ChatInfo | null;
+  setLastChat: (lastChat: ChatInfo) => void;
 }
 
 export default function ChattingOption({
