@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import Review from './Sections/Review';
 import { RootState } from '../../../_reducer';
 import { postTalentData, TalentState } from '../../../_reducer/talent';
+import { updateChatRooms } from '../../../_reducer/user';
+import { setIsFirstChat } from '../../../_reducer/chattings';
 import server from '../../../api';
 import { CONTAINER, SELLER, DETAIL, PHOTOS } from './TalentDetailPageStyle';
 import Modal from '../../../utils/modal';
-import dangoImage from '../../../images/dangoImage.jpeg';
 
 // 여기서 해당 글의 정보를 서버에서 받고, 리덕스에 저장한다.
 // 서버요청의 useEffect의 deps배열안에는 변할수 있는 상태를 넣어준다.
@@ -30,7 +31,10 @@ declare global {
 function TalentDetailPage(): JSX.Element {
   const { Kakao } = window;
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
+  const { isFromDetail, isFirstChat } = useSelector((state: RootState) => state.chattings);
+
   const dispatch = useDispatch();
+  const history = useHistory();
   const [detailData, setDetailData] = useState<any>();
   const [editDetail, setEditDetail] = useState<any>(); // 수정 가능한 데이터
   const [isClicked, setIsClicked] = useState<boolean>(false);
@@ -103,6 +107,7 @@ function TalentDetailPage(): JSX.Element {
     });
   }, [detailData]);
 
+  // Edit 버튼 클릭
   const handleClick = (): void => {
     setIsClicked(true);
   };
@@ -130,6 +135,42 @@ function TalentDetailPage(): JSX.Element {
     }
   };
 
+  // [채팅으로 거래하기] 버튼 눌렀을 때
+  const handleChat = () => {
+    // 처음 누르면 새로운 채팅방 만들어주기
+    if (isFirstChat) {
+      const body = {
+        userId: userInfo?.id, // buyer id (동네 이웃 id)
+        otherId: detailData.userInfo._id, // seller id (동네 고수 id)
+        talentId,
+      };
+      server
+        .post('/chats/createchat', body)
+        .then((res) => {
+          const payload = {
+            chatRooms: [
+              ...userInfo?.chatRooms,
+              {
+                roomId: res.data.roomId,
+                other: detailData.userInfo._id,
+                count: 0,
+              },
+            ],
+          };
+          dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
+          dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: true, talentId }));
+        })
+        .then(() => {
+          history.push('/chatting');
+        })
+        .catch((err) => console.log(err));
+    } else {
+      // 두번째부터는 기존 채팅방으로 이동
+      dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: false, talentId }));
+      history.push('/chatting');
+    }
+  };
+
   return (
     <CONTAINER>
       <Modal />
@@ -139,7 +180,9 @@ function TalentDetailPage(): JSX.Element {
         <div>{detailData?.address}</div>
         <div>별점 평균 : {detailData?.ratings[0] ?? '별점 없음'}</div>
         <div>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</div>
-        <button type="button">채팅으로 거래하기</button>
+        <button onClick={handleChat} type="button">
+          채팅으로 거래하기
+        </button>
       </SELLER>
       <DETAIL>
         {isClicked ? (

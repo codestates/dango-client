@@ -5,12 +5,14 @@ export interface ModalState {
   open: boolean;
   text: string;
   callbackName?: string;
+  callbackData?: any;
 }
 
 export interface OpenPayload {
   type: 'ok' | 'error' | 'danger';
   text: string;
   callbackName?: string;
+  callbackData?: any;
 }
 
 const initialState: ModalState = {

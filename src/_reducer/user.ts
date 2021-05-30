@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// interface Chats {
-
 export interface UserState {
   userInfo: {
     id: string;
@@ -21,6 +19,10 @@ export interface UserState {
 
 export interface UpdateReviewPayload {
   talentId: string;
+}
+
+export interface UpdateChatRoomsPayload {
+  chatRooms: any;
 }
 
 const initialState: UserState = {
@@ -61,9 +63,15 @@ export const userSlice = createSlice({
         state.userInfo.nickname = action.payload.nickname;
       }
     },
+
+    updateChatRooms: (state, action: PayloadAction<UpdateChatRoomsPayload>) => {
+      if (state.userInfo) {
+        state.userInfo.chatRooms = action.payload.chatRooms;
+      }
+    },
   },
 });
 
-export const { signin, signout, updateReview, updateUnreviewed, modifyNickname } = userSlice.actions;
+export const { signin, signout, updateReview, updateUnreviewed, modifyNickname, updateChatRooms } = userSlice.actions;
 
 export default userSlice.reducer;

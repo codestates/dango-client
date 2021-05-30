@@ -7,12 +7,14 @@ import user from './user';
 import map from './map';
 import modal from './modal';
 import talent from './talent';
+import chattings from './chattings';
 
 const reducers = combineReducers({
   user,
   map,
   modal,
   talent,
+  chattings,
 });
 
 const persistConfig = {
