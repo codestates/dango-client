@@ -13,18 +13,22 @@ declare global {
 
 const CONTAINER = styled.div`
   grid-column: 1/5;
+
   width: 67vw;
-  border: 1px solid black;
+  // border: 1px solid black;
 `;
 
 const SEARCH = styled.div`
   position: absolute;
-  top: 1%;
-  right: 1%;
-  width: 200px;
-  border: 1px solid;
+  grid-column: 1/5;
+  top: 2%;
+  right: 1.5%;
+  width: 280px;
+  height: 30px;
+
   z-index: 2;
   background-color: rgba(198, 191, 191, 0.5);
+  background-color: white;
 `;
 
 // -------------------------------LOGIC ------------------------------------------
