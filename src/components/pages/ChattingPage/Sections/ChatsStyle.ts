@@ -36,14 +36,15 @@ export const CHAT = styled.div<mineProps>`
   /* border: 1px solid blue; */
   display: flex;
   flex-direction: ${(props) => (props.mine ? 'row-reverse' : 'row')};
-  align-items: center;
+  align-items: flex-start;
   /* height: 90%; */
   margin: 1% 0px;
+  height: 5vw;
 `;
 export const WRAPIMG = styled.div<mineProps>`
   // 프로필이미지 크기
-  width: 5vw;
-  height: 5vw;
+  width: 4.5vw; // 5vw * 0.9
+  height: 90%; // 메시지 flex가 9이므로 메시지 높이랑맞춘다.
   border-radius: 70%;
   overflow: hidden;
   margin: ${(props) => (props.mine ? '0px 1% 0px 4%' : '0px 4% 0px 1%')};
@@ -53,40 +54,51 @@ export const PROFILEIMG = styled.img`
   width: 100%;
   height: 100%;
 `;
-export const MESSAGEBOX = styled.div`
-  height: 5.5vw;
+export const MESSAGEBOX = styled.div<mineProps>`
+  /* border: 1px solid; */
+  width: 70%;
+  height: auto;
+  min-height: 100%; // 부모 CHAT에 꽉맞춘다.
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: ${(props) => (props.mine ? 'flex-end' : 'flex-start')};
 `;
 export const MESSAGE = styled.div<mineProps>`
   flex: 9;
   position: relative;
-  display: inline-block;
-  padding: 10%;
-  min-width: 5vw;
-  border-radius: 9px;
-  background-color: ${(props) => (props.mine ? ({ theme }) => theme.colors.lightpurple : 'white')};
+  /* display: inline-block; */
+  padding: 3%;
+  color: ${(props) => (props.mine ? 'white' : 'grey')};
+  /* min-height: 1vw; */
+  min-width: 10%;
+  max-width: 90%;
+  border-radius: 1rem;
+  background-color: ${(props) => (props.mine ? ({ theme }) => theme.colors.purple : 'white')};
+  white-space: pre-wrap;
 
   &:after {
     content: '';
     position: absolute;
-    /* left: 0; //right: 0 */
     border: 0 solid transparent;
-    border-top: 9px solid ${(props) => (props.mine ? ({ theme }) => theme.colors.lightpurple : 'white')};
+    border-top: ${(props) => (props.mine ? ({ theme }) => `1vw solid ${theme.colors.purple}` : ' 0.75vw solid white')};
     border-radius: 0 80% 0;
-    width: 2vw;
-    height: 2vh;
+    width: 1vw;
+    height: 1.5vw;
     /* transform: rotate(145deg) translateX(80%); */
     /* transform: rotate(235deg) translateX(80%) scaleX(-1); */
     ${(props) => {
       if (props.mine) {
-        return 'right:0; transform: rotate(235deg) translate(-30%,60%) scaleX(-1);';
+        return 'top: 0; right:0; transform: rotate(235deg) translateX(-1.5vw) scaleX(-1);';
       }
-      return 'left:0; transform: rotate(145deg) translateX(80%);';
+      return 'top: 0; left:0; transform: rotate(145deg) translateX(1vw);';
     }}
   }
+  //top: 50%;
+  /* left: 50%;
+  transform: translate(-50%, -50%); */
+  //translate(-40%,-150%)
 `;
 export const TIME = styled.div`
   flex: 1;
