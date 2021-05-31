@@ -150,6 +150,7 @@ export const DESCRIPTION = styled.textarea`
   }
   background-color: #fffcf0;
   padding: 1rem;
+  line-height: 180%;
 `;
 
 export const BUTTONDIV = styled.div`

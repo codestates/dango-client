@@ -4,7 +4,8 @@ const REVIEW = styled.div`
   display: flex;
   grid-column: 7/10;
   grid-row: 2/6;
-  border: 1px solid;
+  // box-shadow: 1px 1px 3px 1px #dadce0;
+  box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.purple};
   flex-direction: column;
 
   @media screen and (max-width: 768px) {
@@ -14,7 +15,7 @@ const REVIEW = styled.div`
 `;
 // ReviewList
 const REVIEWLIST = styled.ul`
-  border: 1px solid black;
+  // border: 1px solid black;
   flex: 7 1 auto;
   padding: 10px;
 `;

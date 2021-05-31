@@ -7,8 +7,31 @@ import { postTalentData, TalentState } from '../../../_reducer/talent';
 import { updateChatRooms, UpdateChatRoomsPayload } from '../../../_reducer/user';
 import { setIsFirstChat } from '../../../_reducer/chattings';
 import server from '../../../api';
-import { CONTAINER, SELLER, DETAIL, PHOTOS } from './TalentDetailPageStyle';
+import {
+  CONTAINER,
+  SELLER,
+  DETAIL,
+  PHOTOS,
+  PROFILE,
+  PROFILEIMG,
+  NICKNAME,
+  ADDRESS,
+  GRADE,
+  RATING,
+  COUNT,
+  BUTTONDIV,
+  TOP,
+  CATEGORY,
+  PRICE,
+  TITLE,
+  DESCRIPTION,
+  BOTTOM,
+  SHARE,
+  IMG,
+  TEXTAREA,
+} from './TalentDetailPageStyle';
 import Modal from '../../../utils/modal';
+import { SBUTTON } from '../../../styles/Buttons';
 
 // 여기서 해당 글의 정보를 서버에서 받고, 리덕스에 저장한다.
 // 서버요청의 useEffect의 deps배열안에는 변할수 있는 상태를 넣어준다.
@@ -39,6 +62,7 @@ function TalentDetailPage(): JSX.Element {
   const [editDetail, setEditDetail] = useState<any>(); // 수정 가능한 데이터
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const input = useRef<HTMLInputElement | null>(null);
+  const textarea = useRef<HTMLTextAreaElement | null>(null);
 
   const { talentId } = useParams<{ talentId: string }>();
   const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
@@ -76,10 +100,11 @@ function TalentDetailPage(): JSX.Element {
 
   // 카카오톡으로 공유하기
   useEffect(() => {
+    console.log(detailData?.address.split('(')[0]);
     Kakao.Link.createDefaultButton({
       container: '.create-kakao-link-btn', // 버튼 class name
       objectType: 'location',
-      address: detailData ? detailData.address : '경기 성남시 분당구 판교역로 235 에이치스퀘어 N동 8층', // required라서 없으면 에러가 난다.
+      address: detailData ? detailData.address.split('(')[0] : '경기 성남시 분당구 판교역로 235 에이치스퀘어 N동 8층', // required라서 없으면 에러가 난다.
       addressTitle: 'DANGO', // 지도에서 표시될 이름
       content: {
         title: `DANGO와 나누는 재능, ${detailData?.title}`,
@@ -177,69 +202,89 @@ function TalentDetailPage(): JSX.Element {
     <CONTAINER>
       <Modal />
       <SELLER>
-        <img src={detailData?.userInfo.socialData.image} alt="프로필사진" />
-        <div>{detailData?.userInfo.nickname}</div>
-        <div>{detailData?.address}</div>
-        <div>별점 평균 : {detailData?.ratings[0] ?? '별점 없음'}</div>
-        <div>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</div>
-        <button onClick={handleChat} type="button">
-          채팅으로 거래하기
-        </button>
+        <PROFILE>
+          <PROFILEIMG>
+            <IMG src={detailData?.userInfo.socialData.image} alt="프로필사진" />
+          </PROFILEIMG>
+          <NICKNAME>{detailData?.userInfo.nickname}</NICKNAME>
+        </PROFILE>
+        <GRADE>
+          <RATING>별점 평균 : {detailData?.ratings[0] ?? '0.0'}</RATING>
+          <COUNT>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</COUNT>
+        </GRADE>
+        <BUTTONDIV>
+          <SBUTTON onClick={handleChat} type="button">
+            채팅으로 거래하기
+          </SBUTTON>
+          <SBUTTON style={{ marginTop: '5px' }} type="button" onClick={handleClick}>
+            재능 수정하기
+          </SBUTTON>
+        </BUTTONDIV>
       </SELLER>
       <DETAIL>
         {isClicked ? (
           <>
-            <div>
-              카테고리 :
-              <select onBlur={(event) => setEditDetail(event.target.value)}>
-                {categoryList.map((category) => (
-                  <option key={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-            가격 :{' '}
-            <input
-              type="number"
-              ref={input}
-              value={editDetail?.price}
-              onChange={changeInput('price')}
-              placeholder="입력값이 없으면 무료재능기부가 됩니다!"
-            />
-            원
-            <input
-              ref={input}
-              value={editDetail?.title}
-              onChange={changeInput('title')}
-              placeholder="제목을 입력해주세요."
-            />
-            <input
-              ref={input}
-              value={editDetail?.description}
-              onChange={changeInput('description')}
-              placeholder="내용을 입력해주세요."
-            />
-            <button type="button" onClick={submitEdit}>
-              {' '}
-              Complete{' '}
-            </button>
+            <TOP>
+              <CATEGORY>
+                카테고리 :
+                <select onBlur={(event) => setEditDetail(event.target.value)}>
+                  {categoryList.map((category) => (
+                    <option key={category}>{category}</option>
+                  ))}
+                </select>
+              </CATEGORY>
+              <PRICE>
+                가격 :{' '}
+                <input
+                  type="number"
+                  ref={input}
+                  value={editDetail?.price}
+                  onChange={changeInput('price')}
+                  placeholder="입력값이 없으면 무료재능기부가 됩니다!"
+                />
+                원
+              </PRICE>
+            </TOP>
+            <TITLE>
+              <input
+                ref={input}
+                value={editDetail?.title}
+                onChange={changeInput('title')}
+                placeholder="제목을 입력해주세요."
+              />
+            </TITLE>
+
+            <DESCRIPTION>
+              <TEXTAREA
+                ref={textarea}
+                value={editDetail?.description}
+                onChange={changeInput('description')}
+                placeholder="내용을 입력해주세요."
+              />
+            </DESCRIPTION>
+            <BOTTOM>
+              <ADDRESS>{detailData?.address}</ADDRESS>
+              <SBUTTON type="button" onClick={submitEdit}>
+                수정 완료
+              </SBUTTON>
+            </BOTTOM>
           </>
         ) : (
           <>
-            <button type="button" onClick={handleClick}>
-              {' '}
-              Edit{' '}
-            </button>
-            <div>카테고리 : {editDetail?.category}</div>
-            <div>가격 : {editDetail?.price}원</div>
-            <div>{editDetail?.title}</div>
-            <div>{editDetail?.description}</div>
-            <button
-              style={{ border: 'none', backgroundColor: '#FEE500', padding: '5px 10px', borderRadius: '20px' }}
-              type="button"
-              className="create-kakao-link-btn"
-            >
-              카톡으로 공유하기
-            </button>
+            <TOP>
+              <CATEGORY>카테고리 : {editDetail?.category}</CATEGORY>
+              <PRICE>가격 : {editDetail?.price}원</PRICE>
+            </TOP>
+
+            <TITLE>{editDetail?.title}</TITLE>
+            <DESCRIPTION>{editDetail?.description}</DESCRIPTION>
+
+            <BOTTOM>
+              <ADDRESS>{detailData?.address}</ADDRESS>
+              <SHARE type="button" className="create-kakao-link-btn">
+                공유하기
+              </SHARE>
+            </BOTTOM>
           </>
         )}
       </DETAIL>
