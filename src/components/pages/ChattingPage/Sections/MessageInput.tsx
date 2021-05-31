@@ -1,4 +1,9 @@
 import React, { useState, useRef } from 'react';
+import styled from 'styled-components';
+
+const TEXT = styled.textarea`
+  white-space: pre-wrap;
+`;
 
 interface Props {
   callback: (string: string) => void;
@@ -11,14 +16,13 @@ function MessageInput({ callback }: Props): JSX.Element {
   const handleSubmit = (event: React.MouseEvent): void => {
     event.preventDefault();
     callback(message);
-    messageInputTag?.current?.reset();
+    messageInputTag.current?.reset();
   };
 
   return (
     <form ref={messageInputTag} className="messageInputForm">
-      <input
+      <TEXT
         className="messageInput"
-        type="text"
         placeholder="메세지를 입력해주세요"
         onChange={(event) => setMessage(event.target.value)}
       />
