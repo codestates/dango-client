@@ -104,6 +104,7 @@ function ChattingRoomsList(): JSX.Element {
         const chatIndex = talentIdList.indexOf(talentId);
         setCurOtherId(otherList[chatIndex]);
         setCurRoomId(roomIdList[chatIndex]);
+        dispatch(setIsFirstChat({ isFromDetail: false, isFirstChat: false, talentId }));
       }
     }
 

@@ -85,7 +85,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
     // 내가 가진 상대방의 아이디 목록을 전부 서버 소켓으로 보낸 뒤 연결한다.
     connectSocket.emit(
       'joinroom',
-      userInfo?.chatRooms.map((chatRoom: any) => chatRoom.other),
+      userInfo?.chatRooms.map((chatRoom: any) => chatRoom.otherId),
     );
     connectSocket.on('hasjoined', (data: any) => {
       console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
@@ -103,6 +103,8 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
   const callback = (message: string) => {
     connectSocket.emit('messageToOther', curOtherId, message, curRoomId);
   };
+
+  console.log('userInfo:::', userInfo);
 
   // lastChat가 바뀔 때 함수 실행
   // TODO: 3. 메시지를 보내서 lastChat이바뀔때마다 creatNewChats을 실행시킨다.

@@ -63,6 +63,10 @@ function GoogleSignin(): JSX.Element {
           history.push('/');
         })
         .catch((err) => {
+          if (!err.response) {
+            console.log(err);
+            return;
+          }
           const { message } = err.response.data;
           if (message === '등록된 회원이 아닙니다.') {
             dispatch(
