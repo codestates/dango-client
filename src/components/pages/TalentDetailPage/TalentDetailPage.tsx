@@ -164,7 +164,7 @@ function TalentDetailPage(): JSX.Element {
   // [채팅으로 거래하기] 버튼 눌렀을 때
   const handleChat = () => {
     // 처음 누르면 새로운 채팅방 만들어주기
-    if (isFirstChat) {
+    if (userInfo?.chatRooms.find((room: any) => room.talentId === talentId) === undefined) {
       const body = {
         userId: userInfo?.id, // buyer id (동네 이웃 id)
         otherId: detailData.userInfo._id, // seller id (동네 고수 id)

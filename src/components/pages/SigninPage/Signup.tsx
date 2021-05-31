@@ -70,7 +70,6 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
-          localStorage.setItem('id', response.data.id);
           dispatch(
             openModal({
               type: 'ok',
@@ -79,6 +78,10 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           );
         })
         .catch((err) => {
+          if (!err.response) {
+            console.log(err);
+            return;
+          }
           const { message } = err?.response?.data;
           alert(message);
         });
@@ -126,7 +129,6 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
-          localStorage.setItem('id', response.data.id);
           alert('회원가입완료');
         })
         .catch((err) => {
