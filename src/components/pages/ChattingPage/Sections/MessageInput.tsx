@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ReactComponent as SendSvg } from '../../../../images/chatSend.svg';
 import { openModal } from '../../../../_reducer/modal';
 
-const INPUTFORM = styled.form`
+const INPUTDIV = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -14,6 +14,7 @@ const INPUTFORM = styled.form`
 const TEXT = styled.input`
   height: 100%;
   flex: 8;
+  outline: unset;
   border: none;
   padding-left: 1vw;
 `;
@@ -22,6 +23,14 @@ const SUBMIT = styled(SendSvg)`
   /* border: none; */
   height: 2vw;
   cursor: pointer;
+  min-width: 1.2rem;
+  min-height: 1.2rem;
+  &:hover {
+    fill: ${({ theme }) => theme.colors.yellow};
+  }
+  &:active {
+    fill: ${({ theme }) => theme.colors.lightpurple};
+  }
   /* border-radius: 3px; */
 `;
 
@@ -31,28 +40,38 @@ interface Props {
 
 function MessageInput({ callback }: Props): JSX.Element {
   const [message, setMessage] = useState<string>('');
-  const messageInputTag = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
 
-  const handleSubmit = (event: React.MouseEvent): void => {
+  const handleSubmit = (): void => {
     if (message === '') {
-      dispatch(openModal({ type: 'ok', text: '메시지를 입력해주세요!' }));
+      dispatch(openModal({ type: 'error', text: '메시지를 입력해주세요!' }));
     } else {
-      event.preventDefault();
       callback(message);
-      messageInputTag.current?.reset();
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleEnterKey = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleSubmit();
+      event.preventDefault();
     }
   };
 
   return (
-    <INPUTFORM ref={messageInputTag} className="messageInputForm">
+    <INPUTDIV className="messageInputForm">
       <TEXT
+        ref={inputRef}
         className="messageInput"
         placeholder="메세지를 입력해주세요"
         onChange={(event) => setMessage(event.target.value)}
+        onKeyPress={handleEnterKey}
       />
-      <SUBMIT className="submitButton" type="submit" onClick={handleSubmit} fill="#DEDCEE" />
-    </INPUTFORM>
+      <SUBMIT onClick={handleSubmit} fill="#835af1" />
+    </INPUTDIV>
   );
 }
 

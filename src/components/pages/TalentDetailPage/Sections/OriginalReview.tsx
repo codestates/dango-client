@@ -20,6 +20,7 @@ interface OriginalReviewProps {
   };
 }
 
+// 한개의 리뷰
 export default function OriginalReview({ review }: OriginalReviewProps): JSX.Element {
   const userRole = useSelector((state: RootState) => state.talent.userRole);
 
@@ -98,9 +99,10 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
         </div>
         <DATE>{review.date}</DATE>
       </INFO>
+      {/*   review.review는 에러때문에 임시로해놓음. 서버데이터가 지금 달라져서 undefined가뜸. */}
       <div>
-        {setEllipsis(review.review).text}
-        {setEllipsis(review.review).isShowMore && more && createMoreOrCutBtn('더보기')}
+        {review.review && setEllipsis(review.review).text}
+        {review.review && setEllipsis(review.review).isShowMore && more && createMoreOrCutBtn('더보기')}
         {more || createMoreOrCutBtn('접기')}
       </div>
       {postReplyBox && <ReplyReview reviewId={review.reviewId} setPostReplyBox={setPostReplyBox} />}

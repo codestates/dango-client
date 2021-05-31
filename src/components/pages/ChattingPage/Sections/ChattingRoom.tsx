@@ -10,14 +10,13 @@ import Chats from './Chats';
 // 실제로 기능구현이 되는 컴포넌트
 const CHATTINGROOM = styled.div`
   flex: 9;
-  border: 1px solid;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 const CHATLANDING = styled.div`
   flex: 9;
-  border: 1px solid pink;
   overflow: auto;
   /*   transform: rotate(180deg);
   direction: ltr; */
@@ -82,6 +81,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
       chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
     }
   };
+
   // 실제 사용 로직
   useEffect(() => {
     // 내가 가진 상대방의 아이디 목록을 전부 서버 소켓으로 보낸 뒤 연결한다.
@@ -100,6 +100,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
       setLastChat(receivedChats);
     });
   }, []);
+
   // 바뀐 state를 활용해서 메세지를 보낸다.(상대방 아이디, 메세지, 상대방과 함께 들어가 있는 roomId)
   // TODO: 1. 입력창에 메시지를 보낸다.
   const callback = (message: string) => {

@@ -23,6 +23,7 @@ interface MessageProps {
 
 export const RENDER = styled.div`
   width: 100%;
+  padding: 0.3vw;
   /* height: 100%; */
 `;
 export const MOREBTNBOX = styled.div`
