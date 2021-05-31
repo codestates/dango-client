@@ -38,16 +38,10 @@ interface ChattingOptionProps {
     clickPurchase: boolean[];
   } | null;
   setCurRoomId: (roomId: string) => void;
-  lastChat: ChatInfo | null;
   setLastChat: (lastChat: ChatInfo) => void;
 }
 
-export default function ChattingOption({
-  roomInfo,
-  setCurRoomId,
-  lastChat,
-  setLastChat,
-}: ChattingOptionProps): JSX.Element {
+export default function ChattingOption({ roomInfo, setCurRoomId, setLastChat }: ChattingOptionProps): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -60,6 +54,7 @@ export default function ChattingOption({
     server
       .post('/users/confirm', data)
       .then((response) => {
+        setLastChat(response.data.confirmedChat);
         if (roomInfo?.talentId) {
           dispatch(purchaseComplete({ talentId: roomInfo.talentId, confirmed: response.data.confirmed }));
         }

@@ -154,14 +154,7 @@ function ChattingRoomsList(): JSX.Element {
         ))}
       </CHATLIST>
       <CHAT>
-        {curRoomId && (
-          <ChattingOption
-            roomInfo={roomInfo}
-            setCurRoomId={setCurRoomId}
-            lastChat={lastChat}
-            setLastChat={setLastChat}
-          />
-        )}
+        {curRoomId && <ChattingOption roomInfo={roomInfo} setCurRoomId={setCurRoomId} setLastChat={setLastChat} />}
         {curRoomId && (
           <ChattingRoom
             curOtherId={curOtherId}
