@@ -10,22 +10,22 @@ import server from '../../../../api';
 
 const CHATTINGOPTION = styled.div`
   flex: 1;
-`;
-const OPTIONBOX = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30%;
+  width: 50%;
   height: 100%;
   margin-left: auto;
 `;
+
 const COMPLETEBTN = styled.button`
-  flex: 1;
+  flex: 4;
 `;
 const COMPLETED = styled.div`
-  flex: 1;
+  flex: 4;
 `;
 const ESCAPEBTN = styled.button`
+  all: unset;
   flex: 1;
 `;
 
@@ -122,10 +122,8 @@ export default function ChattingOption({ roomInfo, setCurRoomId, setLastChat }: 
 
   return (
     <CHATTINGOPTION>
-      <OPTIONBOX>
-        {roomInfo && checkPurchase()}
-        <ESCAPEBTN onClick={handleEscape}>나가기</ESCAPEBTN>
-      </OPTIONBOX>
+      {roomInfo && checkPurchase()}
+      <ESCAPEBTN onClick={handleEscape}>나가기</ESCAPEBTN>
     </CHATTINGOPTION>
   );
 }

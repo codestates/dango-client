@@ -70,7 +70,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
-          localStorage.setItem('id', response.data.id);
+          // localStorage.setItem('id', response.data.id);
           dispatch(
             openModal({
               type: 'ok',
@@ -79,8 +79,18 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           );
         })
         .catch((err) => {
-          const { message } = err?.response?.data;
-          alert(message);
+          if (!err.response) {
+            console.log(err);
+            return;
+          }
+          const { message } = err.response.data;
+
+          dispatch(
+            openModal({
+              type: 'error',
+              text: message,
+            }),
+          );
         });
     }
 
@@ -126,7 +136,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
-          localStorage.setItem('id', response.data.id);
+          // localStorage.setItem('id', response.data.id);
           alert('회원가입완료');
         })
         .catch((err) => {
@@ -135,7 +145,13 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             return;
           }
           const { message } = err.response.data;
-          alert(message);
+
+          dispatch(
+            openModal({
+              type: 'error',
+              text: message,
+            }),
+          );
         });
     }
   };

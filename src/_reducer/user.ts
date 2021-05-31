@@ -86,6 +86,7 @@ export const userSlice = createSlice({
       // 거래완료여부에 상관없이 해당 채팅룸의 clickPurchase를 true로 바꿔준다.
       if (state.userInfo) {
         const roomIndex = state.userInfo.chatRooms.findIndex((room: any) => room.talentId === talentId);
+        console.log('찾은 roomIndex의 chatRooms', state.userInfo.chatRooms[roomIndex]);
         state.userInfo.chatRooms[roomIndex].clickPurchase[0] = true;
 
         // confirmed가 true면 거래완료된 것이므로 buying에있던 talentId를 unreviewed로 옮겨준다.

@@ -13,7 +13,7 @@ const CHATTINGROOM = styled.div`
   border: 1px solid;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: scroll;
 `;
 const CHATLANDING = styled.div`
   flex: 9;
@@ -25,7 +25,9 @@ const CHATLANDING = styled.div`
 
 const CHATINPUT = styled.div`
   flex: 1;
-  border: 1px solid black;
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
   /*   transform: rotate(180deg);
   direction: ltr; */
   /* overflow: auto; */
@@ -85,7 +87,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
     // 내가 가진 상대방의 아이디 목록을 전부 서버 소켓으로 보낸 뒤 연결한다.
     connectSocket.emit(
       'joinroom',
-      userInfo?.chatRooms.map((chatRoom: any) => chatRoom.other),
+      userInfo?.chatRooms.map((chatRoom: any) => chatRoom.otherId),
     );
     connectSocket.on('hasjoined', (data: any) => {
       console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
