@@ -24,6 +24,7 @@ export const SELLER = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  min-width: 180px;
 `;
 
 export const PROFILE = styled.div`

@@ -3,10 +3,11 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { updateReview } from '../../../../_reducer/user';
 import { openModal } from '../../../../_reducer/modal';
-import { REVIEWCREATE } from './ReviewStyle';
+import { REVIEWCREATE, STARDIV, TEXTAREA, BUTTONDIV } from './ReviewStyle';
 import StarScore from './StarScore';
 import getToday from '../../../../utils/getToday';
 import server from '../../../../api';
+import { SSBUTTON } from '../../../../styles/Buttons';
 
 function ReviewCreate(): JSX.Element {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ function ReviewCreate(): JSX.Element {
   };
   return (
     <REVIEWCREATE>
-      <div>
+      <STARDIV>
         {[1, 2, 3, 4, 5].map((idx) => {
           return (
             <StarScore
@@ -76,8 +77,8 @@ function ReviewCreate(): JSX.Element {
             />
           );
         })}
-      </div>
-      <textarea
+      </STARDIV>
+      <TEXTAREA
         style={{ resize: 'none' }}
         placeholder="솔직한 리뷰를 작성해주세요."
         onChange={handleChangeText}
@@ -86,11 +87,11 @@ function ReviewCreate(): JSX.Element {
         cols={20}
       />
 
-      <div>
-        <button type="submit" onClick={handleSubmit}>
-          리뷰등록
-        </button>
-      </div>
+      <BUTTONDIV>
+        <SSBUTTON type="submit" onClick={handleSubmit}>
+          리뷰 등록
+        </SSBUTTON>
+      </BUTTONDIV>
     </REVIEWCREATE>
   );
 }
