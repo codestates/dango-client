@@ -62,10 +62,6 @@ export const userSlice = createSlice({
         state.userInfo.reviewed.push(talentId);
       }
     },
-    // 테스트용
-    updateUnreviewed: (state, action: PayloadAction<{ talentId: string }>) => {
-      state.userInfo?.unreviewed.push(action.payload.talentId);
-    },
 
     modifyNickname: (state, action: PayloadAction<{ nickname: string }>) => {
       if (state.userInfo) {
@@ -86,6 +82,7 @@ export const userSlice = createSlice({
       // 거래완료여부에 상관없이 해당 채팅룸의 clickPurchase를 true로 바꿔준다.
       if (state.userInfo) {
         const roomIndex = state.userInfo.chatRooms.findIndex((room: any) => room.talentId === talentId);
+        console.log('찾은 roomIndex의 chatRooms', state.userInfo.chatRooms[roomIndex]);
         state.userInfo.chatRooms[roomIndex].clickPurchase[0] = true;
 
         // confirmed가 true면 거래완료된 것이므로 buying에있던 talentId를 unreviewed로 옮겨준다.
@@ -113,15 +110,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const {
-  signin,
-  signout,
-  updateReview,
-  updateUnreviewed,
-  modifyNickname,
-  updateChatRooms,
-  purchaseComplete,
-  escapeRoom,
-} = userSlice.actions;
+export const { signin, signout, updateReview, modifyNickname, updateChatRooms, purchaseComplete, escapeRoom } =
+  userSlice.actions;
 
 export default userSlice.reducer;

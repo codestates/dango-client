@@ -1,8 +1,37 @@
 import React, { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { ReactComponent as SendSvg } from '../../../../images/chatSend.svg';
+import { openModal } from '../../../../_reducer/modal';
 
-const TEXT = styled.textarea`
-  white-space: pre-wrap;
+const INPUTDIV = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  background-color: white;
+`;
+const TEXT = styled.input`
+  height: 100%;
+  flex: 8;
+  outline: unset;
+  border: none;
+  padding-left: 1vw;
+`;
+const SUBMIT = styled(SendSvg)`
+  flex: 1;
+  /* border: none; */
+  height: 2vw;
+  cursor: pointer;
+  min-width: 1.2rem;
+  min-height: 1.2rem;
+  &:hover {
+    fill: ${({ theme }) => theme.colors.yellow};
+  }
+  &:active {
+    fill: ${({ theme }) => theme.colors.lightpurple};
+  }
+  /* border-radius: 3px; */
 `;
 
 interface Props {
@@ -11,25 +40,38 @@ interface Props {
 
 function MessageInput({ callback }: Props): JSX.Element {
   const [message, setMessage] = useState<string>('');
-  const messageInputTag = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
 
-  const handleSubmit = (event: React.MouseEvent): void => {
-    event.preventDefault();
-    callback(message);
-    messageInputTag.current?.reset();
+  const handleSubmit = (): void => {
+    if (message === '') {
+      dispatch(openModal({ type: 'error', text: '메시지를 입력해주세요!' }));
+    } else {
+      callback(message);
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleEnterKey = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleSubmit();
+      event.preventDefault();
+    }
   };
 
   return (
-    <form ref={messageInputTag} className="messageInputForm">
+    <INPUTDIV className="messageInputForm">
       <TEXT
+        ref={inputRef}
         className="messageInput"
-        placeholder="메세지를 입력해주세요"
+        placeholder="메시지를 입력해주세요"
         onChange={(event) => setMessage(event.target.value)}
+        onKeyPress={handleEnterKey}
       />
-      <button className="submitButton" type="submit" onClick={handleSubmit} disabled={message === ''}>
-        Submit
-      </button>
-    </form>
+      <SUBMIT onClick={handleSubmit} fill="#a68bf6" />
+    </INPUTDIV>
   );
 }
 

@@ -6,6 +6,7 @@
 // 자주 사용하는 색.
 const colors = {
   purple: '#835af1',
+  middlepurple: '#a68bf6',
   lightpurple: '#DEDCEE',
   lightgray: '#F6F6F6',
   yellow: '#fbd14b',

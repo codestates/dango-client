@@ -7,26 +7,42 @@ import { RootState } from '../../../../_reducer';
 import { openModal } from '../../../../_reducer/modal';
 import { purchaseComplete, escapeRoom } from '../../../../_reducer/user';
 import server from '../../../../api';
+import { ReactComponent as EscapeSvg } from '../../../../images/chatout.svg';
+import { SBUTTON } from '../../../../styles/Buttons';
 
 const CHATTINGOPTION = styled.div`
+  position: relative;
   flex: 1;
-`;
-const OPTIONBOX = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  width: 30%;
+  width: 100%;
   height: 100%;
-  margin-left: auto;
 `;
-const COMPLETEBTN = styled.button`
-  flex: 1;
+
+const COMPLETEBTN = styled(SBUTTON)`
+  margin-right: 1vw;
 `;
 const COMPLETED = styled.div`
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ab8406;
+  margin: 0 auto;
 `;
-const ESCAPEBTN = styled.button`
-  flex: 1;
+const ESCAPE = styled(EscapeSvg)`
+  height: 1.5vw;
+  width: 1.5vw;
+  min-width: 1.2rem;
+  min-height: 1.2rem;
+  cursor: pointer;
+  margin-right: 1vw;
+  &:hover {
+    fill: ${({ theme }) => theme.colors.yellow};
+  }
+  &:active {
+    fill: ${({ theme }) => theme.colors.lightpurple};
+  }
 `;
 
 interface ChattingOptionProps {
@@ -115,17 +131,15 @@ export default function ChattingOption({ roomInfo, setCurRoomId, setLastChat }: 
       return <COMPLETEBTN onClick={handleComplete}>거래완료</COMPLETEBTN>;
     }
     if (roomInfo?.clickPurchase[1] === false) {
-      return <COMPLETED>상대방의 구매결정을 기다리는중..</COMPLETED>;
+      return <COMPLETED>상대방의 거래완료를 기다리고있어요 😃</COMPLETED>;
     }
-    return <COMPLETED>구매가 완료된 채팅방입니다.</COMPLETED>;
+    return <COMPLETED>거래가 완료된 채팅방입니다. 👍</COMPLETED>;
   };
 
   return (
     <CHATTINGOPTION>
-      <OPTIONBOX>
-        {roomInfo && checkPurchase()}
-        <ESCAPEBTN onClick={handleEscape}>나가기</ESCAPEBTN>
-      </OPTIONBOX>
+      {roomInfo && checkPurchase()}
+      <ESCAPE onClick={handleEscape} fill="#a68bf6" />
     </CHATTINGOPTION>
   );
 }

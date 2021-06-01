@@ -40,16 +40,18 @@ function ReviewCreate(): JSX.Element {
       dispatch(openModal({ type: 'error', text: '리뷰를 입력해주세요.' }));
     } else {
       server
-        .post('talents/review/', data)
+        .post('talents/review', data)
         .then(() => {
           dispatch(updateReview({ talentId }));
           dispatch(openModal({ type: 'ok', text: '리뷰가 등록되었습니다.' }));
         })
         .catch((err) => {
-          console.log(err);
-          if (err.response?.data?.message) {
-            dispatch(openModal({ type: 'error', text: err.response.data.message }));
+          if (!err.response) {
+            console.log(err);
+            return;
           }
+          const { message } = err.response.data;
+          dispatch(openModal({ type: 'error', text: message }));
         });
       setRating(0);
       setReviewText('');

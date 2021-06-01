@@ -53,11 +53,11 @@ function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: ChatsP
         .then(() => {
           setLoading(false);
           if (chattingRoomRef.current) {
-            // if (page === 0) {
-            chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
-            // } else {
-            // chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight + 1000;
-            // }
+            if (page === 0) {
+              chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
+            } else {
+              chattingRoomRef.current.scrollTop = 0;
+            }
           }
         })
         .catch((err) => console.log(err));
