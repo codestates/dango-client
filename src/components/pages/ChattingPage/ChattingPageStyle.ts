@@ -48,6 +48,7 @@ export const CHATLIST = styled.div<{ show: boolean }>`
     grid-row: 4/10;
     width: 80%;
     height: 80%;
+    max-width: 348px;
     z-index: 5;
     animation: ${showModal} 0.5s forwards;
 
@@ -66,7 +67,7 @@ export const CHATLIST = styled.div<{ show: boolean }>`
   }
 
   // 스크롤디자인 보류!
-  ::-webkit-scrollbar {
+  /* ::-webkit-scrollbar {
     width: 0.6rem;
   }
   ::-webkit-scrollbar-thumb {
@@ -79,7 +80,7 @@ export const CHATLIST = styled.div<{ show: boolean }>`
     background-color: grey;
     border-radius: 10px;
     box-shadow: inset 0px 0px 5px white;
-  }
+  } */
 `;
 
 export const CHAT = styled.div`
@@ -104,7 +105,8 @@ export const CHATLISTTITLE = styled.div`
   height: 10%;
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 0.2rem;
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.2); */
 `;
 export const CHATLISTTEXT = styled.div`
   display: flex;
@@ -119,18 +121,17 @@ export const CHATLISTTEXT = styled.div`
   position: relative;
   background-color: ${({ theme }) => theme.colors.middlepurple};
   color: whitesmoke;
-  padding-top: 1.2vw; // 글자가 가운데로안감. 글자속성때문에 조금 위로 올라감
   white-space: nowrap;
 `;
 export const CHATLISTESC = styled.div<{ show: boolean }>`
   display: none;
   color: black;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0.5rem;
+  right: 0.7rem;
   margin-left: auto;
   cursor: pointer;
-  color: grey;
+  color: whitesmoke;
   ${(props) => props.show && 'display:block;'}
   @media screen and (min-width: 1024px) {
     display: none;
@@ -148,7 +149,6 @@ export const USERBOX = styled.div`
   padding: 1vw;
   margin-bottom: 0.7vw; // CHATLIST의 padding과 같게
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-
   white-space: nowrap;
 `;
 export const WRAPIMG = styled.div`
@@ -167,17 +167,15 @@ export const PROFILEIMG = styled.img`
   width: 100%;
   height: 100%;
 `;
-export const USER = styled.div`
+export const USER = styled.div<{ hover: boolean }>`
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   color: grey;
   margin-right: 1vw;
-  &:hover {
-    color: ${({ theme }) => theme.colors.middlepurple};
-    font-weight: 600;
-  }
+
+  ${(props) => props.hover && `color: ${props.theme.colors.middlepurple}; font-weight: 600;`}
 `;
 export const COUNT = styled.div<{ value: number }>`
   display: flex;
@@ -191,7 +189,6 @@ export const COUNT = styled.div<{ value: number }>`
   background-color: #a68bf6;
   border-radius: 70%;
   color: whitesmoke;
-  padding-top: 0.2vw;
   ${(props) => props.value === 0 && 'display: none;'}
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;

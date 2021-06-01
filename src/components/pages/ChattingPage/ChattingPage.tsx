@@ -64,6 +64,7 @@ function ChattingRoomsList(): JSX.Element {
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
   const [lastChat, setLastChat] = useState<ChatInfo | null>(null);
   const [showChatList, setShowChatList] = useState<boolean>(false);
+  const [hover, setHover] = useState<number>(-1);
 
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
   const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
@@ -146,11 +147,16 @@ function ChattingRoomsList(): JSX.Element {
             </CHATLISTESC>
           </CHATLISTTITLE>
           {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
-            <USERBOX key={index} onClick={() => changeRoom(index)}>
+            <USERBOX
+              key={index}
+              onClick={() => changeRoom(index)}
+              onMouseEnter={() => setHover(index)}
+              onMouseLeave={() => setHover(-1)}
+            >
               <WRAPIMG>
                 <PROFILEIMG src={chatRoom.profileImage} alt="profile image," />
               </WRAPIMG>
-              <USER>{chatRoom.otherNickname}</USER>
+              <USER hover={hover === index}>{chatRoom.otherNickname}</USER>
               <COUNT value={chatRoom.count}>
                 <NUMBER>{chatRoom.count}</NUMBER>
               </COUNT>

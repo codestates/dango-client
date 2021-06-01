@@ -34,10 +34,10 @@ export const CHAT = styled.div<ChatProps>`
   /* border: 1px solid blue; */
   display: flex;
   flex-direction: ${(props) => (props.mine ? 'row-reverse' : 'row')};
-  align-items: flex-start;
+  align-items: center;
   /* height: 90%; */
-  margin: 1% 0px;
   min-height: 4.5vw;
+  padding: 0.1rem 0;
 `;
 export const WRAPIMG = styled.div<ChatProps>`
   // 프로필이미지 크기
@@ -72,7 +72,6 @@ export const MESSAGE = styled.div<ChatProps>`
   position: relative;
   /* display: inline-block; */
   padding: 3%;
-  margin-bottom: 1%;
   color: ${(props) => (props.mine ? 'whitesmoke' : 'grey')};
   /* min-height: 1vw; */
   width: auto;
@@ -87,7 +86,7 @@ export const MESSAGE = styled.div<ChatProps>`
     return undefined;
   }}
   white-space: pre-wrap;
-  margin: 1% 1vw;
+  margin: 0.5vw 1vw;
 
   &:after {
     content: '';
