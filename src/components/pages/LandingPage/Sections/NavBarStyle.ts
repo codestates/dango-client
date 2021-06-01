@@ -1,11 +1,22 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const LINK = styled(Link)<{ current: boolean; disPlay: boolean }>`
   padding: 15px 20px;
-  color: ${(props) => (props.current ? '#6A60A9' : '#83818c')};
+  color: ${(props) =>
+    props.current
+      ? css`
+          ${({ theme }) => theme.colors.purple}
+        `
+      : '#83818c'};
   border-top: 3px solid white;
-  border-bottom: 3px solid ${(props) => (props.current ? '#6A60A9' : 'transparent')};
+  border-bottom: 3px solid
+    ${(props) =>
+      props.current
+        ? css`
+            ${({ theme }) => theme.colors.purple}
+          `
+        : 'transparent'};
   font-weight: ${(props) => (props.current ? 450 : 320)};
   font-size: 1.15rem;
   z-index: 15;
@@ -13,7 +24,13 @@ export const LINK = styled(Link)<{ current: boolean; disPlay: boolean }>`
     color: ${({ theme }) => theme.colors.purple};
     font-weight: 450;
     cursor: pointer;
-    border-bottom: 3px solid ${(props) => (props.current ? '#6A60A9' : '#F6F6F6')};
+    border-bottom: 3px solid
+      ${(props) =>
+        props.current
+          ? css`
+              ${({ theme }) => theme.colors.purple}
+            `
+          : '#F6F6F6'};
   }
   @media screen and (max-width: 895px) {
     border-bottom: none;
@@ -28,6 +45,7 @@ export const NAV = styled('ul')`
   list-style: none;
   justify-content: space-around;
   width: 40%;
+  min-width: 500px;
   margin-left: auto;
   padding-left: 0;
   display: inline-flex;
@@ -37,6 +55,7 @@ export const NAV = styled('ul')`
     display: flex;
     align-items: center;
     width: 100%;
+    min-width: auto;
   }
 `;
 
@@ -61,8 +80,8 @@ export const MENUBARS = styled('button')`
 export const LOGO = styled('div')`
   color: ${({ theme }) => theme.colors.purple};
   font-size: 2.4rem;
-  padding: 9px 25px 0 0;
-  font-weight: 600;
+  padding: 7px 25px 10px 0;
+  font-weight: 500;
 `;
 
 export const LOGOCONTAINER = styled('div')`
@@ -79,7 +98,7 @@ export const CONTAINER = styled('header')`
   width: 100%;
   align-items: center;
   background-color: #fff;
-  z-index: 15;
+  z-index: 5;
   justify-content: space-between;
   border-bottom: 0.5px solid #efefef;
   position: fixed;
