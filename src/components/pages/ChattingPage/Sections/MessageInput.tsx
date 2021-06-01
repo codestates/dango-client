@@ -25,8 +25,10 @@ const SUBMIT = styled(SendSvg)`
   cursor: pointer;
   min-width: 1.2rem;
   min-height: 1.2rem;
+  fill: ${({ theme }) => theme.colors.middlepurple};
+
   &:hover {
-    fill: ${({ theme }) => theme.colors.yellow};
+    fill: ${({ theme }) => theme.colors.mustard};
   }
   &:active {
     fill: ${({ theme }) => theme.colors.lightpurple};
@@ -70,7 +72,7 @@ function MessageInput({ callback }: Props): JSX.Element {
         onChange={(event) => setMessage(event.target.value)}
         onKeyPress={handleEnterKey}
       />
-      <SUBMIT onClick={handleSubmit} fill="#a68bf6" />
+      <SUBMIT onClick={handleSubmit} />
     </INPUTDIV>
   );
 }

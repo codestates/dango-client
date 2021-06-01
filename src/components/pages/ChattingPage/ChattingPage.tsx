@@ -7,7 +7,24 @@ import { setIsFirstChat, newChattingRoom } from '../../../_reducer/chattings';
 import ChattingOption from './Sections/ChattingOption';
 import ChattingRoom from './Sections/ChattingRoom';
 import Modal from '../../../utils/modal';
-import { CONTAINER, CHATLIST, CHAT, USERBOX, WRAPIMG, PROFILEIMG, USER, COUNT, NUMBER } from './ChattingPageStyle';
+
+import {
+  CONTAINER,
+  CHATLIST,
+  CHAT,
+  USERBOX,
+  WRAPIMG,
+  PROFILEIMG,
+  USER,
+  COUNT,
+  NUMBER,
+  CHATLISTTITLE,
+  CHATLISTTEXT,
+  CHATLISTESC,
+  EMPTYBOX,
+  EMPTYROOM,
+  NOROOMBTN,
+} from './ChattingPageStyle';
 
 export interface RoomType {
   roomId: string;
@@ -46,6 +63,8 @@ function ChattingRoomsList(): JSX.Element {
   const [connectSocket, setConnectSocket] = useState<any>();
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
   const [lastChat, setLastChat] = useState<ChatInfo | null>(null);
+  const [showChatList, setShowChatList] = useState<boolean>(false);
+  const [hover, setHover] = useState<number>(-1);
 
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
   const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
@@ -113,21 +132,31 @@ function ChattingRoomsList(): JSX.Element {
     console.log('클릭된 idx::', index);
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
-    // 이렇게하면 똑같은방을 클릭했을때 curRoomId가 변하지않아서 빈채팅방이 랜더된다.
-    // dispatch(newChattingRoom());
+    setShowChatList(false);
   };
 
   return (
     <>
       <Modal />
       <CONTAINER>
-        <CHATLIST>
+        <CHATLIST show={showChatList}>
+          <CHATLISTTITLE>
+            <CHATLISTTEXT>채팅목록</CHATLISTTEXT>
+            <CHATLISTESC show={showChatList} onClick={() => setShowChatList(false)}>
+              ✕
+            </CHATLISTESC>
+          </CHATLISTTITLE>
           {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
-            <USERBOX key={index} onClick={() => changeRoom(index)}>
+            <USERBOX
+              key={index}
+              onClick={() => changeRoom(index)}
+              onMouseEnter={() => setHover(index)}
+              onMouseLeave={() => setHover(-1)}
+            >
               <WRAPIMG>
                 <PROFILEIMG src={chatRoom.profileImage} alt="profile image," />
               </WRAPIMG>
-              <USER>{chatRoom.otherNickname}</USER>
+              <USER hover={hover === index}>{chatRoom.otherNickname}</USER>
               <COUNT value={chatRoom.count}>
                 <NUMBER>{chatRoom.count}</NUMBER>
               </COUNT>
@@ -135,8 +164,16 @@ function ChattingRoomsList(): JSX.Element {
           ))}
         </CHATLIST>
         <CHAT>
-          {curRoomId && <ChattingOption roomInfo={roomInfo} setCurRoomId={setCurRoomId} setLastChat={setLastChat} />}
           {curRoomId && (
+            <ChattingOption
+              roomInfo={roomInfo}
+              setCurRoomId={setCurRoomId}
+              setLastChat={setLastChat}
+              showChatList={showChatList}
+              setShowChatList={setShowChatList}
+            />
+          )}
+          {curRoomId ? (
             <ChattingRoom
               curOtherId={curOtherId}
               curRoomId={curRoomId}
@@ -144,6 +181,11 @@ function ChattingRoomsList(): JSX.Element {
               lastChat={lastChat}
               setLastChat={setLastChat}
             />
+          ) : (
+            <EMPTYBOX>
+              <NOROOMBTN onClick={() => setShowChatList(!showChatList)} />
+              <EMPTYROOM />
+            </EMPTYBOX>
           )}
         </CHAT>
       </CONTAINER>

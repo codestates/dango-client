@@ -160,6 +160,7 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
 
     if (address && lat && lng) {
       selectLocationData(address, lat, lng);
+      setLiIdx(-2);
     }
   };
 
@@ -267,19 +268,19 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
           ? locationList.map((location, idx) => {
               if (Array.isArray(location.address)) {
                 return (
-                  <LIBOX key={idx}>
-                    <LI onClick={() => handleClickLocation(location)} idx={idx} liIdx={liIdx}>
+                  <LIBOX key={idx} onClick={() => handleClickLocation(location)}>
+                    <LI idx={idx} liIdx={liIdx}>
                       {location.address[0]}
                     </LI>
-                    <SUBLI onClick={() => handleClickLocation(location)} idx={idx} liIdx={liIdx}>
+                    <SUBLI idx={idx} liIdx={liIdx}>
                       {location.address[1]}
                     </SUBLI>
                   </LIBOX>
                 );
               }
               return (
-                <LIBOX key={idx}>
-                  <LI onClick={() => handleClickLocation(location)} idx={idx} liIdx={liIdx}>
+                <LIBOX key={idx} onClick={() => handleClickLocation(location)}>
+                  <LI idx={idx} liIdx={liIdx}>
                     {location.address}
                   </LI>
                 </LIBOX>

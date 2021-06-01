@@ -39,7 +39,7 @@ function Navbar(): JSX.Element {
         {userInfo ? (
           <>
             {linkList}
-            <LINK current={false} to="signout" disPlay={disPlay}>
+            <LINK current={false} to="/" disPlay={disPlay}>
               <li onClick={() => setDisPlay(false)}>
                 <SignOut />
               </li>
