@@ -19,12 +19,19 @@ interface ChattingOptionProps {
   } | null;
   setCurRoomId: (roomId: string) => void;
   setLastChat: (lastChat: ChatInfo) => void;
+  showChatList: boolean;
+  setShowChatList: (boolean: boolean) => void;
 }
 
-export default function ChattingOption({ roomInfo, setCurRoomId, setLastChat }: ChattingOptionProps): JSX.Element {
+export default function ChattingOption({
+  roomInfo,
+  setCurRoomId,
+  setLastChat,
+  showChatList,
+  setShowChatList,
+}: ChattingOptionProps): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [showChatList, setShowChatList] = useState<boolean>(false);
 
   const handleComplete = () => {
     const data = {

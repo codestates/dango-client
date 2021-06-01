@@ -98,8 +98,7 @@ export const MESSAGE = styled.div<ChatProps>`
     border-radius: 0 80% 0;
     width: 1vw;
     height: 1.5vw;
-    /* transform: rotate(145deg) translateX(80%); */
-    /* transform: rotate(235deg) translateX(80%) scaleX(-1); */
+
     ${(props) => {
       if (props.mine) {
         return 'top: 0; right:0; transform: rotate(235deg) translateX(-1.15vw) scaleX(-1);';
@@ -123,5 +122,5 @@ export const TIME = styled.div`
   color: grey;
   font-size: 0.8rem;
   margin-bottom: 1vw;
-  min-width: 4vw;
+  min-width: 3.7rem;
 `;

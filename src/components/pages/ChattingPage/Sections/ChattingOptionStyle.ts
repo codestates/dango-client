@@ -22,6 +22,7 @@ export const COMPLETEBTN = styled(SBUTTON)`
   justify-content: center;
   align-items: center;
   background-color: #a68bf6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 export const COMPLETED = styled.div`
   position: absolute;
@@ -55,7 +56,7 @@ export const CHATLISTBTN = styled(ChatListSvg)`
   margin-right: auto;
   display: none;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     display: block;
   }
 `;
