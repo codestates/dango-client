@@ -47,7 +47,8 @@ module.exports = {
     'react/jsx-boolean-value': 'off',
     'no-underscore-dangle': 'off',
     'import/no-mutable-exports': 0,
-    'import/no-unresolved': 'off',
+    'consistent-return': 'off',
+    'import/no-unresolved': 0,
   },
   settings: {
     'import/resolver': {
