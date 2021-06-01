@@ -82,20 +82,16 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
 
   const handleInfoWindow = (talent: any) => {
     const markerImage = new window.kakao.maps.MarkerImage(
-      `/images/markerPurple.png`,
+      `/images/purpleMarker.png`,
       new window.kakao.maps.Size(30, 38),
       {
         offset: new window.kakao.maps.Point(14, 38),
       },
     );
 
-    const clickImage = new window.kakao.maps.MarkerImage(
-      `/images/markerClick.png`,
-      new window.kakao.maps.Size(38, 45),
-      {
-        offset: new window.kakao.maps.Point(19, 45),
-      },
-    );
+    const clickImage = new window.kakao.maps.MarkerImage(`/images/redMarker.png`, new window.kakao.maps.Size(38, 45), {
+      offset: new window.kakao.maps.Point(19, 45),
+    });
 
     if (infoWindowGroup.length > 0) {
       // 모든 인포윈도우를 닫고, 모든 마커를 기본마커이미지로바꾼다.
