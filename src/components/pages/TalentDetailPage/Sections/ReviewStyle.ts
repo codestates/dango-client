@@ -13,6 +13,7 @@ const REVIEW = styled.div`
     grid-row: 6/10;
   }
   padding: 1rem;
+  min-width: 300px;
 `;
 
 // ReviewList
@@ -37,7 +38,9 @@ export const INFO = styled.div`
 
 export const USERSTAR = styled.div``;
 
-export const STAR = styled.span``;
+export const STAR = styled.span`
+  min-width: 100px;
+`;
 
 export const NICKNAME = styled.span`
   margin-right: 1rem;
