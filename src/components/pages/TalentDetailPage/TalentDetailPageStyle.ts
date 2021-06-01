@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const CONTAINER = styled.div`
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  height: 95vh;
+  grid-template-rows: repeat(4, 1fr);
+  height: 87vh;
   grid-gap: 20px;
   margin: 1.25rem auto;
   width: 75%;
@@ -14,11 +14,12 @@ export const CONTAINER = styled.div`
     grid-template-columns: repeat(6, 1fr);
     width: 95%;
   }
+  margin-top: 5.5rem;
 `;
 
 export const SELLER = styled.div`
   grid-column: 1/3;
-  grid-row: 2/5;
+  grid-row: 1/4;
   box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.lightpurple};
   display: flex;
   flex-direction: column;
@@ -64,7 +65,7 @@ export const BUTTONDIV = styled.div`
 
 export const DETAIL = styled.div`
   grid-column: 3/7;
-  grid-row: 2/5;
+  grid-row: 1/4;
   // box-shadow: 1px 1px 3px 1px #dadce0;
   box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.lightpurple};
   display: flex;
@@ -83,7 +84,7 @@ export const ADDRESS = styled.div`
 `;
 
 export const TOP = styled.div`
-  padding: 0 1rem;
+  padding: 0 2rem;
   height: 10%;
   display: flex;
   justify-content: space-between;
@@ -163,23 +164,71 @@ export const SHARETEXTAREA = styled.textarea`
   opacity: 0;
 `;
 
-export const TEXTAREA = styled.textarea`
+export const PHOTOS = styled.div`
+  grid-column: 1/7;
+  grid-row: 4/5;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+`;
+
+export const EDITCATEGORY = styled.select`
+  border: none;
+  outline: none;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  padding-left: 1rem;
+`;
+
+export const OPTION = styled.option`
   all: unset;
-  height: 90%;
-  width: 100%;
-  // border-bottom: 1px solid white;
+  color: red;
+  &:hover {
+    color: ${({ theme }) => theme.colors.yellow};
+    border: 2px solid ${({ theme }) => theme.colors.yellow};
+  }
+`;
+
+export const PRICEINPUT = styled.input`
+  all: unset;
   box-shadow: 1px 1px 3px 1px #dadce0;
   &:focus {
-    // border-bottom: 2px solid #835af1;
     box-shadow: 1px 1px 3px 1px #835af1;
   }
-  // background-color: #fffcf0;
-  padding: 1rem;
+  text-align: end;
+  width: 6rem;
+`;
+
+export const TITLEINPUT = styled.input`
+  all: unset;
+  box-shadow: 1px 1px 3px 1px #dadce0;
+  &:focus {
+    box-shadow: 1px 1px 3px 1px #835af1;
+  }
+  text-align: center;
+  width: 85%;
+  padding: 0.5rem 1rem;
+`;
+
+export const EDITDESC = styled.div`
+  // border: 1px solid;
+  // padding: 0 1rem;
+  // margin: 0 1rem;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // box-shadow: 1px 1px 3px 1px #dadce0;
+  // background-color: ${({ theme }) => theme.colors.lightgray};
+  white-space: pre-wrap;
   line-height: 180%;
 `;
 
-export const PHOTOS = styled.div`
-  grid-column: 1/7;
-  grid-row: 5/6;
+export const TEXTAREA = styled.textarea`
+  all: unset;
+  height: 90%;
+  width: 85%;
   box-shadow: 1px 1px 3px 1px #dadce0;
+  &:focus {
+    box-shadow: 1px 1px 3px 1px #835af1;
+  }
+  padding: 1rem;
+  line-height: 180%;
 `;

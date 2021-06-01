@@ -34,6 +34,11 @@ import {
   SHARETEXTAREA,
   KAKAO,
   CLIP,
+  PRICEINPUT,
+  TITLEINPUT,
+  EDITDESC,
+  EDITCATEGORY,
+  OPTION,
 } from './TalentDetailPageStyle';
 import Modal from '../../../utils/modal';
 import { SBUTTON } from '../../../styles/Buttons';
@@ -246,16 +251,14 @@ function TalentDetailPage(): JSX.Element {
           <>
             <TOP>
               <CATEGORY>
-                카테고리 :
-                <select onBlur={(event) => setEditDetail(event.target.value)}>
+                <EDITCATEGORY onBlur={(event) => setEditDetail(event.target.value)}>
                   {categoryList.map((category) => (
-                    <option key={category}>{category}</option>
+                    <OPTION key={category}>{category}</OPTION>
                   ))}
-                </select>
+                </EDITCATEGORY>
               </CATEGORY>
               <PRICE>
-                가격 :{' '}
-                <input
+                <PRICEINPUT
                   type="number"
                   ref={input}
                   value={editDetail?.price}
@@ -266,7 +269,7 @@ function TalentDetailPage(): JSX.Element {
               </PRICE>
             </TOP>
             <TITLE>
-              <input
+              <TITLEINPUT
                 ref={input}
                 value={editDetail?.title}
                 onChange={changeInput('title')}
@@ -274,14 +277,14 @@ function TalentDetailPage(): JSX.Element {
               />
             </TITLE>
 
-            <DESCRIPTION>
+            <EDITDESC>
               <TEXTAREA
                 ref={textarea}
                 value={editDetail?.description}
                 onChange={changeInput('description')}
                 placeholder="내용을 입력해주세요."
               />
-            </DESCRIPTION>
+            </EDITDESC>
             <BOTTOM>
               <ADDRESS>{detailData?.address}</ADDRESS>
               <SBUTTON type="button" onClick={submitEdit}>
@@ -292,8 +295,8 @@ function TalentDetailPage(): JSX.Element {
         ) : (
           <>
             <TOP>
-              <CATEGORY>카테고리 : {editDetail?.category}</CATEGORY>
-              <PRICE>가격 : {editDetail?.price}원</PRICE>
+              <CATEGORY>{editDetail?.category}</CATEGORY>
+              <PRICE>{editDetail?.price}원</PRICE>
             </TOP>
 
             <TITLE>{editDetail?.title}</TITLE>
@@ -305,10 +308,8 @@ function TalentDetailPage(): JSX.Element {
                 <SHAREDIV className="create-kakao-link-btn" style={{ marginRight: '1rem' }}>
                   <KAKAO src="/images/kakao.png" alt="kakao" />
                 </SHAREDIV>
-
                 <SHAREDIV onClick={handleCopyUrl}>
                   <CLIP src="/images/link.png" alt="link" />
-
                   <form>
                     <SHARETEXTAREA ref={copyUrlRef} value={window.location.href} />
                   </form>
