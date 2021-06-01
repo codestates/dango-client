@@ -51,6 +51,7 @@ export const DATE = styled.div`
 export const REVIEWCONTENT = styled.p`
   white-space: pre-wrap;
   margin-bottom: 1rem;
+  line-height: 120%;
 `;
 
 // 답글
@@ -91,6 +92,7 @@ export const REPLYDATE = styled.span`
 
 export const REPLYCONTENT = styled.p`
   white-space: pre-wrap;
+  line-height: 120%;
 `;
 
 // ReviewCreate

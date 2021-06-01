@@ -9,11 +9,12 @@ import server from '../../../api';
 import Modal from '../../../utils/modal';
 
 const CONTAINER = styled.div`
-  display: grid;
-  height: 100vh;
-  grid-template-columns: repeat(6, 1fr);
+  //display: grid;
+  height: 93vh;
+  // grid-template-columns: repeat(6, 1fr);
   margin-top: 4rem;
   // border: 3px solid;
+  display: flex;
 `;
 
 function MapPage(): JSX.Element {

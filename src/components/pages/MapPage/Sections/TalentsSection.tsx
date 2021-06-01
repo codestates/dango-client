@@ -25,14 +25,8 @@ import {
   INPUT,
   LABEL,
   RADIOINPUT,
+  RADIOLABEL,
 } from './TalentsSectionStyle';
-
-/* FIXME: 
- [ ] sort 기본옵션? 거리순?
- [ ] Warning: You provided a `checked` prop to a form field without an `onChange` handler. 
-     This will render a read-only field. If the field should be mutable use `defaultChecked`. 
-     Otherwise, set either `onChange` or `readOnly`.
-*/
 
 interface TalentsSectionProps {
   map: any;
@@ -83,13 +77,13 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
   const handleInfoWindow = (talent: any) => {
     const markerImage = new window.kakao.maps.MarkerImage(
       `/images/purpleMarker.png`,
-      new window.kakao.maps.Size(30, 38),
+      new window.kakao.maps.Size(40, 50),
       {
         offset: new window.kakao.maps.Point(14, 38),
       },
     );
 
-    const clickImage = new window.kakao.maps.MarkerImage(`/images/redMarker.png`, new window.kakao.maps.Size(38, 45), {
+    const clickImage = new window.kakao.maps.MarkerImage(`/images/redMarker.png`, new window.kakao.maps.Size(44, 55), {
       offset: new window.kakao.maps.Point(19, 45),
     });
 
@@ -133,9 +127,9 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
           {/* <RADIOINPUT type="radio" id="default" name="default" value="default" checked />
           <LABEL htmlFor="default">거리순</LABEL> */}
           {sortData.map((ele) => (
-            <div key={ele.id} onChange={handleRadioBox}>
+            <div key={ele.id} onChange={handleRadioBox} style={{ marginRight: '0.5rem' }}>
               <RADIOINPUT type="radio" id={ele.id} name="sort" value={ele.id} />
-              <LABEL htmlFor={ele.id}>{ele.name}</LABEL>
+              <RADIOLABEL htmlFor={ele.id}>{ele.name}</RADIOLABEL>
             </div>
           ))}
         </RADIOBOX>

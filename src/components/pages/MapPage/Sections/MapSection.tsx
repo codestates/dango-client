@@ -13,20 +13,16 @@ declare global {
 }
 
 const CONTAINER = styled.div`
-  grid-column: 1/5;
-
-  width: 67vw;
-  // border: 1px solid black;
+  width: 80vw;
 `;
 
 const SEARCH = styled.div`
   position: absolute;
   grid-column: 1/5;
-  top: 2%;
-  right: 1.5%;
+  top: 3%;
+  right: 2%;
   width: 280px;
-  height: 30px;
-
+  height: 50px;
   z-index: 2;
   background-color: rgba(198, 191, 191, 0.5);
   background-color: white;
@@ -160,11 +156,11 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
     infowindowRef.current = [];
 
     // 마커 이미지, 사이즈, 이미지의 위치 설정
-    const markerImage = new kakao.maps.MarkerImage(`/images/purpleMarker.png`, new window.kakao.maps.Size(30, 38), {
+    const markerImage = new kakao.maps.MarkerImage(`/images/purpleMarker.png`, new window.kakao.maps.Size(40, 50), {
       offset: new window.kakao.maps.Point(14, 38),
     });
 
-    const clickImage = new kakao.maps.MarkerImage(`/images/redMarker.png`, new window.kakao.maps.Size(38, 45), {
+    const clickImage = new kakao.maps.MarkerImage(`/images/redMarker.png`, new window.kakao.maps.Size(44, 55), {
       offset: new window.kakao.maps.Point(19, 45),
     });
 
