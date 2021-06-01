@@ -62,10 +62,6 @@ export const userSlice = createSlice({
         state.userInfo.reviewed.push(talentId);
       }
     },
-    // 테스트용
-    updateUnreviewed: (state, action: PayloadAction<{ talentId: string }>) => {
-      state.userInfo?.unreviewed.push(action.payload.talentId);
-    },
 
     modifyNickname: (state, action: PayloadAction<{ nickname: string }>) => {
       if (state.userInfo) {
@@ -114,15 +110,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const {
-  signin,
-  signout,
-  updateReview,
-  updateUnreviewed,
-  modifyNickname,
-  updateChatRooms,
-  purchaseComplete,
-  escapeRoom,
-} = userSlice.actions;
+export const { signin, signout, updateReview, modifyNickname, updateChatRooms, purchaseComplete, escapeRoom } =
+  userSlice.actions;
 
 export default userSlice.reducer;

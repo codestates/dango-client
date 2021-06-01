@@ -86,7 +86,7 @@ function TalentDetailPage(): JSX.Element {
         const payload: TalentState = {
           talentId,
           sellerId: res.data.userInfo._id,
-          reviews: res.data.reviews,
+          reviews: res.data.reviews.reverse(),
           userId: userInfo?.id,
           userRole,
         };

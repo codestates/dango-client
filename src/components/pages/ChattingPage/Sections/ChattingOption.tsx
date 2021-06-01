@@ -139,7 +139,7 @@ export default function ChattingOption({ roomInfo, setCurRoomId, setLastChat }: 
   return (
     <CHATTINGOPTION>
       {roomInfo && checkPurchase()}
-      <ESCAPE onClick={handleEscape} fill="#835af1" />
+      <ESCAPE onClick={handleEscape} fill="#a68bf6" />
     </CHATTINGOPTION>
   );
 }

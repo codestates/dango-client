@@ -66,11 +66,11 @@ function MessageInput({ callback }: Props): JSX.Element {
       <TEXT
         ref={inputRef}
         className="messageInput"
-        placeholder="메세지를 입력해주세요"
+        placeholder="메시지를 입력해주세요"
         onChange={(event) => setMessage(event.target.value)}
         onKeyPress={handleEnterKey}
       />
-      <SUBMIT onClick={handleSubmit} fill="#835af1" />
+      <SUBMIT onClick={handleSubmit} fill="#a68bf6" />
     </INPUTDIV>
   );
 }

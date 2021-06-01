@@ -99,10 +99,9 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
         </div>
         <DATE>{review.date}</DATE>
       </INFO>
-      {/*   review.review는 에러때문에 임시로해놓음. 서버데이터가 지금 달라져서 undefined가뜸. */}
-      <div>
-        {review.review && setEllipsis(review.review).text}
-        {review.review && setEllipsis(review.review).isShowMore && more && createMoreOrCutBtn('더보기')}
+      <div style={{ whiteSpace: 'pre-wrap' }}>
+        {setEllipsis(review.review).text}
+        {setEllipsis(review.review).isShowMore && more && createMoreOrCutBtn('더보기')}
         {more || createMoreOrCutBtn('접기')}
       </div>
       {postReplyBox && <ReplyReview reviewId={review.reviewId} setPostReplyBox={setPostReplyBox} />}
@@ -113,7 +112,7 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
               <REPLYNAME>고수</REPLYNAME>
               <REPLYDATE>{review.reply.replyDate}</REPLYDATE>
             </div>
-            <p>{review.reply.replyDescription}</p>
+            <p style={{ whiteSpace: 'pre-wrap' }}>{review.reply.replyDescription}</p>
           </REPLY>
         </REPLYBOX>
       )}

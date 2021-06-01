@@ -7,34 +7,7 @@ import { setIsFirstChat, newChattingRoom } from '../../../_reducer/chattings';
 import ChattingOption from './Sections/ChattingOption';
 import ChattingRoom from './Sections/ChattingRoom';
 import Modal from '../../../utils/modal';
-
-const CONTAINER = styled.div`
-  display: grid;
-  height: 85vh;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-  grid-column-gap: 20px;
-  margin: 1rem;
-`;
-
-const CHATLIST = styled.div`
-  grid-column: 2/5;
-  grid-row: 2/11;
-`;
-
-const CHAT = styled.div`
-  grid-column: 5/10;
-  grid-row: 2/11;
-  display: flex;
-  flex-direction: column;
-  background-color: #f2f7f8;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  /* overflow: auto;
-  transform: rotate(180deg);
-  direction: rtl; */
-`;
+import { CONTAINER, CHATLIST, CHAT, USERBOX, WRAPIMG, PROFILEIMG, USER, COUNT, NUMBER } from './ChattingPageStyle';
 
 export interface RoomType {
   roomId: string;
@@ -150,10 +123,15 @@ function ChattingRoomsList(): JSX.Element {
       <CONTAINER>
         <CHATLIST>
           {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
-            <div style={{ cursor: 'pointer' }} key={chatRoom.roomId} onClick={() => changeRoom(index)}>
-              <img src={chatRoom.profileImage} alt="상대방 프사," />
-              상대방 닉네임: {chatRoom.otherNickname}, 안 읽은 메시지: {chatRoom.count}
-            </div>
+            <USERBOX key={index} onClick={() => changeRoom(index)}>
+              <WRAPIMG>
+                <PROFILEIMG src={chatRoom.profileImage} alt="profile image," />
+              </WRAPIMG>
+              <USER>{chatRoom.otherNickname}</USER>
+              <COUNT value={chatRoom.count}>
+                <NUMBER>{chatRoom.count}</NUMBER>
+              </COUNT>
+            </USERBOX>
           ))}
         </CHATLIST>
         <CHAT>
