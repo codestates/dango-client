@@ -1,18 +1,5 @@
 import styled from 'styled-components';
 
-// interface LiType {
-//   idx: number;
-//   liIdx: number;
-// }
-
-// const LI = styled.li<LiType>`
-//   // background-color: rgba(198, 191, 191, 0.1);
-//   // background-color: ${(props) => props.idx === props.liIdx && '#835af1'};
-//   color: ${(props) => props.idx === props.liIdx && '#835af1'};
-//   color: ${(props) => props.idx === 0 && props.liIdx === -2 && '#835af1'};
-//   cursor: pointer;
-//   padding: 0.5rem;
-// `;
 interface ChatProps {
   mine: boolean;
   notice?: boolean;
@@ -71,12 +58,13 @@ export const MESSAGE = styled.div<ChatProps>`
 
   position: relative;
   /* display: inline-block; */
-  padding: 3%;
+  padding: 0.6rem;
   color: ${(props) => (props.mine ? 'whitesmoke' : 'grey')};
   /* min-height: 1vw; */
   width: auto;
   min-width: 10%;
   max-width: 90%;
+  min-height: 34px;
   border-radius: 1rem;
   background-color: ${(props) => (props.mine ? ({ theme }) => theme.colors.purple : 'white')};
   ${(props) => {
@@ -92,11 +80,12 @@ export const MESSAGE = styled.div<ChatProps>`
     content: '';
     position: absolute;
     border: 0 solid transparent;
-    border-top: ${(props) =>
-      props.mine ? ({ theme }) => `0.9vw solid ${theme.colors.purple}` : ' 0.75vw solid white'};
+    border-top: ${(props) => (props.mine ? ({ theme }) => `0.7vw solid ${theme.colors.purple}` : ' 0.7vw solid white')};
     border-radius: 0 80% 0;
     width: 1vw;
-    height: 1.5vw;
+    height: 1vw;
+    min-width: 0.5rem;
+    min-height: 0.5rem;
 
     ${(props) => {
       if (props.mine) {
@@ -112,10 +101,6 @@ export const MESSAGE = styled.div<ChatProps>`
       return undefined;
     }}
   }
-  //top: 50%;
-  /* left: 50%;
-  transform: translate(-50%, -50%); */
-  //translate(-40%,-150%)
 `;
 export const TIME = styled.div`
   color: grey;

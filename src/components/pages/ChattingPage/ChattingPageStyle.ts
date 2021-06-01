@@ -42,7 +42,7 @@ export const CHATLIST = styled.div<{ show: boolean }>`
   margin-right: 1.5vw;
   min-width: 200px;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 768px) {
     display: none;
     grid-column: 4/9;
     grid-row: 4/10;
@@ -93,7 +93,7 @@ export const CHAT = styled.div`
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 768px) {
     grid-column: 2/10;
     font-size: 0.8rem;
   }
@@ -133,7 +133,7 @@ export const CHATLISTESC = styled.div<{ show: boolean }>`
   cursor: pointer;
   color: whitesmoke;
   ${(props) => props.show && 'display:block;'}
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     display: none;
   }
 `;
@@ -147,7 +147,6 @@ export const USERBOX = styled.div`
   min-width: 163px;
   min-height: 41px;
   padding: 1vw;
-  margin-bottom: 0.7vw; // CHATLIST의 padding과 같게
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   white-space: nowrap;
 `;
@@ -209,7 +208,9 @@ export const EMPTYROOM = styled(EmptyRoomSvg)`
 
 export const NOROOMBTN = styled(CHATLISTBTN)`
   position: relative;
-  z-index: 99;
-  width: 200px;
-  height: 200px;
+  fill: #2f2e40;
+  top: 3vw;
+  left: 3vw;
+  width: 8vw;
+  height: 8vw;
 `;

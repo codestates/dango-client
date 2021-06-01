@@ -110,9 +110,9 @@ export default function ChattingOption({
 
   return (
     <CHATTINGOPTION>
-      <CHATLISTBTN fill="grey" onClick={() => setShowChatList(!showChatList)} />
+      <CHATLISTBTN onClick={() => setShowChatList(!showChatList)} />
       {roomInfo && checkPurchase()}
-      <ESCAPEBTN onClick={handleEscape} fill="#a68bf6" />
+      <ESCAPEBTN onClick={handleEscape} />
     </CHATTINGOPTION>
   );
 }

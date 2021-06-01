@@ -39,8 +39,9 @@ export const ESCAPEBTN = styled(EscapeSvg)`
   min-height: 1.2rem;
   cursor: pointer;
   margin-right: 1.7vw;
+  fill: ${({ theme }) => theme.colors.middlepurple};
   &:hover {
-    fill: ${({ theme }) => theme.colors.yellow};
+    fill: ${({ theme }) => theme.colors.mustard};
   }
   &:active {
     fill: ${({ theme }) => theme.colors.lightpurple};
@@ -56,7 +57,15 @@ export const CHATLISTBTN = styled(ChatListSvg)`
   margin-right: auto;
   display: none;
 
-  @media screen and (max-width: 1024px) {
+  fill: grey;
+  &:hover {
+    fill: ${({ theme }) => theme.colors.mustard};
+  }
+  &:active {
+    fill: ${({ theme }) => theme.colors.lightpurple};
+  }
+
+  @media screen and (max-width: 768px) {
     display: block;
   }
 `;
