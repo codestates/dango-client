@@ -23,7 +23,7 @@ export const LBUTTON = styled.button`
 
   /* 크기 */
   height: 3rem;
-  line-height: 3rem; // 글자 수직 가운데 정렬
+  ${({ theme }) => theme.common.flexCenter}; // 글자 수직 가운데 정렬
   font-size: 1.25rem;
 `;
 
@@ -53,7 +53,7 @@ export const MBUTTON = styled.button`
 
   /* 크기 */
   height: 2.25rem;
-  line-height: 2.25rem; // 글자 수직 가운데 정렬
+  ${({ theme }) => theme.common.flexCenter}; // 글자 수직 가운데 정렬
   font-size: 1rem;
 `;
 
@@ -83,8 +83,31 @@ export const SBUTTON = styled.button`
 
   /* 크기 */
   height: 1.75rem;
-  line-height: 1.75rem; // 글자 수직 가운데 정렬
+  ${({ theme }) => theme.common.flexCenter}; // 글자 수직 가운데 정렬
   font-size: 0.875rem;
 `;
 
-export default { LBUTTON, MBUTTON, SBUTTON };
+// Small Button, 작은 사이즈
+export const SSBUTTON = styled.button`
+  outline: none;
+  border: none;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  /* 색상 */
+  color: ${({ theme }) => theme.colors.purple};
+  border: 0.12rem solid;
+  background: white;
+  &:hover {
+    color: ${({ theme }) => theme.colors.yellow};
+  }
+
+  /* 크기 */
+  height: 1.25rem;
+  ${({ theme }) => theme.common.flexCenter}; // 글자 수직 가운데 정렬
+  font-size: 0.75rem;
+`;
+
+export default { LBUTTON, MBUTTON, SBUTTON, SSBUTTON };

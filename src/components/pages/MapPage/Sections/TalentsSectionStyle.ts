@@ -1,33 +1,41 @@
 import styled from 'styled-components';
 
 export const CONTAINER = styled.div`
-  display: grid;
-  grid-column: 5/7;
-
-  width: 33vw;
-  // min-width: 400px;
+  // grid-column: 5/7;
+  width: 420px;
   // border: 1px solid;
   z-index: 2;
   margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-between;
+  /* @media screen and (max-width: 900px) {
+    width: 450px;
+  } */
 `;
 
 export const FILTERSECTION = styled.div`
-  grid-row: 1/2;
-  height: 20vh;
+  height: 30vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+  padding: 1rem 0;
+  // box-shadow: 1px 1px 3px 1px #dadce0;
 `;
 
 export const CHECKBOX = styled.div`
-  max-width: 640px;
-  // border: 1px solid;
+  // max-width: 640px;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.lightgray};
+  padding: 0 1rem 1rem 1rem;
+  //  height: 100px;
 `;
 
 export const UL = styled.ul`
   list-style: none;
-  padding: 20px;
+  // padding: 20px;
+
+  // max-width: 600px;
 `;
 
 export const LI = styled.li`
@@ -70,28 +78,37 @@ export const INPUT = styled.input`
 
 export const RADIOBOX = styled.div`
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   // margin: 2rem auto;
   background: white;
-  // border: 1px solid white;
+  // border: 1px solid;
   border-radius: 3px;
   text-align: left;
   display: flex;
   justify-content: space-evenly;
+  padding: 1rem 1rem 0 1rem;
+`;
+
+export const RADIOLABEL = styled(LABEL)`
+  // color: #adadad;
+  border-radius: 5px;
 `;
 
 export const RADIOINPUT = styled.input`
   display: absolute;
   position: absolute;
   opacity: 0;
-  &:checked + ${LABEL} {
+  &:checked + ${RADIOLABEL} {
+    background-color: ${({ theme }) => theme.colors.yellow};
+    color: #fff;
+  }
+  &:hover + ${RADIOLABEL} {
     background-color: ${({ theme }) => theme.colors.yellow};
     color: #fff;
   }
 `;
 
 export const TALENTSLIST = styled.div`
-  grid-row: 2/4;
   height: 70vh;
   border-top: 1.5px solid rgba(0, 0, 0, 0.09);
   overflow: auto; // 내용이 넘칠 때 스크롤바 생김.
@@ -100,11 +117,12 @@ export const TALENTSLIST = styled.div`
 export const TALENT = styled.div`
   height: 12vh;
   display: flex;
-  /* justify-content: center; */
+  // padding: 1rem 0;
+  justify-content: center;
   color: #787878;
   align-items: center;
   margin-bottom: 0.5rem;
-  box-shadow: 2px 2px 2px 2px ${({ theme }) => theme.colors.lightgray};
+  box-shadow: 1px 1px 2px 2px ${({ theme }) => theme.colors.lightgray};
 
   &:hover,
   &:focus,
@@ -112,7 +130,7 @@ export const TALENT = styled.div`
     // background-color: #835af1;
     color: #835af1;
     cursor: pointer;
-    box-shadow: 2px 2px 2px 2px ${({ theme }) => theme.colors.lightpurple};
+    box-shadow: 2px 2px 5px 3px ${({ theme }) => theme.colors.lightpurple};
   }
 `;
 

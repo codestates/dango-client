@@ -3,7 +3,23 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 import ReplyReview from './ReplyReview';
-import { LIST, INFO, NICKNAME, DATE, REPLYBOX, REPLY, REPLYNAME, REPLYDATE } from './ReviewStyle';
+import {
+  LIST,
+  INFO,
+  NICKNAME,
+  DATE,
+  REPLYBOX,
+  REPLY,
+  REPLYNAME,
+  REPLYDATE,
+  USERSTAR,
+  STAR,
+  REVIEWCONTENT,
+  REPLYTOP,
+  REPLYCONTENT,
+  REPLYBUTTON,
+} from './ReviewStyle';
+import { SSBUTTON } from '../../../../styles/Buttons';
 
 interface OriginalReviewProps {
   review: {
@@ -86,33 +102,33 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
   return (
     <LIST>
       <INFO>
-        <div>
+        <USERSTAR>
           <NICKNAME>{review.nickname}</NICKNAME>
-          <span>{getStar(review.rating)}</span>
-          {userRole === 'seller' && !replyBox && (
-            <span>
-              <button type="button" onClick={handleClickReply}>
-                답글달기
-              </button>
-            </span>
-          )}
-        </div>
+          <STAR>{getStar(review.rating)}</STAR>
+        </USERSTAR>
         <DATE>{review.date}</DATE>
       </INFO>
-      <div style={{ whiteSpace: 'pre-wrap' }}>
+      <REVIEWCONTENT>
         {setEllipsis(review.review).text}
         {setEllipsis(review.review).isShowMore && more && createMoreOrCutBtn('더보기')}
         {more || createMoreOrCutBtn('접기')}
-      </div>
+      </REVIEWCONTENT>
+      {userRole === 'seller' && !replyBox && !postReplyBox && (
+        <REPLYBUTTON>
+          <SSBUTTON type="button" onClick={handleClickReply} style={{ marginLeft: 'auto' }}>
+            답글 달기
+          </SSBUTTON>
+        </REPLYBUTTON>
+      )}
       {postReplyBox && <ReplyReview reviewId={review.reviewId} setPostReplyBox={setPostReplyBox} />}
       {replyBox && review.reply && (
         <REPLYBOX>
           <REPLY>
-            <div>
+            <REPLYTOP>
               <REPLYNAME>고수</REPLYNAME>
               <REPLYDATE>{review.reply.replyDate}</REPLYDATE>
-            </div>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{review.reply.replyDescription}</p>
+            </REPLYTOP>
+            <REPLYCONTENT>{review.reply.replyDescription}</REPLYCONTENT>
           </REPLY>
         </REPLYBOX>
       )}

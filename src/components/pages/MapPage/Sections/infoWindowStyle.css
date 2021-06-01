@@ -106,17 +106,31 @@
 }
 
 .button {
-    outline: none;
-    border: none;
-    border: 1.5px solid;
-    border-radius: 1.25rem;
-    background-color: white;
-    cursor: pointer;
-    padding: 0.2rem 0.5rem;  
-    
-    font-size: 0.7rem;
+  outline: none;
+  border: none;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  /* 색상 */
+  color: gray;
+  border: 0.12rem solid;
+  background: white;
+  
+
+  /* 크기 */
+  height: 1.25rem;
+  
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+
 
 .button:hover {
     color: #835AF1; 
+    
 }
