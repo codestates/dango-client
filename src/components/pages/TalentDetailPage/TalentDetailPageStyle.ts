@@ -71,6 +71,7 @@ export const DETAIL = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   // align-items: center;
+  padding: 1rem 0;
 `;
 
 export const ADDRESS = styled.div`
@@ -125,15 +126,41 @@ export const BOTTOM = styled.div`
   margin-top: 2rem;
 `;
 
-export const SHARE = styled.button`
-  border: none;
-  background-color: ${({ theme }) => theme.colors.purple};
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
+export const SHAREBOX = styled.div`
+  display: flex;
+`;
+
+export const SHAREDIV = styled.div`
+  border-radius: 15px;
+  border: 1.5px solid #ececf5;
+  position: relative; // url 복사할때, textarea 영역이 보이지 않도록 하기 위해.
+  overflow: hidden;
+  width: 50px;
+  height: 50px;
+  ${({ theme }) => theme.common.flexCenter};
   &:hover {
-    background-color: black;
+    cursor: pointer;
+    box-shadow: 1px 1px 2px 0.5px #dadce0;
   }
+`;
+
+export const KAKAO = styled.img`
+  width: 25px;
+  height: 25px;
+`;
+
+export const CLIP = styled.img`
+  width: 25px;
+  height: 25px;
+`;
+
+export const SHARETEXTAREA = styled.textarea`
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
 `;
 
 export const TEXTAREA = styled.textarea`
