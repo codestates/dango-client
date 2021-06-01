@@ -85,7 +85,9 @@ function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: ChatsP
                   <PROFILEIMG alt={chat.postedBy.image} src={chat.postedBy.image} />
                 </WRAPIMG>
                 <MESSAGEBOX mine={chat.postedBy._id === userInfo?.id}>
-                  <MESSAGE mine={chat.postedBy._id === userInfo?.id}>{chat.message}</MESSAGE>
+                  <MESSAGE mine={chat.postedBy._id === userInfo?.id} notice={chat.type === 'confirm'}>
+                    {chat.message}
+                  </MESSAGE>
                   <TIME>{getChatTime(chat.createdAt)}</TIME>
                 </MESSAGEBOX>
               </CHAT>
@@ -98,7 +100,9 @@ function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: ChatsP
                     <PROFILEIMG alt={chat.image} src={chat.image} />
                   </WRAPIMG>
                   <MESSAGEBOX mine={chat.id === userInfo?.id}>
-                    <MESSAGE mine={chat.id === userInfo?.id}>{chat.message}</MESSAGE>
+                    <MESSAGE mine={chat.id === userInfo?.id} notice={chat.type === 'confirm'}>
+                      {chat.message}
+                    </MESSAGE>
                     <TIME>{chat.time}</TIME>
                   </MESSAGEBOX>
                 </CHAT>

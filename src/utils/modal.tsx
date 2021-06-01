@@ -43,6 +43,9 @@ export default function Modal(): JSX.Element {
     dispatch(closeModal());
     if (callbackName) {
       // 취소 또는 모달창 끌때 실행할 콜백들 작성
+      if (callbackName === 'goToRoot') {
+        history.push('/');
+      }
     }
   };
 
@@ -200,12 +203,13 @@ const OKBUTTON = styled.button`
   background-color: #ab8ce4;
   border: 1px solid #ab8ce4;
   border-radius: 7px;
-  width: 35%;
+  width: 3.5rem;
   color: whitesmoke;
 `;
 const CANCLEBUTTON = styled(OKBUTTON)`
   background-color: #b1c3c8;
   border: 1px solid #b1c3c8;
+  width: 3.5rem;
 `;
 
 const CHECKSVG = styled(CheckSvg)`

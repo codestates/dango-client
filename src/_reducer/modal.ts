@@ -11,7 +11,8 @@ export interface ModalState {
 export interface OpenPayload {
   type: 'ok' | 'error' | 'danger';
   text: string;
-  callbackName?: string;
+  // 콜백네임 추가할때마다 여기에도 넣어야함.
+  callbackName?: 'goToRoot' | 'googleWithdrawal' | 'kakaoWithdrawal';
   callbackData?: any;
 }
 

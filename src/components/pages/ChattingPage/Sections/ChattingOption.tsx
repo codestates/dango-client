@@ -7,43 +7,7 @@ import { RootState } from '../../../../_reducer';
 import { openModal } from '../../../../_reducer/modal';
 import { purchaseComplete, escapeRoom } from '../../../../_reducer/user';
 import server from '../../../../api';
-import { ReactComponent as EscapeSvg } from '../../../../images/chatout.svg';
-import { SBUTTON } from '../../../../styles/Buttons';
-
-const CHATTINGOPTION = styled.div`
-  position: relative;
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-`;
-
-const COMPLETEBTN = styled(SBUTTON)`
-  margin-right: 1vw;
-`;
-const COMPLETED = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #ab8406;
-  margin: 0 auto;
-`;
-const ESCAPE = styled(EscapeSvg)`
-  height: 1.5vw;
-  width: 1.5vw;
-  min-width: 1.2rem;
-  min-height: 1.2rem;
-  cursor: pointer;
-  margin-right: 1vw;
-  &:hover {
-    fill: ${({ theme }) => theme.colors.yellow};
-  }
-  &:active {
-    fill: ${({ theme }) => theme.colors.lightpurple};
-  }
-`;
+import { CHATTINGOPTION, COMPLETEBTN, COMPLETED, ESCAPEBTN, CHATLISTBTN } from './ChattingOptionStyle';
 
 interface ChattingOptionProps {
   roomInfo: {
@@ -60,6 +24,7 @@ interface ChattingOptionProps {
 export default function ChattingOption({ roomInfo, setCurRoomId, setLastChat }: ChattingOptionProps): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
+  const [showChatList, setShowChatList] = useState<boolean>(false);
 
   const handleComplete = () => {
     const data = {
@@ -138,8 +103,9 @@ export default function ChattingOption({ roomInfo, setCurRoomId, setLastChat }: 
 
   return (
     <CHATTINGOPTION>
+      <CHATLISTBTN fill="grey" onClick={() => setShowChatList(!showChatList)} />
       {roomInfo && checkPurchase()}
-      <ESCAPE onClick={handleEscape} fill="#a68bf6" />
+      <ESCAPEBTN onClick={handleEscape} fill="#a68bf6" />
     </CHATTINGOPTION>
   );
 }

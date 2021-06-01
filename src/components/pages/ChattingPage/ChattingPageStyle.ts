@@ -2,11 +2,15 @@ import styled from 'styled-components';
 
 export const CONTAINER = styled.div`
   display: grid;
-  height: 85vh;
+  height: 95vh;
+  width: 95vw;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 20px;
-  margin: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 export const CHATLIST = styled.div`
@@ -21,7 +25,18 @@ export const CHATLIST = styled.div`
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   background-color: #f2f7f8;
+  padding: 0.7vw; // USERBOX의 margin-bottom과 같게
 
+  @media screen and (max-width: 768px) {
+    display: none;
+    grid-column: 4/9;
+    grid-row: 3/11;
+    width: 80%;
+    height: 80%;
+    z-index: 5;
+  }
+
+  // 스크롤디자인 보류!
   ::-webkit-scrollbar {
     width: 0.6rem;
   }
@@ -47,9 +62,11 @@ export const CHAT = styled.div`
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  /* overflow: auto;
-  transform: rotate(180deg);
-  direction: rtl; */
+
+  @media screen and (max-width: 768px) {
+    grid-column: 2/10;
+    font-size: 0.8rem;
+  }
 `;
 
 export const USERBOX = styled.div`
@@ -59,7 +76,9 @@ export const USERBOX = styled.div`
   cursor: pointer;
   width: 100%;
   padding: 1vw;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.7vw; // CHATLIST의 padding과 같게
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
 `;
 export const WRAPIMG = styled.div`
   // 프로필이미지 크기
