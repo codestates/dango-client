@@ -2,9 +2,13 @@ import styled from 'styled-components';
 
 export const CONTAINER = styled.div`
   display: grid;
-  grid-column: 5/6;
-  width: 30vw;
+  grid-column: 5/7;
+
+  width: 33vw;
   // min-width: 400px;
+  // border: 1px solid;
+  z-index: 2;
+  margin-left: auto;
 `;
 
 export const FILTERSECTION = styled.div`

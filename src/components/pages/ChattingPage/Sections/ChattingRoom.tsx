@@ -107,6 +107,8 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
     connectSocket.emit('messageToOther', curOtherId, message, curRoomId);
   };
 
+  console.log('userInfo:::', userInfo);
+
   // lastChat가 바뀔 때 함수 실행
   // TODO: 3. 메시지를 보내서 lastChat이바뀔때마다 creatNewChats을 실행시킨다.
   useEffect(() => {
