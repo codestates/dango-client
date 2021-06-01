@@ -14,7 +14,7 @@ function ReviewList(): JSX.Element {
           return <OriginalReview key={review._id} review={review} />;
         })
       ) : (
-        <div>앗..! 아직 남겨진 리뷰가 없습니다.😢</div>
+        <div>🍡 아직 남겨진 리뷰가 없습니다.</div>
       )}
     </REVIEWLIST>
   );

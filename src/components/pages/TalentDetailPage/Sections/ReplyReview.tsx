@@ -5,6 +5,8 @@ import { updateReply } from '../../../../_reducer/talent';
 import { openModal } from '../../../../_reducer/modal';
 import getToday from '../../../../utils/getToday';
 import server from '../../../../api';
+import { REPLYTEXTAREA, FORM, REPLYBUTTONDIV } from './ReviewStyle';
+import { SSBUTTON } from '../../../../styles/Buttons';
 
 interface ReplyReviewProps {
   reviewId: string;
@@ -51,11 +53,13 @@ export default function ReplyReview({ reviewId, setPostReplyBox }: ReplyReviewPr
   };
 
   return (
-    <form style={{ display: 'flex' }} onSubmit={handleSubmit}>
-      <textarea style={{ resize: 'none', borderRadius: '5px' }} onChange={handleChangeText} />
-      <button type="submit" onClick={handleSubmit}>
-        답글등록
-      </button>
-    </form>
+    <FORM onSubmit={handleSubmit}>
+      <REPLYTEXTAREA onChange={handleChangeText} />
+      <REPLYBUTTONDIV>
+        <SSBUTTON type="submit" onClick={handleSubmit} style={{ marginLeft: 'auto' }}>
+          답글 등록
+        </SSBUTTON>
+      </REPLYBUTTONDIV>
+    </FORM>
   );
 }
