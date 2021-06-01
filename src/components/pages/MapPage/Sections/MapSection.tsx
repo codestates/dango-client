@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { RootState } from '../../../../_reducer';
 import { setMapConfig, SetMapconfigPayload, setMarkerLatLng } from '../../../../_reducer/map';
 import LocationSearch from '../../TalentRegistrationPage/Sections/LocationSearch';
+import './infoWindowStyle.css';
 
 declare global {
   interface Window {
@@ -159,11 +160,11 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
     infowindowRef.current = [];
 
     // 마커 이미지, 사이즈, 이미지의 위치 설정
-    const markerImage = new kakao.maps.MarkerImage(`/images/markerPurple.png`, new window.kakao.maps.Size(30, 38), {
+    const markerImage = new kakao.maps.MarkerImage(`/images/purpleMarker.png`, new window.kakao.maps.Size(30, 38), {
       offset: new window.kakao.maps.Point(14, 38),
     });
 
-    const clickImage = new kakao.maps.MarkerImage(`/images/markerClick.png`, new window.kakao.maps.Size(38, 45), {
+    const clickImage = new kakao.maps.MarkerImage(`/images/redMarker.png`, new window.kakao.maps.Size(38, 45), {
       offset: new window.kakao.maps.Point(19, 45),
     });
 
@@ -182,24 +183,38 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
             clickable: true,
           });
 
-          const iwcontent = `<div class="main" style="padding: 7px;">
-                          <div class="title">제목 : ${talentData[i]?.title}</div>
-                          <div class="category">카테고리 : ${talentData[i]?.category}</div>
-                          <div class="address">지역 : ${talentData[i]?.address}</div>
-                          <div class="ratings">별점 : ${talentData[i]?.ratings[0] ?? '별점 없음'}</div>
-                          <div class="nickname">닉네임 : ${talentData[i]?.nickname}</div>
-                          <div class="price">가격 : ${talentData[i]?.price}</div>
-                          <div class="description">내용 : ${talentData[i]?.description}</div>
-                          <a href="/detail/${talentData[i]?.id}" target="_self">
-                            <button class="button">상세페이지로 이동</button>
-                          </a>
+          const iwcontent = `<div class="main">
+                              <div class="top">
+                                <div class="top-left">
+                                  <img class='image' src='/images/dango1.png' alt='dango'/>                                                                
+                                </div>
+                                <div class="top-right">
+                                  <div class="title">${talentData[i]?.title}</div>
+                                  <div class="category">${talentData[i]?.category}</div>
+                                  <div class="price">${talentData[i]?.price}원</div>
+                                </div>
+                              </div>
+                                
+                              <div class="middle">
+                                <div class="middle-top">
+                                  <div class="nickname">${talentData[i]?.nickname}</div>
+                                  <div class="ratings">별점 : ${talentData[i]?.ratings[0] ?? '0'}</div>
+                                </div>
+                                <div class="description">${talentData[i]?.description}</div>
+                                <div class="address">${talentData[i]?.address}</div>
+                              </div>  
+
+                              <div class="bottom">
+                                  <a href="/detail/${talentData[i]?.id}" target="_self">
+                                    <button class="button">상세페이지로 이동</button>
+                                  </a>
+                              </div>    
                           </div>
                           `;
-          const iwRemoveable = true;
 
           const infowindow = new kakao.maps.InfoWindow({
             content: iwcontent,
-            removable: iwRemoveable,
+            // removable: iwRemoveable,
           });
           /// ---------------marker,infowindow 생성 끝 -------------------------- ///
 
