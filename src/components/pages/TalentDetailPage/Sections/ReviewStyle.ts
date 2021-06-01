@@ -15,7 +15,6 @@ const REVIEW = styled.div`
 `;
 // ReviewList
 const REVIEWLIST = styled.ul`
-  // border: 1px solid black;
   flex: 7 1 auto;
   padding: 10px;
 `;

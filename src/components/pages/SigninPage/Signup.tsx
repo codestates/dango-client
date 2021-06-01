@@ -82,8 +82,14 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             console.log(err);
             return;
           }
-          const { message } = err?.response?.data;
-          alert(message);
+          const { message } = err.response.data;
+
+          dispatch(
+            openModal({
+              type: 'error',
+              text: message,
+            }),
+          );
         });
     }
 
@@ -129,7 +135,12 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
-          alert('회원가입완료');
+          dispatch(
+            openModal({
+              type: 'ok',
+              text: '회원가입이 완료되었습니다.',
+            }),
+          );
         })
         .catch((err) => {
           if (!err.response) {
@@ -137,7 +148,13 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             return;
           }
           const { message } = err.response.data;
-          alert(message);
+
+          dispatch(
+            openModal({
+              type: 'error',
+              text: message,
+            }),
+          );
         });
     }
   };

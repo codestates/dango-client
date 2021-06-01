@@ -20,6 +20,7 @@ interface OriginalReviewProps {
   };
 }
 
+// 한개의 리뷰
 export default function OriginalReview({ review }: OriginalReviewProps): JSX.Element {
   const userRole = useSelector((state: RootState) => state.talent.userRole);
 
@@ -98,7 +99,7 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
         </div>
         <DATE>{review.date}</DATE>
       </INFO>
-      <div>
+      <div style={{ whiteSpace: 'pre-wrap' }}>
         {setEllipsis(review.review).text}
         {setEllipsis(review.review).isShowMore && more && createMoreOrCutBtn('더보기')}
         {more || createMoreOrCutBtn('접기')}
@@ -111,7 +112,7 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
               <REPLYNAME>고수</REPLYNAME>
               <REPLYDATE>{review.reply.replyDate}</REPLYDATE>
             </div>
-            <p>{review.reply.replyDescription}</p>
+            <p style={{ whiteSpace: 'pre-wrap' }}>{review.reply.replyDescription}</p>
           </REPLY>
         </REPLYBOX>
       )}
