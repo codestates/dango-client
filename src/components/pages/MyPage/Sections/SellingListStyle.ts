@@ -1,7 +1,18 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export const SELLINGLIST = styled.div`
+const showModal = keyframes`
+  from {
+    opacity: 0.5;
+    transform: translateY(3%);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0%);
+  }
+`;
+
+export const SELLINGLIST = styled.div<{ showSell: boolean }>`
   grid-column: 3/5;
   grid-row: 2/11;
 
@@ -27,6 +38,18 @@ export const SELLINGLIST = styled.div`
   }
   @media screen and (max-width: 532px) {
     display: none;
+    z-index: 5;
+    animation: ${showModal} 0.5s forwards;
+
+    ${({ showSell }) =>
+      showSell &&
+      css`
+        display: flex;
+        grid-column: 2/6;
+        grid-row: 2/11;
+        position: relative;
+        background-color: white;
+      `}
   }
 `;
 
@@ -41,6 +64,7 @@ export const HEADER = styled.header`
   font-weight: 600;
   padding: 0 1vw;
   min-height: 3rem;
+  position: relative;
 `;
 export const LIST = styled.div`
   flex: 8;
@@ -90,4 +114,19 @@ export const TITLE = styled.div`
 `;
 export const PRICE = styled.div`
   color: grey;
+`;
+
+// -----------모바일 버튼 -------------- //
+
+export const MOBILE_ESC = styled.div<{ showSell: boolean }>`
+  display: none;
+  color: black;
+  position: absolute;
+  top: 50%;
+  right: 0.7rem;
+  transform: translateY(-50%);
+  margin-left: auto;
+  cursor: pointer;
+  color: black;
+  ${(props) => props.showSell && 'display:block;'}
 `;

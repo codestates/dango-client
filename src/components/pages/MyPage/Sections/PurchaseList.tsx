@@ -1,21 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PURCHASELIST } from './PurchaseListStyle';
 import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 import { handleCategory } from '../../MapPage/Sections/functions';
 import { HEADER, LIST, ITEM, CATEGORY_IMG, SELLINFO as PURCHASE_INFO, TITLE, PRICE } from './SellingListStyle';
-import { GO_TO_REVIEW, STAR } from './PurchaseListStyle';
+import { PURCHASELIST, GO_TO_REVIEW, STAR, MOBILE_ESC } from './PurchaseListStyle';
 
 import { Type } from '../MyPage';
 
 interface Props {
   reviewed: Type[];
   unreviewed: Type[];
-  show: boolean;
-  setShow: (show: boolean) => void;
+  showPurchase: boolean;
+  setShowPurchase: (show: boolean) => void;
 }
 
-export default function PurchaseList({ reviewed, unreviewed, show, setShow }: Props): JSX.Element {
+export default function PurchaseList({ reviewed, unreviewed, showPurchase, setShowPurchase }: Props): JSX.Element {
   const limitTitle = (title: string): string => {
     if (title.length > 10) {
       return `${title.slice(0, 20)}...`;
@@ -42,8 +41,14 @@ export default function PurchaseList({ reviewed, unreviewed, show, setShow }: Pr
   };
   return (
     <>
-      <PURCHASELIST>
-        <HEADER>구매 내역</HEADER>
+      <PURCHASELIST showPurchase={showPurchase}>
+        <HEADER>
+          {' '}
+          <span>구매 내역</span>
+          <MOBILE_ESC showPurchase={showPurchase} onClick={() => setShowPurchase(false)}>
+            ✕
+          </MOBILE_ESC>
+        </HEADER>
         <LIST>
           {unreviewed.map((list: Type) => (
             <ITEM to={`/detail/${list._id}`} key={Math.random()}>

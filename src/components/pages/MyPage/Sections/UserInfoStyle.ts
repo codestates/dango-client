@@ -59,13 +59,14 @@ export const HELLO = styled.div`
   grid-row: 1/4;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   font-size: ${({ theme }) => theme.fontSizes.xxl};
   color: #4c4c4c;
   font-weight: bold;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 
   @media screen and (max-width: 768px) {
     grid-column: 6/11;
@@ -75,6 +76,14 @@ export const HELLO = styled.div`
     grid-column: 1/11;
     grid-row: 1/4;
   }
+`;
+
+export const HELLO_TEXT = styled.div`
+  line-height: 140%;
+`;
+
+export const PURPLE = styled.span`
+  color: ${({ theme }) => theme.colors.purple};
 `;
 
 export const PROFILE_BOX = styled.div`
@@ -157,7 +166,7 @@ export const NICKNAME_INPUT = styled.input`
   ${(props) => props.disabled && 'margin-bottom:19px;'}// modifyBox만큼 미리 마진을줘서 수정할때 위치안변하게
 `;
 export const MODIFY_BUTTON = styled(ModifySvg)`
-  fill: ${({ theme }) => theme.colors.middlepurple};
+  fill: ${({ theme }) => theme.colors.purple};
   height: 1rem;
   cursor: pointer;
   margin-left: auto;
@@ -219,3 +228,20 @@ export const WITHDRAWAL_BOX = styled.div`
 export const WITHDRAWAL_BUTTON = styled(Withdrawal)`
   all: unset;
 `;
+
+// ----------------모바일 용 버튼 ----------------- //
+export const MOBILE_BUTTON = styled.div`
+  display: none;
+
+  @media screen and (max-width: 532px) {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    width: 50%;
+    justify-content: space-between;
+  }
+`;
+export const OPEN_SELL_BUTTON = styled(SSBUTTON)``;
+export const OPEN_PURCHASE_BUTTON = styled(SSBUTTON)``;

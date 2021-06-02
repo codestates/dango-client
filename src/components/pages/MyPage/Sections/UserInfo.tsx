@@ -8,6 +8,8 @@ import server from '../../../../api';
 import getToday from '../../../../utils/getToday';
 import {
   HELLO,
+  HELLO_TEXT,
+  PURPLE,
   PROFILE_BOX,
   USERINFO,
   WRAPIMG,
@@ -22,12 +24,16 @@ import {
   MODIFYCHECK_BUTTON,
   MODIFY_ESC_BUTTON,
   WITHDRAWAL_BOX,
+  MOBILE_BUTTON,
+  OPEN_SELL_BUTTON,
+  OPEN_PURCHASE_BUTTON,
 } from './UserInfoStyle';
 
 interface Props {
-  setShow: (show: boolean) => void;
+  setShowSell: (show: boolean) => void;
+  setShowPurchase: (show: boolean) => void;
 }
-export default function UserInfo({ setShow }: Props): JSX.Element {
+export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo, accessToken } = useSelector((state: RootState) => state.user, shallowEqual);
   const [modifyMode, setModifyMode] = useState<boolean>(false);
@@ -113,9 +119,12 @@ export default function UserInfo({ setShow }: Props): JSX.Element {
   return (
     <USERINFO>
       <HELLO>
-        반갑습니다 {userInfo?.nickname}님,
-        <br />
-        <br /> {getToday('weekend')}도 DANGO와 함께!
+        <HELLO_TEXT>
+          반갑습니다 <PURPLE>{userInfo?.nickname}</PURPLE>님,
+        </HELLO_TEXT>
+        <HELLO_TEXT>
+          {getToday('weekend')}도 <PURPLE>DANGO</PURPLE>와 함께!
+        </HELLO_TEXT>
       </HELLO>
       <PROFILE_BOX>
         <WRAPIMG>
@@ -163,6 +172,10 @@ export default function UserInfo({ setShow }: Props): JSX.Element {
           <Withdrawal />
         </WITHDRAWAL_BOX>
       </INFO>
+      <MOBILE_BUTTON>
+        <OPEN_SELL_BUTTON onClick={() => setShowSell(true)}>판매 목록</OPEN_SELL_BUTTON>
+        <OPEN_PURCHASE_BUTTON onClick={() => setShowPurchase(true)}>구매 목록</OPEN_PURCHASE_BUTTON>
+      </MOBILE_BUTTON>
     </USERINFO>
   );
 }
