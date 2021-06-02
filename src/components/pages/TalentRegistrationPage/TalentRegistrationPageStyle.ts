@@ -99,15 +99,9 @@ export const ADDRESS_SPAN = styled.span`
 `;
 
 export const ADDRESS = styled.div`
-  // border: 1px solid red;
-  // grid-column: 2/3;
-  // width: 60%;
-  // height: 10%;
-  // ${({ theme }) => theme.common.flexCenter}
-  // box-shadow: 1px 1px 3px 1px #dadce0;
-  // max-width: 600px;
+  ${({ theme }) => theme.common.flexCenter};
   width: 368px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: ${({ theme }) => theme.colors.purple};
   height: 2.5rem;
 `;
@@ -140,11 +134,6 @@ export const CATEGORY = styled.select`
 
 export const OPTION = styled.option`
   all: unset;
-  color: red;
-  &:hover {
-    color: ${({ theme }) => theme.colors.yellow};
-    border: 2px solid ${({ theme }) => theme.colors.yellow};
-  }
 `;
 
 export const PRICEBOX = styled.div`
@@ -218,7 +207,7 @@ export const FREEINPUT = styled.input`
 `;
 
 export const DESCRIPTIONBOX = styled.div`
-  height: 25%;
+  height: 30%;
   display: flex;
   // align-items: center;
 `;

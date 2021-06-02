@@ -65,6 +65,7 @@ function TalentDetailPage(): JSX.Element {
   const { Kakao } = window;
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
   const { isFromDetail, isFirstChat } = useSelector((state: RootState) => state.chattings);
+  const { userRole } = useSelector((state: RootState) => state.talent, shallowEqual);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -234,16 +235,19 @@ function TalentDetailPage(): JSX.Element {
           <NICKNAME>{detailData?.userInfo.nickname}</NICKNAME>
         </PROFILE>
         <GRADE>
-          <RATING>별점 평균 : {detailData?.ratings[0] ?? '0.0'}</RATING>
+          <RATING>별점 평균 : {detailData?.ratings[0] ?? '0'}</RATING>
           <COUNT>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</COUNT>
         </GRADE>
         <BUTTONDIV>
-          <SBUTTON onClick={handleChat} type="button">
-            채팅으로 거래하기
-          </SBUTTON>
-          <SBUTTON style={{ marginTop: '5px' }} type="button" onClick={handleClick}>
-            재능 수정하기
-          </SBUTTON>
+          {userRole === 'seller' ? (
+            <SBUTTON style={{ marginTop: '5px' }} type="button" onClick={handleClick}>
+              재능 수정하기
+            </SBUTTON>
+          ) : (
+            <SBUTTON onClick={handleChat} type="button">
+              채팅으로 거래하기
+            </SBUTTON>
+          )}
         </BUTTONDIV>
       </SELLER>
       <DETAIL>

@@ -105,7 +105,7 @@ export default function TalentRegistrationPage(): JSX.Element {
           <LocationSearch setLocation={setLocation} setAddress={setAddress} addressRef={addressRef} />
         </SEARCHBOX>
         <ADDRESSBOX>
-          <ADDRESS_SPAN>주소</ADDRESS_SPAN>
+          <ADDRESS_SPAN />
           <ADDRESS ref={addressRef} />
         </ADDRESSBOX>
 
