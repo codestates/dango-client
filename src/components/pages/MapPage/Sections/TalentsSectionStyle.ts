@@ -2,33 +2,45 @@ import styled from 'styled-components';
 
 export const CONTAINER = styled.div`
   // grid-column: 5/7;
-  width: 420px;
+  width: 370px;
   // border: 1px solid;
   z-index: 2;
   margin-left: auto;
   display: flex;
   flex-direction: column;
   // justify-content: space-between;
-  /* @media screen and (max-width: 900px) {
-    width: 450px;
-  } */
+  font-size: 0.9rem;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const FILTERSECTION = styled.div`
+  width: 370px;
   height: 30vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  padding: 1rem 0;
+
   // box-shadow: 1px 1px 3px 1px #dadce0;
 `;
 
 export const CHECKBOX = styled.div`
   // max-width: 640px;
   border-bottom: 2px solid ${({ theme }) => theme.colors.lightgray};
-  padding: 0 1rem 1rem 1rem;
+  // padding: 0 1rem 1rem 1rem;
   //  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  //  border: 1px solid;
+  height: 60%;
+  padding: 0 1rem;
+`;
+
+export const CHECKBOX_SPAN = styled.span`
+  font-size: 0.9rem;
 `;
 
 export const UL = styled.ul`
@@ -54,6 +66,7 @@ export const LABEL = styled.label`
   padding: 8px 12px;
   user-select: none;
   cursor: pointer;
+  font-size: 0.8rem;
   &:before {
     display: inline-block;
     font-style: normal;
@@ -77,18 +90,30 @@ export const INPUT = styled.input`
 `;
 
 export const RADIOBOX = styled.div`
-  width: 100%;
-  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 35%;
+  padding: 0 1rem;
+`;
+
+export const RADIOBOX_SPAN = styled.span`
+  font-size: 0.9rem;
+`;
+
+export const RADIODIV = styled.div`
+  // width: 100%;
+  // max-width: 600px;
   // margin: 2rem auto;
   background: white;
   // border: 1px solid;
   border-radius: 3px;
   text-align: left;
-  display: flex;
-  justify-content: space-evenly;
-  padding: 1rem 1rem 0 1rem;
+  display: inline;
+  // flex-direction: column;
+  // justify-content: space-evenly;
+  // padding: 1rem 1rem 0 1rem;
 `;
-
 export const RADIOLABEL = styled(LABEL)`
   // color: #adadad;
   border-radius: 5px;
@@ -98,11 +123,11 @@ export const RADIOINPUT = styled.input`
   display: absolute;
   position: absolute;
   opacity: 0;
-  &:checked + ${RADIOLABEL} {
+  &:checked + ${LABEL} {
     background-color: ${({ theme }) => theme.colors.yellow};
     color: #fff;
   }
-  &:hover + ${RADIOLABEL} {
+  &:hover + ${LABEL} {
     background-color: ${({ theme }) => theme.colors.yellow};
     color: #fff;
   }

@@ -38,7 +38,7 @@ export const PROFILEIMG = styled.div`
 
 export const IMG = styled.img`
   border-radius: 50%;
-  width: 80%;
+  width: 100%;
 `;
 
 export const NICKNAME = styled.div`

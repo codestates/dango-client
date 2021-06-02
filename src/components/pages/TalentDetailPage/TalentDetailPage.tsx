@@ -65,6 +65,7 @@ function TalentDetailPage(): JSX.Element {
   const { Kakao } = window;
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
   const { isFromDetail, isFirstChat } = useSelector((state: RootState) => state.chattings);
+  const { userRole } = useSelector((state: RootState) => state.talent, shallowEqual);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -74,6 +75,7 @@ function TalentDetailPage(): JSX.Element {
   const input = useRef<HTMLInputElement | null>(null);
   const textarea = useRef<HTMLTextAreaElement | null>(null);
   const copyUrlRef = useRef<HTMLTextAreaElement | null>(null);
+  const select = useRef<HTMLSelectElement | null>(null);
 
   const { talentId } = useParams<{ talentId: string }>();
   const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
@@ -89,6 +91,7 @@ function TalentDetailPage(): JSX.Element {
         // 작성자의 id와 유저의 id가 같으면 판매자
         if (res.data.userInfo._id === userInfo?.id) {
           userRole = 'seller';
+
           // 유저의 unreviewed 에 해당 글의 id가있으면 리뷰작성가능자
         } else if (userInfo?.unreviewed.indexOf(talentId) !== -1) {
           userRole = 'reviewer';
@@ -159,14 +162,19 @@ function TalentDetailPage(): JSX.Element {
 
   const submitEdit = (): void => {
     if (!editDetail.title || !editDetail.description) {
-      alert('모든 내용을 입력해주세요!');
+      dispatch(openModal({ type: 'error', text: '모든 내용을 입력해주세요.' }));
     } else {
-      // body 넣을 예정
+      const body = {
+        userId: userInfo?.id,
+        talentId,
+        ...editDetail,
+      };
       server
-        .post('/talents/edit')
+        .post('/talents/edit', body)
         .then((response) => {
-          setDetailData(response.data);
+          setEditDetail(response.data.data);
           setIsClicked(false);
+          dispatch(openModal({ type: 'ok', text: '수정이 완료되었습니다.' }));
         })
         .catch(() => '');
     }
@@ -229,21 +237,24 @@ function TalentDetailPage(): JSX.Element {
       <SELLER>
         <PROFILE>
           <PROFILEIMG>
-            <IMG src={detailData?.userInfo.socialData.image} alt="프로필사진" />
+            <IMG src={detailData?.userInfo?.socialData?.image} alt="프로필사진" />
           </PROFILEIMG>
-          <NICKNAME>{detailData?.userInfo.nickname}</NICKNAME>
+          <NICKNAME>{detailData?.userInfo?.nickname}</NICKNAME>
         </PROFILE>
         <GRADE>
-          <RATING>별점 평균 : {detailData?.ratings[0] ?? '0.0'}</RATING>
+          <RATING>별점 평균 : {detailData?.ratings[0] ?? '0'} / 5</RATING>
           <COUNT>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</COUNT>
         </GRADE>
         <BUTTONDIV>
-          <SBUTTON onClick={handleChat} type="button">
-            채팅으로 거래하기
-          </SBUTTON>
-          <SBUTTON style={{ marginTop: '5px' }} type="button" onClick={handleClick}>
-            재능 수정하기
-          </SBUTTON>
+          {userRole === 'seller' ? (
+            <SBUTTON style={{ marginTop: '5px' }} type="button" onClick={handleClick}>
+              재능 수정하기
+            </SBUTTON>
+          ) : (
+            <SBUTTON onClick={handleChat} type="button">
+              채팅으로 거래하기
+            </SBUTTON>
+          )}
         </BUTTONDIV>
       </SELLER>
       <DETAIL>
@@ -251,7 +262,7 @@ function TalentDetailPage(): JSX.Element {
           <>
             <TOP>
               <CATEGORY>
-                <EDITCATEGORY onBlur={(event) => setEditDetail(event.target.value)}>
+                <EDITCATEGORY ref={select} onChange={changeInput('category')} defaultValue={editDetail?.category}>
                   {categoryList.map((category) => (
                     <OPTION key={category}>{category}</OPTION>
                   ))}
@@ -261,9 +272,10 @@ function TalentDetailPage(): JSX.Element {
                 <PRICEINPUT
                   type="number"
                   ref={input}
-                  value={editDetail?.price}
+                  defaultValue={editDetail?.price}
                   onChange={changeInput('price')}
                   placeholder="입력값이 없으면 무료재능기부가 됩니다!"
+                  min="0"
                 />
                 원
               </PRICE>
@@ -271,7 +283,7 @@ function TalentDetailPage(): JSX.Element {
             <TITLE>
               <TITLEINPUT
                 ref={input}
-                value={editDetail?.title}
+                defaultValue={editDetail?.title}
                 onChange={changeInput('title')}
                 placeholder="제목을 입력해주세요."
               />
@@ -280,7 +292,7 @@ function TalentDetailPage(): JSX.Element {
             <EDITDESC>
               <TEXTAREA
                 ref={textarea}
-                value={editDetail?.description}
+                defaultValue={editDetail?.description}
                 onChange={changeInput('description')}
                 placeholder="내용을 입력해주세요."
               />
@@ -311,7 +323,7 @@ function TalentDetailPage(): JSX.Element {
                 <SHAREDIV onClick={handleCopyUrl}>
                   <CLIP src="/images/link.png" alt="link" />
                   <form>
-                    <SHARETEXTAREA ref={copyUrlRef} value={window.location.href} />
+                    <SHARETEXTAREA ref={copyUrlRef} defaultValue={window.location.href} />
                   </form>
                 </SHAREDIV>
               </SHAREBOX>

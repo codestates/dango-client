@@ -4,6 +4,7 @@ import { io } from 'socket.io-client';
 import styled from 'styled-components';
 import { RootState } from '../../../_reducer';
 import { setIsFirstChat, newChattingRoom } from '../../../_reducer/chattings';
+import { initCount } from '../../../_reducer/user';
 import ChattingOption from './Sections/ChattingOption';
 import ChattingRoom from './Sections/ChattingRoom';
 import Modal from '../../../utils/modal';
@@ -133,6 +134,8 @@ function ChattingRoomsList(): JSX.Element {
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
     setShowChatList(false);
+    // 채팅방에 들어가면 안 읽은 메시지 수를 0으로 만들어준다.
+    dispatch(initCount({ index }));
   };
 
   return (
@@ -141,7 +144,7 @@ function ChattingRoomsList(): JSX.Element {
       <CONTAINER>
         <CHATLIST show={showChatList}>
           <CHATLISTTITLE>
-            <CHATLISTTEXT>채팅목록</CHATLISTTEXT>
+            <CHATLISTTEXT>채팅 목록</CHATLISTTEXT>
             <CHATLISTESC show={showChatList} onClick={() => setShowChatList(false)}>
               ✕
             </CHATLISTESC>

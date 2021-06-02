@@ -21,9 +21,19 @@ import {
   FREEINPUT,
   FREELABEL,
   DESCRIPTION,
-  CATEGPRICE,
   BUTTONDIV,
   OPTION,
+  TITLEBOX,
+  TITLE_SPAN,
+  CATEGORYBOX,
+  CATEGORY_SPAN,
+  PRICE_SPAN,
+  SEARCH_SPAN,
+  ADDRESSBOX,
+  ADDRESS_SPAN,
+  DESCRIPTIONBOX,
+  DESCRIPTION_SPAN,
+  PRICEBOX,
 } from './TalentRegistrationPageStyle';
 
 const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
@@ -91,33 +101,47 @@ export default function TalentRegistrationPage(): JSX.Element {
     <CONTAINER>
       <Modal />
       <FORM>
-        <TITLE onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" />
+        <TITLEBOX>
+          <TITLE_SPAN>제목</TITLE_SPAN>
+          <TITLE onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" />
+        </TITLEBOX>
 
         <SEARCHBOX>
+          <SEARCH_SPAN>지역 검색</SEARCH_SPAN>
           <LocationSearch setLocation={setLocation} setAddress={setAddress} addressRef={addressRef} />
-          <ADDRESS ref={addressRef} />
         </SEARCHBOX>
+        <ADDRESSBOX>
+          <ADDRESS_SPAN />
+          <ADDRESS ref={addressRef} />
+        </ADDRESSBOX>
 
-        <CATEGPRICE>
+        <CATEGORYBOX>
+          <CATEGORY_SPAN>카테고리</CATEGORY_SPAN>
           <CATEGORY onBlur={handleChange('category')}>
             {categoryList.map((category) => (
               <OPTION key={category}>{category}</OPTION>
             ))}
           </CATEGORY>
+        </CATEGORYBOX>
 
+        <PRICEBOX>
+          <PRICE_SPAN>가격</PRICE_SPAN>
           <PRICE>
-            <PRICEINPUT onChange={handleChange('price')} value={registerData.price} type="number" />
             <FREE onChange={handleFreeTalent}>
               <FREEINPUT type="checkbox" id="free" />
               <FREELABEL htmlFor="free">✓ 재능 기부</FREELABEL>
             </FREE>
+            <PRICEINPUT onChange={handleChange('price')} value={registerData.price} type="number" />
           </PRICE>
-        </CATEGPRICE>
+        </PRICEBOX>
 
-        <DESCRIPTION
-          onChange={handleChange('description')}
-          placeholder="ex) 비좁아진 냉장고의 공간을 되찾아 드립니다!"
-        />
+        <DESCRIPTIONBOX>
+          <DESCRIPTION_SPAN>설명</DESCRIPTION_SPAN>
+          <DESCRIPTION
+            onChange={handleChange('description')}
+            placeholder="ex) 비좁아진 냉장고의 공간을 되찾아 드립니다! &#13;&#10; 주부 경력 20년!!"
+          />
+        </DESCRIPTIONBOX>
       </FORM>
       <ImageUploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
       <BUTTONDIV>

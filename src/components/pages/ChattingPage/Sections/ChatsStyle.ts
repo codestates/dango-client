@@ -69,7 +69,7 @@ export const MESSAGE = styled.div<ChatProps>`
   background-color: ${(props) => (props.mine ? ({ theme }) => theme.colors.purple : 'white')};
   ${(props) => {
     if (props.notice) {
-      return 'background-color: #ab8406; color:whitesmoke; font-weight:bold;';
+      return 'background-color: #FA697C; color:whitesmoke;';
     }
     return undefined;
   }}
@@ -96,7 +96,7 @@ export const MESSAGE = styled.div<ChatProps>`
 
     ${(props) => {
       if (props.notice) {
-        return 'border-top-color: #ab8406;';
+        return 'border-top-color: #FA697C;';
       }
       return undefined;
     }}

@@ -3,17 +3,17 @@ import styled from 'styled-components';
 export const CONTAINER = styled.div`
   place-items: center;
   grid-column: 10/13;
-  grid-row: 3/12;
+  grid-row: 1/10;
   box-shadow: 1px 1px 3px 1px #dadce0;
-  margin-right: 1rem;
+  // margin-right: 1rem;
   /* width: auto;
   height: auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  @media screen and (max-width: 850px) {
-    grid-column: 1/10;
+  @media screen and (max-width: 768px) {
+    grid-column: 1/13;
     grid-row: 13/16;
   }
 `;
