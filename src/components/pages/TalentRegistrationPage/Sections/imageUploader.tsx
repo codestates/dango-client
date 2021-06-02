@@ -14,10 +14,8 @@ function imageUploader({ imageUrl, setImageUrl }: any): JSX.Element {
       headers: { 'Content-Type': 'multipart/form-data' },
     };
 
-    if (acceptedFiles.length > 1) {
-      acceptedFiles.map((file: any, index: number) => formData.append('file', file[index].path));
-    } else {
-      formData.append('file', acceptedFiles[0].path);
+    for (let i = 0; i < acceptedFiles.length; i++) {
+      formData.append('file', acceptedFiles[i]);
     }
 
     server.post('/images/upload', formData, config).then((response) => {
