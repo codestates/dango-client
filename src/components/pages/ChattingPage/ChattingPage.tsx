@@ -144,7 +144,7 @@ function ChattingRoomsList(): JSX.Element {
       <CONTAINER>
         <CHATLIST show={showChatList}>
           <CHATLISTTITLE>
-            <CHATLISTTEXT>채팅목록</CHATLISTTEXT>
+            <CHATLISTTEXT>채팅 목록</CHATLISTTEXT>
             <CHATLISTESC show={showChatList} onClick={() => setShowChatList(false)}>
               ✕
             </CHATLISTESC>

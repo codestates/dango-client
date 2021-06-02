@@ -11,6 +11,8 @@ export const CHATTINGOPTION = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  background-color: white;
+  // border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 `;
 
 export const COMPLETEBTN = styled(SBUTTON)`
@@ -21,14 +23,16 @@ export const COMPLETEBTN = styled(SBUTTON)`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #a68bf6;
+  &:hover {
+    background: #fa697c;
+  }
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 export const COMPLETED = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  color: #ab8406;
+  color: #fa697c;
   margin: 0 auto;
   white-space: nowrap;
 `;
@@ -39,9 +43,9 @@ export const ESCAPEBTN = styled(EscapeSvg)`
   min-height: 1.2rem;
   cursor: pointer;
   margin-right: 1.7vw;
-  fill: ${({ theme }) => theme.colors.middlepurple};
+  fill: ${({ theme }) => theme.colors.purple};
   &:hover {
-    fill: ${({ theme }) => theme.colors.mustard};
+    fill: #fa697c;
   }
   &:active {
     fill: ${({ theme }) => theme.colors.lightpurple};

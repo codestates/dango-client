@@ -26,6 +26,9 @@ import {
   LABEL,
   RADIOINPUT,
   RADIOLABEL,
+  CHECKBOX_SPAN,
+  RADIOBOX_SPAN,
+  RADIODIV,
 } from './TalentsSectionStyle';
 
 interface TalentsSectionProps {
@@ -108,6 +111,7 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
     <CONTAINER>
       <FILTERSECTION>
         <CHECKBOX>
+          <CHECKBOX_SPAN>카테고리</CHECKBOX_SPAN>
           <UL>
             {filterData.map((ele) => (
               <LI key={ele.id} onChange={() => handleCheckBox(ele.name)}>
@@ -124,14 +128,17 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
           </UL>
         </CHECKBOX>
         <RADIOBOX>
+          <RADIOBOX_SPAN>정렬</RADIOBOX_SPAN>
           {/* <RADIOINPUT type="radio" id="default" name="default" value="default" checked />
           <LABEL htmlFor="default">거리순</LABEL> */}
-          {sortData.map((ele) => (
-            <div key={ele.id} onChange={handleRadioBox} style={{ marginRight: '0.5rem' }}>
-              <RADIOINPUT type="radio" id={ele.id} name="sort" value={ele.id} />
-              <RADIOLABEL htmlFor={ele.id}>{ele.name}</RADIOLABEL>
-            </div>
-          ))}
+          <UL>
+            {sortData.map((ele) => (
+              <LI key={ele.id} onChange={handleRadioBox} style={{ marginRight: '0.5rem' }}>
+                <RADIOINPUT type="radio" id={ele.id} name="sort" value={ele.id} />
+                <LABEL htmlFor={ele.id}>{ele.name}</LABEL>
+              </LI>
+            ))}
+          </UL>
         </RADIOBOX>
       </FILTERSECTION>
       <TALENTSLIST>
