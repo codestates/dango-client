@@ -146,7 +146,7 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
               <STARNICK>
                 <RATINGS>
                   {emoticons.handleStarRatings(talent[0].ratings[0])}
-                  {talent[0].ratings[1] ?? '(0)'}
+                  {talent[0].ratings[1] !== undefined ? `(${talent[0].ratings[1]})` : '(0)'}
                 </RATINGS>
                 <NICKNAME>{talent[0].nickname}</NICKNAME>
               </STARNICK>

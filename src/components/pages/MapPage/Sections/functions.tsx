@@ -24,9 +24,9 @@ export function handleCategory(category: string): string {
 }
 
 // 별점 평균 범위별로 렌더
-export function handleStarRatings(ratings: any): JSX.Element {
-  switch (ratings) {
-    case ratings >= 4.5: // 별 다섯 개
+export function handleStarRatings(ratings: number | undefined): JSX.Element {
+  switch (true) {
+    case ratings !== undefined && ratings >= 4.5: // 별 다섯 개
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -36,7 +36,7 @@ export function handleStarRatings(ratings: any): JSX.Element {
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
         </>
       );
-    case ratings < 4.5 && ratings >= 3.5: // 별 네 개
+    case ratings !== undefined && ratings < 4.5 && ratings >= 3.5: // 별 네 개
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -46,7 +46,7 @@ export function handleStarRatings(ratings: any): JSX.Element {
           <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
         </>
       );
-    case ratings < 3.5 && ratings >= 2.5: // 별 세 개
+    case ratings !== undefined && ratings < 3.5 && ratings >= 2.5: // 별 세 개
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -56,7 +56,7 @@ export function handleStarRatings(ratings: any): JSX.Element {
           <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
         </>
       );
-    case ratings < 2.5 && ratings >= 1.5: // 별 두 개
+    case ratings !== undefined && ratings < 2.5 && ratings >= 1.5: // 별 두 개
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -66,7 +66,7 @@ export function handleStarRatings(ratings: any): JSX.Element {
           <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
         </>
       );
-    case ratings < 1.5 && ratings >= 0.5: // 별 한 개
+    case ratings !== undefined && ratings < 1.5 && ratings >= 0.5: // 별 한 개
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
