@@ -235,7 +235,7 @@ function TalentDetailPage(): JSX.Element {
           <NICKNAME>{detailData?.userInfo.nickname}</NICKNAME>
         </PROFILE>
         <GRADE>
-          <RATING>별점 평균 : {detailData?.ratings[0] ?? '0'}</RATING>
+          <RATING>별점 평균 : {detailData?.ratings[0] ?? '0'} / 5</RATING>
           <COUNT>고용 횟수 : {detailData?.ratings[1] ?? '0'}회</COUNT>
         </GRADE>
         <BUTTONDIV>

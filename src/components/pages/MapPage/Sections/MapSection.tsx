@@ -21,10 +21,8 @@ const SEARCH = styled.div`
   grid-column: 1/5;
   top: 3%;
   right: 2%;
-  width: 280px;
-  height: 50px;
+  width: 400px;
   z-index: 2;
-  background-color: rgba(198, 191, 191, 0.5);
   background-color: white;
 `;
 
