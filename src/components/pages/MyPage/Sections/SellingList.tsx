@@ -2,25 +2,33 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Type } from '../MyPage';
 import { handleCategory } from '../../MapPage/Sections/functions';
-import { SELLINGLIST, HEADER, LIST, ITEM, CATEGORY_IMG, SELLINFO } from './SellingListStyle';
+import { SELLINGLIST, HEADER, LIST, ITEM, CATEGORY_IMG, SELLINFO, TITLE, PRICE } from './SellingListStyle';
 
 interface Props {
   selling: Type[];
+  show: boolean;
+  setShow: (show: boolean) => void;
 }
 
-export default function SellingList({ selling }: Props): JSX.Element {
+export default function SellingList({ selling, show, setShow }: Props): JSX.Element {
+  const limitTitle = (title: string): string => {
+    if (title.length > 10) {
+      return `${title.slice(0, 20)}...`;
+    }
+    return title;
+  };
+
   return (
     <>
       <SELLINGLIST>
-        <HEADER> Selling List </HEADER>
+        <HEADER> 판매 내역 </HEADER>
         <LIST>
           {selling.map((list: Type) => (
-            <ITEM key={Math.random()}>
+            <ITEM to={`/detail/${list._id}`} key={Math.random()}>
               <CATEGORY_IMG>{handleCategory(list.category)}</CATEGORY_IMG>
               <SELLINFO>
-                <Link to={`/detail/${list._id}`}>제목: {list.title}</Link>
-                <div>주소: {list.address}</div>
-                <div>가격: {list.price} 원</div>
+                <TITLE>{limitTitle(list.title)}</TITLE>
+                <PRICE>판매 가격: {list.price} 원</PRICE>
               </SELLINFO>
             </ITEM>
           ))}

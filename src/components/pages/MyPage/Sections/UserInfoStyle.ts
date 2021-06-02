@@ -25,16 +25,18 @@ import Withdrawal from '../../SigninPage/Withdrawal';
 // `;
 
 export const USERINFO = styled.div`
-  grid-column: 1/4;
+  grid-column: 1/3;
   grid-row: 2/11;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  grid-column-gap: 2%;
+
   border-radius: 0.2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: relative;
   overflow: hidden;
+  /* min-width: 261px; */
 
   transition: all 0.2s ease-in-out;
   &:hover {
@@ -43,31 +45,73 @@ export const USERINFO = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    grid-column: 2/10;
+    grid-column: 1/7;
     grid-row: 1/6;
     margin-bottom: 1rem;
-    flex-direction: row;
+  }
+  @media screen and (max-width: 532px) {
+    grid-column: 2/6;
+    grid-row: 2/11;
   }
 `;
+export const HELLO = styled.div`
+  grid-column: 1/11;
+  grid-row: 1/4;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: ${({ theme }) => theme.fontSizes.xxl};
+  color: #4c4c4c;
+  font-weight: bold;
+  white-space: nowrap;
+
+  @media screen and (max-width: 768px) {
+    grid-column: 6/11;
+    grid-row: 1/6;
+  }
+  @media screen and (max-width: 532px) {
+    grid-column: 1/11;
+    grid-row: 1/4;
+  }
+`;
+
 export const PROFILE_BOX = styled.div`
-  flex: 3;
+  grid-column: 1/11;
+  grid-row: 4/9;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  border: 1px solid red;
+  @media screen and (max-width: 768px) {
+    grid-column: 1/6;
+    grid-row: 1/11;
+  }
+  @media screen and (max-width: 532px) {
+    grid-column: 1/11;
+    grid-row: 4/9;
+  }
 
   /* background-color: ${({ theme }) => theme.colors.middlepurple}; */
 `;
 export const INFO = styled.div`
-  flex: 2;
+  grid-column: 1/11;
+  grid-row: 9/11;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  border: 1px solid red;
+  @media screen and (max-width: 768px) {
+    grid-column: 6/11;
+    grid-row: 6/11;
+  }
+  @media screen and (max-width: 532px) {
+    grid-column: 1/11;
+    grid-row: 9/11;
+  }
 `;
 
 // ------------PROFILE_BOX 안 ----------------//
@@ -76,7 +120,6 @@ export const WRAPIMG = styled.div`
   width: 10vw;
   border-radius: 70%;
   overflow: hidden;
-  border: 1px solid blue;
   min-width: 187px;
   min-height: 187px;
   margin-bottom: 1vw;
@@ -93,7 +136,6 @@ export const NICKNAME_BOX = styled.div`
   align-items: center;
   width: 100%;
   position: relative;
-  border: 1px solid;
 `;
 export const NICKNAME = styled.div<{ modify: boolean }>`
   display: flex;
@@ -101,7 +143,6 @@ export const NICKNAME = styled.div<{ modify: boolean }>`
   justify-content: center;
   align-items: center;
   position: relative;
-  border: 1px solid red;
 `;
 export const NICKNAME_INPUT = styled.input`
   flex: 1;
@@ -112,7 +153,6 @@ export const NICKNAME_INPUT = styled.input`
   width: 9rem;
   height: 2vw;
   min-height: 19px;
-  border: 1px solid;
 
   ${(props) => props.disabled && 'margin-bottom:19px;'}// modifyBox만큼 미리 마진을줘서 수정할때 위치안변하게
 `;
@@ -167,7 +207,6 @@ export const EMAIL = styled.div`
   align-items: center;
   width: 100%;
   flex: 9;
-  border: 1px solid;
 `;
 export const WITHDRAWAL_BOX = styled.div`
   display: flex;

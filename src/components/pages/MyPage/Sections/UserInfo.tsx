@@ -5,7 +5,9 @@ import { modifyNickname } from '../../../../_reducer/user';
 import { openModal } from '../../../../_reducer/modal';
 import Withdrawal from '../../SigninPage/Withdrawal';
 import server from '../../../../api';
+import getToday from '../../../../utils/getToday';
 import {
+  HELLO,
   PROFILE_BOX,
   USERINFO,
   WRAPIMG,
@@ -22,8 +24,10 @@ import {
   WITHDRAWAL_BOX,
 } from './UserInfoStyle';
 
-// 로그인방식에 따라 카카오이미지 같은거 붙이기
-export default function UserInfo(): JSX.Element {
+interface Props {
+  setShow: (show: boolean) => void;
+}
+export default function UserInfo({ setShow }: Props): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo, accessToken } = useSelector((state: RootState) => state.user, shallowEqual);
   const [modifyMode, setModifyMode] = useState<boolean>(false);
@@ -108,6 +112,11 @@ export default function UserInfo(): JSX.Element {
 
   return (
     <USERINFO>
+      <HELLO>
+        반갑습니다 {userInfo?.nickname}님,
+        <br />
+        <br /> {getToday('weekend')}도 DANGO와 함께!
+      </HELLO>
       <PROFILE_BOX>
         <WRAPIMG>
           <PROFILEIMG alt="prifileImage" src={userInfo?.image} />

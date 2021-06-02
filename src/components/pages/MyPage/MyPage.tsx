@@ -24,6 +24,7 @@ export default function MyPage(): JSX.Element {
   const [reviewed, setReviewed] = useState<Type[]>([]);
   const [unreviewed, setUnreviewed] = useState<Type[]>([]);
   const [selling, setSelling] = useState<Type[]>([]);
+  const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
     server
@@ -42,9 +43,9 @@ export default function MyPage(): JSX.Element {
     <>
       <Modal />
       <MYPAGE>
-        <UserInfo />
-        <PurchaseList reviewed={reviewed} unreviewed={unreviewed} />
-        <SellingList selling={selling} />
+        <UserInfo setShow={setShow} />
+        <PurchaseList reviewed={reviewed} unreviewed={unreviewed} show={show} setShow={setShow} />
+        <SellingList selling={selling} show={show} setShow={setShow} />
       </MYPAGE>
     </>
   );

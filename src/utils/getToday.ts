@@ -1,9 +1,21 @@
-export default function getToday(): string {
+export default function getToday(type = 'normal'): string {
   const date = new Date();
-  const today = date.toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-  return today;
+  if (type === 'normal') {
+    const today = date.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    return today;
+  }
+
+  const weekday = date
+    .toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long',
+    })
+    .split(' ')[3];
+  return weekday;
 }
