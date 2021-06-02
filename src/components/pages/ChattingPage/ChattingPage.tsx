@@ -149,6 +149,17 @@ function ChattingRoomsList(): JSX.Element {
               ✕
             </CHATLISTESC>
           </CHATLISTTITLE>
+          {!userInfo && <USER hover={false}>로그인이 필요한 서비스입니다.</USER>}
+          {userInfo?.chatRooms.length === 0 && (
+            <USER hover={false} style={{ textAlign: 'center' }}>
+              현재 참여하고 계신 채팅방이 없습니다! <br />
+              <br />
+              지금 바로 우리동네 이웃들과 재능을 나눠보세요!!
+              <br />
+              <br />
+              😊
+            </USER>
+          )}
           {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
             <USERBOX
               key={index}

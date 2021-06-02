@@ -11,12 +11,12 @@ import MYPAGE from './MyPageStyle';
 import Modal from '../../../utils/modal';
 
 export interface Type {
-  reviews?: number;
-  title?: string;
-  address?: string;
-  category?: string;
-  price?: number;
-  _id?: string;
+  reviews: number;
+  title: string;
+  address: string;
+  category: string;
+  price: number;
+  _id: string;
 }
 
 export default function MyPage(): JSX.Element {
@@ -24,11 +24,14 @@ export default function MyPage(): JSX.Element {
   const [reviewed, setReviewed] = useState<Type[]>([]);
   const [unreviewed, setUnreviewed] = useState<Type[]>([]);
   const [selling, setSelling] = useState<Type[]>([]);
+  const [showSell, setShowSell] = useState<boolean>(false);
+  const [showPurchase, setShowPurchase] = useState<boolean>(false);
 
   useEffect(() => {
     server
       .get(`/users/mypage/${userInfo?.id}`)
       .then((response) => {
+        console.log('mypage 데이터:', response.data);
         const { reviewed, unreviewed, selling } = response.data.data;
         setReviewed(reviewed);
         setUnreviewed(unreviewed);
@@ -41,9 +44,14 @@ export default function MyPage(): JSX.Element {
     <>
       <Modal />
       <MYPAGE>
-        <UserInfo />
-        <PurchaseList reviewed={reviewed} unreviewed={unreviewed} />
-        <SellingList selling={selling} />
+        <UserInfo setShowSell={setShowSell} setShowPurchase={setShowPurchase} />
+        <SellingList selling={selling} showSell={showSell} setShowSell={setShowSell} />
+        <PurchaseList
+          reviewed={reviewed}
+          unreviewed={unreviewed}
+          showPurchase={showPurchase}
+          setShowPurchase={setShowPurchase}
+        />
       </MYPAGE>
     </>
   );

@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { RootState } from '../../../_reducer';
 import { openModal } from '../../../_reducer/modal';
+
+const WITHDRAWAL_BUTTON = styled.button`
+  all: unset;
+  color: grey;
+  cursor: pointer;
+  font-size: 0.7rem;
+  &:hover {
+    font-weight: bold;
+  }
+`;
 
 function Withdrawal(): JSX.Element {
   const dispatch = useDispatch();
@@ -29,7 +40,7 @@ function Withdrawal(): JSX.Element {
     dispatch(
       openModal({
         type: 'danger',
-        text: '정말 탈퇴하시겠습니까?',
+        text: '정말 탈퇴하시겠습니까? 😢',
         callbackName: 'kakaoWithdrawal',
         callbackData: { config, withdrawalURL },
       }),
@@ -40,7 +51,7 @@ function Withdrawal(): JSX.Element {
     dispatch(
       openModal({
         type: 'danger',
-        text: '정말 탈퇴하시겠습니까?',
+        text: '정말 탈퇴하시겠습니까? 😢',
         callbackName: 'googleWithdrawal',
         callbackData: { config, withdrawalURL },
       }),
@@ -48,11 +59,12 @@ function Withdrawal(): JSX.Element {
   };
 
   return (
-    <div>
-      <button type="button" onClick={userInfo?.social === 'kakao' ? handleKakaoWithdrawal : handleGoogleWithdrawal}>
-        회원탈퇴
-      </button>
-    </div>
+    <WITHDRAWAL_BUTTON
+      type="button"
+      onClick={userInfo?.social === 'kakao' ? handleKakaoWithdrawal : handleGoogleWithdrawal}
+    >
+      회원탈퇴
+    </WITHDRAWAL_BUTTON>
   );
 }
 

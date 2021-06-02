@@ -269,7 +269,7 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
           ? locationList.map((location, idx) => {
               if (Array.isArray(location.address)) {
                 return (
-                  <LIBOX key={idx} onClick={() => handleClickLocation(location)}>
+                  <LIBOX key={idx} onClick={() => handleClickLocation(location)} onMouseEnter={() => setLiIdx(-3)}>
                     <LI idx={idx} liIdx={liIdx}>
                       {location.address[0]}
                     </LI>
@@ -280,7 +280,7 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
                 );
               }
               return (
-                <LIBOX key={idx} onClick={() => handleClickLocation(location)}>
+                <LIBOX key={idx} onClick={() => handleClickLocation(location)} onMouseEnter={() => setLiIdx(-3)}>
                   <LI idx={idx} liIdx={liIdx}>
                     {location.address}
                   </LI>
