@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import server from '../../../api/index';
 import { RootState } from '../../../_reducer';
@@ -42,8 +43,9 @@ export default function TalentRegistrationPage(): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
   const [location, setLocation] = useState<number[]>([]);
   const [address, setAddress] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<any>([]);
   const [registerData, setRegisterData] = useState({
-    images: ['사진'],
+    images: imageUrl,
     description: '',
     price: 0,
     category: '홈/리빙',
@@ -51,6 +53,7 @@ export default function TalentRegistrationPage(): JSX.Element {
     userId: userInfo?.id,
   });
   const addressRef = useRef<HTMLDivElement>(null);
+  const history = useHistory();
 
   useEffect(() => {
     console.log('location::::', location);
@@ -77,6 +80,7 @@ export default function TalentRegistrationPage(): JSX.Element {
     } else {
       const body = {
         ...registerData,
+        images: imageUrl,
         address,
         location,
         description: registerData.description.replace('\r\n', '<br>'),
@@ -84,8 +88,10 @@ export default function TalentRegistrationPage(): JSX.Element {
       server
         .post('/talents/create', body)
         .then((res) => {
-          console.log(res);
+          console.log('res', res);
           dispatch(openModal({ type: 'ok', text: '재능이 등록되었습니다!' }));
+          setImageUrl([]);
+          history.push('/map');
         })
         .catch((err) => console.log(err));
     }
@@ -137,7 +143,7 @@ export default function TalentRegistrationPage(): JSX.Element {
           />
         </DESCRIPTIONBOX>
       </FORM>
-      <ImageUploader />
+      <ImageUploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
       <BUTTONDIV>
         <BUTTON type="button" onClick={handleFormSubmit}>
           재능 등록
