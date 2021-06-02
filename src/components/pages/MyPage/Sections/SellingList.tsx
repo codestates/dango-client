@@ -1,21 +1,30 @@
 import React from 'react';
-import { SELLINGLIST } from './SellingListStyle';
-
+import { Link } from 'react-router-dom';
 import { Type } from '../MyPage';
+import { handleCategory } from '../../MapPage/Sections/functions';
+import { SELLINGLIST, HEADER, LIST, ITEM, CATEGORY_IMG, SELLINFO } from './SellingListStyle';
 
-export default function SellingList({ selling }: any): JSX.Element {
+interface Props {
+  selling: Type[];
+}
+
+export default function SellingList({ selling }: Props): JSX.Element {
   return (
     <>
       <SELLINGLIST>
-        SellingList
-        {selling.map((list: Type) => (
-          <div key={Math.random()}>
-            <div>{list.title}</div>
-            <div>{list.address}</div>
-            <div>{list.category}</div>
-            <div>{list.price}</div>
-          </div>
-        ))}
+        <HEADER> Selling List </HEADER>
+        <LIST>
+          {selling.map((list: Type) => (
+            <ITEM key={Math.random()}>
+              <CATEGORY_IMG>{handleCategory(list.category)}</CATEGORY_IMG>
+              <SELLINFO>
+                <Link to={`/detail/${list._id}`}>제목: {list.title}</Link>
+                <div>주소: {list.address}</div>
+                <div>가격: {list.price} 원</div>
+              </SELLINFO>
+            </ITEM>
+          ))}
+        </LIST>
       </SELLINGLIST>
     </>
   );

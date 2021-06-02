@@ -11,12 +11,12 @@ import MYPAGE from './MyPageStyle';
 import Modal from '../../../utils/modal';
 
 export interface Type {
-  reviews?: number;
-  title?: string;
-  address?: string;
-  category?: string;
-  price?: number;
-  _id?: string;
+  reviews: number;
+  title: string;
+  address: string;
+  category: string;
+  price: number;
+  _id: string;
 }
 
 export default function MyPage(): JSX.Element {
@@ -29,6 +29,7 @@ export default function MyPage(): JSX.Element {
     server
       .get(`/users/mypage/${userInfo?.id}`)
       .then((response) => {
+        console.log('mypage 데이터:', response.data);
         const { reviewed, unreviewed, selling } = response.data.data;
         setReviewed(reviewed);
         setUnreviewed(unreviewed);

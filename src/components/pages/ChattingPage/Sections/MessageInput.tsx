@@ -52,6 +52,7 @@ function MessageInput({ callback }: Props): JSX.Element {
       callback(message);
       if (inputRef.current) {
         inputRef.current.value = '';
+        setMessage('');
       }
     }
   };

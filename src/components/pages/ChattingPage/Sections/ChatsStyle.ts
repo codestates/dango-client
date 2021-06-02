@@ -54,7 +54,7 @@ export const MESSAGEBOX = styled.div<ChatProps>`
   align-items: flex-end;
 `;
 export const MESSAGE = styled.div<ChatProps>`
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.24);
 
   position: relative;
   /* display: inline-block; */

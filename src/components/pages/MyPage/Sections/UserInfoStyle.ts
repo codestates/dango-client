@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import { ReactComponent as ModifySvg } from '../../../../images/edit.svg';
-
+import { SSBUTTON } from '../../../../styles/Buttons';
+import Withdrawal from '../../SigninPage/Withdrawal';
 // const showModal = keyframes//`
 
 //    ${'0%'} {
@@ -30,10 +31,10 @@ export const USERINFO = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  border-radius: 1rem;
+  border-radius: 0.2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: relative;
-  top: 0;
+  overflow: hidden;
 
   transition: all 0.2s ease-in-out;
   &:hover {
@@ -43,28 +44,21 @@ export const USERINFO = styled.div`
 
   @media screen and (max-width: 768px) {
     grid-column: 2/10;
-    grid-row: 2/6;
+    grid-row: 1/6;
     margin-bottom: 1rem;
+    flex-direction: row;
   }
 `;
-export const IMAGEBOX = styled.div`
+export const PROFILE_BOX = styled.div`
   flex: 3;
   display: flex;
-  width: 100%;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid;
-`;
-export const WRAPIMG = styled.div`
-  height: 15vw;
-  width: 15vw;
-  border-radius: 70%;
-  overflow: hidden;
-`;
-export const PROFILEIMG = styled.img`
-  object-fit: cover;
   width: 100%;
-  height: 100%;
+  border: 1px solid red;
+
+  /* background-color: ${({ theme }) => theme.colors.middlepurple}; */
 `;
 export const INFO = styled.div`
   flex: 2;
@@ -73,42 +67,54 @@ export const INFO = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  border: 1px solid;
+  border: 1px solid red;
 `;
-export const NICKNAMEBOX = styled.div`
+
+// ------------PROFILE_BOX 안 ----------------//
+export const WRAPIMG = styled.div`
+  height: 10vw;
+  width: 10vw;
+  border-radius: 70%;
+  overflow: hidden;
+  border: 1px solid blue;
+  min-width: 187px;
+  min-height: 187px;
+  margin-bottom: 1vw;
+`;
+export const PROFILEIMG = styled.img`
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+`;
+
+export const NICKNAME_BOX = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid;
   width: 100%;
   position: relative;
+  border: 1px solid;
 `;
 export const NICKNAME = styled.div<{ modify: boolean }>`
   display: flex;
   ${(props) => props.modify && 'flex-direction:column;'}
   justify-content: center;
   align-items: center;
-  border: 2px solid red;
   position: relative;
-  width: auto;
+  border: 1px solid red;
 `;
 export const NICKNAME_INPUT = styled.input`
+  flex: 1;
   all: unset;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: 700;
   text-align: center;
-  padding: 0 1vw;
-  border: 1px solid blue;
   width: 9rem;
   height: 2vw;
-  ${(props) => props.disabled && 'margin-bottom:2vw;'}// modifyBox만큼 미리 마진을줘서 수정할때 위치안변하게
-`;
-export const NICKNAME_MODIFYBOX = styled.span`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid green;
-  position: relative;
-  margin-left: auto;
-  height: 2vw;
+  min-height: 19px;
+  border: 1px solid;
+
+  ${(props) => props.disabled && 'margin-bottom:19px;'}// modifyBox만큼 미리 마진을줘서 수정할때 위치안변하게
 `;
 export const MODIFY_BUTTON = styled(ModifySvg)`
   fill: ${({ theme }) => theme.colors.middlepurple};
@@ -116,7 +122,7 @@ export const MODIFY_BUTTON = styled(ModifySvg)`
   cursor: pointer;
   margin-left: auto;
   position: absolute;
-  top: 25%;
+  top: 30%;
   right: 0.5vw;
   transform: translateY(-50%);
 
@@ -127,9 +133,50 @@ export const MODIFY_BUTTON = styled(ModifySvg)`
     fill: ${({ theme }) => theme.colors.lightpurple};
   }
 `;
+export const NICKNAME_MODIFYBOX = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-left: auto;
+  height: 19px;
+  width: 100%;
+`;
+export const MODIFYCHECK_BUTTON = styled(SSBUTTON)`
+  border: none;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.mustard};
+  }
+`;
+export const MODIFY_ESC_BUTTON = styled.div`
+  height: 1rem;
+  cursor: pointer;
+  margin-left: auto;
+  position: absolute;
+  top: 25%;
+  right: 0.5vw;
+  transform: translateY(-50%);
+`;
+
+// -------------------INFO 안---------------//
 export const EMAIL = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  flex: 9;
+  border: 1px solid;
+`;
+export const WITHDRAWAL_BOX = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding: 1vw;
+`;
+
+export const WITHDRAWAL_BUTTON = styled(Withdrawal)`
+  all: unset;
 `;
