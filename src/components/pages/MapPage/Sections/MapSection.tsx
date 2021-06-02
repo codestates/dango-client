@@ -5,26 +5,13 @@ import { RootState } from '../../../../_reducer';
 import { setMapConfig, SetMapconfigPayload, setMarkerLatLng } from '../../../../_reducer/map';
 import LocationSearch from '../../TalentRegistrationPage/Sections/LocationSearch';
 import './infoWindowStyle.css';
+import { CONTAINER, SEARCH } from './MapSectionStyle';
 
 declare global {
   interface Window {
     kakao: any;
   }
 }
-
-const CONTAINER = styled.div`
-  width: 80vw;
-`;
-
-const SEARCH = styled.div`
-  position: absolute;
-  grid-column: 1/5;
-  top: 3%;
-  right: 2%;
-  width: 400px;
-  z-index: 2;
-  background-color: white;
-`;
 
 // -------------------------------LOGIC ------------------------------------------
 // 1. 처음 default 좌표 영역(bounds)안의 전체카테고리 재능판매리스트를 서버에서 받는다.

@@ -9,9 +9,9 @@ export const CONTAINER = styled.div`
   display: flex;
   flex-direction: column;
   // justify-content: space-between;
-  /* @media screen and (max-width: 900px) {
-    width: 450px;
-  } */
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const FILTERSECTION = styled.div`
