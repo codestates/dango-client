@@ -37,7 +37,7 @@ export const CHATLIST = styled.div<{ show: boolean }>`
   overflow-y: auto;
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  background-color: #f2f7f8;
+  background-color: white;
   /* padding: 1.5vw; */
   margin-right: 1.5vw;
   min-width: 200px;
@@ -88,7 +88,7 @@ export const CHAT = styled.div`
   grid-row: 2/11;
   display: flex;
   flex-direction: column;
-  background-color: #f2f7f8;
+  background-color: rgba(255, 252, 240, 0.7);
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -119,9 +119,10 @@ export const CHATLISTTEXT = styled.div`
   padding: 1vw;
   margin-bottom: 0.7vw;
   position: relative;
-  background-color: ${({ theme }) => theme.colors.middlepurple};
+  background-color: ${({ theme }) => theme.colors.purple};
   color: whitesmoke;
   white-space: nowrap;
+  font-size: 1.3rem;
 `;
 export const CHATLISTESC = styled.div<{ show: boolean }>`
   display: none;
@@ -174,7 +175,7 @@ export const USER = styled.div<{ hover: boolean }>`
   color: grey;
   margin-right: 1vw;
 
-  ${(props) => props.hover && `color: ${props.theme.colors.middlepurple}; font-weight: 600;`}
+  ${(props) => props.hover && `color: ${props.theme.colors.purple}; font-weight: 600;`}
 `;
 export const COUNT = styled.div<{ value: number }>`
   display: flex;

@@ -100,10 +100,10 @@ export default function ChattingOption({
 
   const checkPurchase = () => {
     if (roomInfo?.clickPurchase[0] === false) {
-      return <COMPLETEBTN onClick={handleComplete}>거래완료</COMPLETEBTN>;
+      return <COMPLETEBTN onClick={handleComplete}>거래 완료</COMPLETEBTN>;
     }
     if (roomInfo?.clickPurchase[1] === false) {
-      return <COMPLETED>상대방의 거래완료를 기다리고있어요 😃</COMPLETED>;
+      return <COMPLETED>상대방의 거래 완료를 기다리고 있어요. 😃</COMPLETED>;
     }
     return <COMPLETED>거래가 완료된 채팅방입니다. 👍</COMPLETED>;
   };

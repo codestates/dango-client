@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { openModal } from '../../../../_reducer/modal';
 
 const SEARCH = styled.div`
-  // border: 1px solid blue;
+  //border: 1px solid blue;
   // grid-column: 1/2;
-  width: 400px;
-  height: 100%;
+  // width: 400px;
+  // height: 100%;
   // position: relative;
 `;
 
@@ -22,13 +22,14 @@ const INPUT = styled.input`
   cursor: text;
   // border: 1px solid;
   width: 368px;
-  height: 100%;
+  // height: 100%;
   box-shadow: 1px 1px 3px 1px #dadce0;
+  transition: all 0.2s ease-in-out;
   &:focus {
-    // border-bottom: 2px solid #835af1;
-    box-shadow: 1px 1px 3px 1px #835af1;
+    box-shadow: 3px 3px 6px 1px #dadce0;
   }
   padding: 0 1rem;
+  height: 2.5rem;
 `;
 
 const UL = styled.ul`
@@ -257,7 +258,7 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
     <SEARCH>
       <INPUT
         type="text"
-        placeholder="예) 한빛로, 동교동, 강남역, 스타벅스  🔍"
+        placeholder="예) 한빛로, 동교동, 강남역, Starbucks                          🔍"
         onChange={handleChangeLocation}
         onKeyPress={handleEnterKey}
         onKeyDown={handleKeyDown}

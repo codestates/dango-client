@@ -107,10 +107,25 @@ export const userSlice = createSlice({
         state.userInfo.chatRooms.splice(roomIndex, 1);
       }
     },
+    initCount: (state, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+      if (state.userInfo) {
+        console.log('roomindex::::', index);
+        state.userInfo.chatRooms[index].count = 0;
+      }
+    },
   },
 });
 
-export const { signin, signout, updateReview, modifyNickname, updateChatRooms, purchaseComplete, escapeRoom } =
-  userSlice.actions;
+export const {
+  signin,
+  signout,
+  updateReview,
+  modifyNickname,
+  updateChatRooms,
+  purchaseComplete,
+  escapeRoom,
+  initCount,
+} = userSlice.actions;
 
 export default userSlice.reducer;
