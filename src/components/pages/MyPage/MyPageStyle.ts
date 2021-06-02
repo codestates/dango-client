@@ -6,14 +6,12 @@ const MYPAGE = styled.div`
   grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 2%;
 
-  height: 80vh;
-  width: 95%;
-  border: 1px solid;
+  height: 80vh; // 카드높이 조절
+  width: 75%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 0 1rem;
 `;
 
 export default MYPAGE;

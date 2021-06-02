@@ -5,7 +5,19 @@ import { modifyNickname } from '../../../../_reducer/user';
 import { openModal } from '../../../../_reducer/modal';
 import Withdrawal from '../../SigninPage/Withdrawal';
 import server from '../../../../api';
-import { USERINFO, WRAPIMG, PROFILEIMG, INFO } from './UserInfoStyle';
+import {
+  IMAGEBOX,
+  USERINFO,
+  WRAPIMG,
+  PROFILEIMG,
+  INFO,
+  NICKNAMEBOX,
+  EMAIL,
+  NICKNAME,
+  NICKNAME_INPUT,
+  NICKNAME_MODIFYBOX,
+  MODIFY_BUTTON,
+} from './UserInfoStyle';
 
 // 로그인방식에 따라 카카오이미지 같은거 붙이기
 export default function UserInfo(): JSX.Element {
@@ -93,39 +105,36 @@ export default function UserInfo(): JSX.Element {
 
   return (
     <USERINFO>
-      <WRAPIMG>
-        <PROFILEIMG alt="prifileImage" src={userInfo?.image} />
-      </WRAPIMG>
+      <IMAGEBOX>
+        <WRAPIMG>
+          <PROFILEIMG alt="prifileImage" src={userInfo?.image} />
+        </WRAPIMG>
+      </IMAGEBOX>
       <INFO>
-        <div>
-          <span>닉네임:</span>
-
-          <span>
-            <input
+        <NICKNAMEBOX>
+          <NICKNAME modify={modifyMode}>
+            <NICKNAME_INPUT
               type="text"
+              maxLength={8}
               ref={inputRef}
               disabled={!modifyMode}
               defaultValue={userInfo?.nickname}
-              style={{ all: 'unset' }}
             />
-            {modifyMode ? (
-              <span>
+            {modifyMode || <MODIFY_BUTTON onClick={handleClickModify} />}
+            {modifyMode && (
+              <NICKNAME_MODIFYBOX>
                 <button type="button" onClick={handleNicknameCheck}>
                   중복확인
                 </button>
                 <button type="button" onClick={handleClickChangeNickname}>
                   수정완료
                 </button>
-              </span>
-            ) : (
-              <span style={{ height: '100%' }} onClick={handleClickModify}>
-                <img style={{ height: '1rem' }} alt="nicknameEdit" src="/images/edit.png" />
-              </span>
+                <div onClick={() => setModifyMode(false)}>✕</div>
+              </NICKNAME_MODIFYBOX>
             )}
-          </span>
-        </div>
-        <div>
-          <span>email:</span>
+          </NICKNAME>
+        </NICKNAMEBOX>
+        <EMAIL>
           <span>
             <img
               alt="loginTypeImage"
@@ -134,11 +143,11 @@ export default function UserInfo(): JSX.Element {
             />
           </span>
           <span>{userInfo?.email}</span>
-        </div>
-        <div>
-          <Withdrawal />
-        </div>
+        </EMAIL>
       </INFO>
+      <div>
+        <Withdrawal />
+      </div>
     </USERINFO>
   );
 }
