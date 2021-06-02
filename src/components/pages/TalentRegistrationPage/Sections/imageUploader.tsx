@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDropzone } from 'react-dropzone';
-import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../../../_reducer/modal';
 import server from '../../../../api/index';
 import { CONTAINER, IMAGEBIGDIV, IMAGEDIV, IMAGEP, PLUS, SPAN, IMAGESPAN } from './imageUploaderStyle';
 
-function imageUploader(): JSX.Element {
+function imageUploader({ imageUrl, setImageUrl }: any): JSX.Element {
   const dispatch = useDispatch();
-  const [images, setImages] = useState<any>([]);
 
   const formData = new FormData();
   const imageUploadHandler = (acceptedFiles: any) => {
@@ -16,26 +14,24 @@ function imageUploader(): JSX.Element {
       headers: { 'Content-Type': 'multipart/form-data' },
     };
 
-    formData.append('file', acceptedFiles[0]);
+    if (acceptedFiles.length > 1) {
+      acceptedFiles.map((file: any, index: number) => formData.append('file', file[index].path));
+    } else {
+      formData.append('file', acceptedFiles[0].path);
+    }
+
     server.post('/images/upload', formData, config).then((response) => {
-      if (response.data.succeess) {
-        setImages([...images, response.data.filePath]);
+      if (response.data.message === '이미지 등록에 성공했습니다.') {
+        setImageUrl([...imageUrl, ...response.data.data]);
       } else {
         dispatch(openModal({ type: 'error', text: '이미지 저장에 실패했습니다.' }));
       }
     });
   };
 
-  // 테스트용
-  const onDrop = (acceptedFiles: any) => {
-    formData.append('file', acceptedFiles[0]);
-    setImages([...(images || []), ...acceptedFiles]);
-  };
-  console.log(images);
-
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
-    onDrop,
+    onDrop: imageUploadHandler,
     maxFiles: 3,
   });
 
@@ -45,10 +41,10 @@ function imageUploader(): JSX.Element {
       <IMAGEBIGDIV {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         <IMAGEDIV>
-          {images.length !== 0
-            ? images.map((file: string) => (
-                <IMAGEP key={file}>
-                  <img alt={file} src={URL.createObjectURL(file)} />
+          {imageUrl.length !== 0
+            ? imageUrl.map((file: string) => (
+                <IMAGEP key={Math.random()}>
+                  <img alt={file} src={imageUrl} />
                 </IMAGEP>
               ))
             : ''}
