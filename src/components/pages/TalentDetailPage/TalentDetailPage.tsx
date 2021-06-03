@@ -126,17 +126,16 @@ function TalentDetailPage(): JSX.Element {
       content: {
         title: `DANGO와 나누는 재능, ${detailData?.title}`,
         description: detailData?.description,
-        // 이미지 파일 url 형태로 올리거나 카카오 서버에 업로드된 이미지여야 한다.
-        imageUrl: 'http://k.kakaocdn.net/dn/bSbH9w/btqgegaEDfW/vD9KKV0hEintg6bZT4v4WK/kakaolink40_original.png',
+        imageUrl: 'https://dango.s3.amazonaws.com/image/original/5ab0cf1c1bdfb3ac9c8a66ded2c1a49b',
         link: {
           mobileWebUrl: `http://localhost:3000/detail/${talentId}`,
           webUrl: `http://localhost:3000/detail/${talentId}`,
         },
       },
       social: {
-        likeCount: 286,
-        commentCount: 45,
-        sharedCount: 845,
+        likeCount: 930,
+        commentCount: 75,
+        sharedCount: 401,
       },
       buttons: [
         {
