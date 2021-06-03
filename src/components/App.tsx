@@ -34,7 +34,7 @@ function App(): JSX.Element {
       console.log('connectSocket! socket.id: ', socket.id);
     });
     setConnectSocket(connect);
-  }, [userInfo]);
+  }, []);
 
   return (
     <>

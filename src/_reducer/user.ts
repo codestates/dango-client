@@ -33,6 +33,18 @@ export interface UpdateChatRoomsPayload {
     clickPurchase: boolean[];
   };
 }
+export interface RenewChatRoomsPayload {
+  chatRooms: {
+    talentId: string;
+    roomId: string;
+    count: number;
+    otherId: string;
+    otherNickname: string;
+    profileImage: string;
+    // [내가 구매완료 눌렀는지 정보, 모두 눌렀는지에 대한 정보]
+    clickPurchase: boolean[];
+  }[];
+}
 
 const initialState: UserState = {
   userInfo: null,
@@ -72,6 +84,11 @@ export const userSlice = createSlice({
     updateChatRooms: (state, action: PayloadAction<UpdateChatRoomsPayload>) => {
       if (state.userInfo) {
         state.userInfo.chatRooms.push(action.payload.chatRooms);
+      }
+    },
+    renewChatRooms: (state, action: PayloadAction<RenewChatRoomsPayload>) => {
+      if (state.userInfo) {
+        state.userInfo.chatRooms = action.payload.chatRooms;
       }
     },
 
@@ -123,6 +140,7 @@ export const {
   updateReview,
   modifyNickname,
   updateChatRooms,
+  renewChatRooms,
   purchaseComplete,
   escapeRoom,
   initCount,
