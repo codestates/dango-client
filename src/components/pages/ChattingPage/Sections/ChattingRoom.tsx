@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '../../../../_reducer';
-import { updateChatRooms } from '../../../../_reducer/user';
+import { renewChatRooms } from '../../../../_reducer/user';
 import getChatTime from '../../../../utils/getChatTime';
 import MessageInput from './MessageInput';
 import Chats from './Chats';
@@ -104,22 +104,24 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
       // 새방이 만들어졌다는 메시지라면 서버에서 새 chatRooms를 받아서
       if (receivedChats.type === 'init') {
         console.log('채팅방 만들어졌음 이제 서버에서 룸데이터받을꺼임');
-        server.get(`/users/chatinfo/${userInfo?.id}`).then((res) => {
-          dispatch(updateChatRooms({ chatRooms: res.data.chatrooms[res.data.chatrooms.length - 1] }));
-        });
+        server
+          .get(`/users/chatinfo/${userInfo?.id}`)
+          .then((res) => {
+            console.log('서버에서받은 룸데이터', res.data);
+            dispatch(renewChatRooms({ chatRooms: res.data.chatrooms }));
+          })
+          .catch((err) => console.log(err));
         return;
       }
       setLastChat(receivedChats);
     });
-  }, []);
+  }, [userInfo]);
 
   // 바뀐 state를 활용해서 메세지를 보낸다.(상대방 아이디, 메세지, 상대방과 함께 들어가 있는 roomId)
   // TODO: 1. 입력창에 메시지를 보낸다.
   const callback = (message: string) => {
     connectSocket.emit('messageToOther', curOtherId, message, curRoomId);
   };
-
-  console.log('userInfo:::', userInfo);
 
   // lastChat가 바뀔 때 함수 실행
   // TODO: 3. 메시지를 보내서 lastChat이바뀔때마다 creatNewChats을 실행시킨다.
