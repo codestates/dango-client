@@ -165,12 +165,6 @@ export const SHARETEXTAREA = styled.textarea`
   opacity: 0;
 `;
 
-export const PHOTOS = styled.div`
-  grid-column: 1/7;
-  grid-row: 4/5;
-  box-shadow: 1px 1px 3px 1px #dadce0;
-`;
-
 export const EDITCATEGORY = styled.select`
   border: none;
   outline: none;
@@ -232,4 +226,51 @@ export const TEXTAREA = styled.textarea`
   }
   padding: 1rem;
   line-height: 180%;
+`;
+
+export const PHOTOS = styled.div`
+  grid-column: 1/7;
+  grid-row: 4/5;
+  box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.purple};
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem 0;
+  // border: 5px solid ${({ theme }) => theme.colors.lightpurple};
+`;
+
+export const PHOTODIV = styled.div`
+  // border: 1px solid #dadce0;
+  box-shadow: 0px 0px 2px 0.5px ${({ theme }) => theme.colors.lightpurple};
+  background-color: white;
+  width: 30%;
+  ${({ theme }) => theme.common.flexCenter};
+`;
+
+export const PHOTO = styled.img`
+  // height: 80%;
+  // width: 40%;
+  // max-width: 215px;
+  max-height: 122px;
+  width: 100%;
+  // height: 100%;
+  // height: 122px;
+  // border: 2px solid #dadce0;
+  cursor: pointer;
+  &:active {
+    position: absolute;
+    bottom: 2rem;
+    max-width: 400px;
+    max-height: 400px;
+    width: 400px;
+    height: auto;
+    background-color: white;
+    box-shadow: 1px 1px 50px 15px #dadce0;
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+  }
+`;
+
+export const SPAN = styled.span`
+  color: ${({ theme }) => theme.colors.lightpurple};
 `;

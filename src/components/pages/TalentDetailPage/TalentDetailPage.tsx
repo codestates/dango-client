@@ -39,6 +39,9 @@ import {
   EDITDESC,
   EDITCATEGORY,
   OPTION,
+  PHOTODIV,
+  PHOTO,
+  SPAN,
 } from './TalentDetailPageStyle';
 import Modal from '../../../utils/modal';
 import { SBUTTON } from '../../../styles/Buttons';
@@ -331,7 +334,17 @@ function TalentDetailPage(): JSX.Element {
           </>
         )}
       </DETAIL>
-      <PHOTOS>photos</PHOTOS>
+      <PHOTOS>
+        <PHOTODIV>
+          {detailData?.images[0] ? <PHOTO src={detailData.images[0]} alt="사진" /> : <SPAN>No image</SPAN>}
+        </PHOTODIV>
+        <PHOTODIV>
+          {detailData?.images[1] ? <PHOTO src={detailData.images[1]} alt="사진" /> : <SPAN>No image</SPAN>}
+        </PHOTODIV>
+        <PHOTODIV>
+          {detailData?.images[2] ? <PHOTO src={detailData.images[2]} alt="사진" /> : <SPAN>No image</SPAN>}
+        </PHOTODIV>
+      </PHOTOS>
       <Review />
     </CONTAINER>
   );
