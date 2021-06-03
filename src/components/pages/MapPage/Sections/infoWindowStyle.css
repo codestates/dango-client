@@ -1,31 +1,26 @@
 .main {    
-   
     width: 300px;
     height: 250px;
     display: flex;
     font-size: 0.875rem;
     flex-direction: column;
-    justify-content: space-evenly;
-    /* box-shadow: 2px 2px 20px 10px #dadce0; */
-    
-
+    justify-content: space-between; 
 }
 
 .top {
     height: 30%;
-    
+    width: 298px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
     background-color: rgba(131, 90, 241, 0.15);
-    
+    background-color: #fffcf0;
 }
 
 .top-left {
     width: 3.2rem;
-    height: 3.2rem;
-    
+    height: 3.2rem;    
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -67,14 +62,12 @@
 }
 
 
-
 .middle {
-    height: 55%;
-    
+    height: 55%;    
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    padding: 0 2rem;
+    justify-content: space-between;
+    padding: 1rem 2rem;
     font-size: 0.875rem;
 }
 
@@ -84,9 +77,18 @@
     align-items: center;
 }
 
+.nickname {
+    color:#a68bf6; 
+}
+
+.ratings {
+    color:#a68bf6; 
+}
+
 .description {
     white-space: pre-wrap;
     line-height: 130%;
+    margin: 0.5rem 0;
 }
 
 .address {
@@ -98,39 +100,27 @@
 }
 
 .bottom {
-    height: 15%;
+    height: 10%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 0 1rem;
+    align-items: flex-end;
 }
 
 .button {
   outline: none;
   border: none;
-  border-radius: 1.25rem;
   cursor: pointer;
-  padding-left: 1rem;
-  padding-right: 1rem;
-
-  /* 색상 */
-  color: gray;
-  border: 0.12rem solid;
-  background: white;
-  
-
-  /* 크기 */
-  height: 1.25rem;
-  
+  width: 298px;
+  height: 1.5rem;
   font-size: 0.75rem;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center;  
+  color: #FA697C; 
+  background-color: rgba(252, 232, 235, 0.5);
 }
 
-
-
 .button:hover {
-    color: #835AF1; 
-    
+  color: #835AF1; 
+  background-color: rgba(131, 90, 241, 0.1);    
 }
