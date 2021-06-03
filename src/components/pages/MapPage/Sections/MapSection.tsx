@@ -170,7 +170,7 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
                                   <img class='image' src='/images/dango1.png' alt='dango'/>                                                                
                                 </div>
                                 <div class="top-right">
-                                  <div class="title">${talentData[i]?.title}</div>
+                                  <div class="title">${talentData[i]?.title.slice(0, 13)}</div>
                                   <div class="category">${talentData[i]?.category}</div>
                                   <div class="price">${talentData[i]?.price}원</div>
                                 </div>
@@ -179,15 +179,15 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
                               <div class="middle">
                                 <div class="middle-top">
                                   <div class="nickname">${talentData[i]?.nickname}</div>
-                                  <div class="ratings">별점 : ${talentData[i]?.ratings[0] ?? '0'}</div>
+                                  <div class="ratings">별점 : ${talentData[i]?.ratings[0] ?? '0'} / 5</div>
                                 </div>
-                                <div class="description">${talentData[i]?.description}</div>
+                                <div class="description">${talentData[i]?.description.slice(0, 50)}</div>
                                 <div class="address">${talentData[i]?.address}</div>
                               </div>  
 
                               <div class="bottom">
                                   <a href="/detail/${talentData[i]?.id}" target="_self">
-                                    <button class="button">상세페이지로 이동</button>
+                                    <button class="button">상세 페이지로 이동</button>
                                   </a>
                               </div>    
                           </div>
