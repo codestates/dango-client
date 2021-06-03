@@ -1,8 +1,21 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { IoIosClose } from 'react-icons/io';
 import server from '../../../api';
 import { signin, UserState } from '../../../_reducer/user';
 import { openModal } from '../../../_reducer/modal';
+
+import {
+  SIGNUP_BACKGROUND,
+  SIGNUP_CONTAINER,
+  CLOSEBTN,
+  SIGNUP_DIV,
+  SIGNUP_FORM,
+  SIGNUP_SPAN,
+  SIGNUP_INPUT,
+  SIGNUP_BTN,
+} from './SignupStyle';
 
 interface SignupProps {
   social: string;
@@ -14,13 +27,14 @@ interface SignupProps {
 
 function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [nickname, setNickname] = useState<string | null>(null);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
   };
 
-  const handleNicknameSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleNicknameSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (!nickname || nickname.length < 2) {
       dispatch(openModal({ type: 'error', text: '닉네임은 두글자 이상 적어주세요.' }));
@@ -158,15 +172,29 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
         });
     }
   };
+  const closeBtn = (): void => {
+    history.push('/');
+  };
 
   return (
-    <div>
-      <form onSubmit={handleNicknameSubmit}>
-        <span>닉네임: </span>
-        <input name="닉네임" onChange={handleInput} />
-        <button type="submit">닉네임등록</button>
-      </form>
-    </div>
+    <SIGNUP_BACKGROUND>
+      <SIGNUP_CONTAINER>
+        <SIGNUP_DIV>
+          <CLOSEBTN onClick={closeBtn}>
+            {' '}
+            <IoIosClose size="35" color="#83818c" />{' '}
+          </CLOSEBTN>
+          <SIGNUP_FORM>
+            <SIGNUP_SPAN>사용하실 닉네임을 적어주세요. </SIGNUP_SPAN>
+            {/* <SIGNUP_DIV /> */}
+            <SIGNUP_INPUT name="닉네임" onChange={handleInput} />
+            <SIGNUP_BTN type="submit" onClick={handleNicknameSubmit}>
+              닉네임 등록
+            </SIGNUP_BTN>
+          </SIGNUP_FORM>
+        </SIGNUP_DIV>
+      </SIGNUP_CONTAINER>
+    </SIGNUP_BACKGROUND>
   );
 }
 
