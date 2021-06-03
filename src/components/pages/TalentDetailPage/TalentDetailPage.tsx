@@ -61,7 +61,10 @@ declare global {
   }
 }
 
-function TalentDetailPage(): JSX.Element {
+interface Props {
+  connectSocket: any;
+}
+function TalentDetailPage({ connectSocket }: Props): JSX.Element {
   const { Kakao } = window;
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
   const { isFromDetail, isFirstChat } = useSelector((state: RootState) => state.chattings);

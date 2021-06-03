@@ -49,7 +49,10 @@ function App(): JSX.Element {
               <Route path="/map" component={MapPage} />
               <Route path="/chatting" render={(props) => <ChattingPage {...props} connectSocket={connectSocket} />} />
               <Route path="/register" component={TalentRegister} />
-              <Route path="/detail/:talentId" component={TalentDetailPage} />
+              <Route
+                path="/detail/:talentId"
+                render={(props) => <TalentDetailPage {...props} connectSocket={connectSocket} />}
+              />
               <Route path="/mypage" component={Mypage} />
             </Switch>
           </div>
