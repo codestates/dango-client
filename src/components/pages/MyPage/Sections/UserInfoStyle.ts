@@ -45,13 +45,14 @@ export const USERINFO = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    grid-column: 1/7;
-    grid-row: 1/6;
-    margin-bottom: 1rem;
-  }
-  @media screen and (max-width: 532px) {
     grid-column: 2/6;
     grid-row: 2/11;
+    padding: 1vw;
+
+    /* min-width: 352px; */
+  }
+  @media screen and (max-width: 540px) {
+    grid-row: 3/10;
   }
 `;
 export const HELLO = styled.div`
@@ -68,17 +69,13 @@ export const HELLO = styled.div`
   font-weight: bold;
   /* white-space: nowrap; */
 
-  @media screen and (max-width: 768px) {
-    grid-column: 6/11;
-    grid-row: 1/6;
-  }
-  @media screen and (max-width: 532px) {
-    grid-column: 1/11;
-    grid-row: 1/4;
+  @media screen and (max-width: 540px) {
+    font-size: 1rem;
   }
 `;
 
 export const HELLO_TEXT = styled.div`
+  word-break: keep-all;
   line-height: 140%;
 `;
 
@@ -94,16 +91,6 @@ export const PROFILE_BOX = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  @media screen and (max-width: 768px) {
-    grid-column: 1/6;
-    grid-row: 1/11;
-  }
-  @media screen and (max-width: 532px) {
-    grid-column: 1/11;
-    grid-row: 4/9;
-  }
-
-  /* background-color: ${({ theme }) => theme.colors.middlepurple}; */
 `;
 export const INFO = styled.div`
   grid-column: 1/11;
@@ -113,14 +100,6 @@ export const INFO = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  @media screen and (max-width: 768px) {
-    grid-column: 6/11;
-    grid-row: 6/11;
-  }
-  @media screen and (max-width: 532px) {
-    grid-column: 1/11;
-    grid-row: 9/11;
-  }
 `;
 
 // ------------PROFILE_BOX 안 ----------------//
@@ -129,9 +108,15 @@ export const WRAPIMG = styled.div`
   width: 10vw;
   border-radius: 70%;
   overflow: hidden;
-  min-width: 187px;
-  min-height: 187px;
+  min-width: 188px;
+  min-height: 188px;
   margin-bottom: 1vw;
+  box-shadow: 0 7px 28px rgba(0, 0, 0, 0.16), 0 7px 10px rgba(0, 0, 0, 0.16);
+
+  @media screen and (max-width: 540px) {
+    min-width: 128px;
+    min-height: 128px;
+  }
 `;
 export const PROFILEIMG = styled.img`
   object-fit: cover;
@@ -143,15 +128,16 @@ export const NICKNAME_BOX = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 75%;
   position: relative;
 `;
 export const NICKNAME = styled.div<{ modify: boolean }>`
   display: flex;
-  ${(props) => props.modify && 'flex-direction:column;'}
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
+  width: 100%;
 `;
 export const NICKNAME_INPUT = styled.input`
   flex: 1;
@@ -160,10 +146,13 @@ export const NICKNAME_INPUT = styled.input`
   font-weight: 700;
   text-align: center;
   width: 9rem;
-  height: 2vw;
-  min-height: 19px;
+  height: 19px;
 
-  ${(props) => props.disabled && 'margin-bottom:19px;'}// modifyBox만큼 미리 마진을줘서 수정할때 위치안변하게
+  ${(props) => props.disabled && 'margin-bottom:19px;'} // modifyBox만큼 미리 마진을줘서 수정할때 위치안변하게
+
+  @media screen and (max-width: 540px) {
+    font-size: ${({ theme }) => theme.fontSizes.base};
+  }
 `;
 export const MODIFY_BUTTON = styled(ModifySvg)`
   fill: ${({ theme }) => theme.colors.purple};
@@ -171,8 +160,8 @@ export const MODIFY_BUTTON = styled(ModifySvg)`
   cursor: pointer;
   margin-left: auto;
   position: absolute;
-  top: 30%;
-  right: 0.5vw;
+  top: 26%;
+  right: 0;
   transform: translateY(-50%);
 
   &:hover {
@@ -216,6 +205,10 @@ export const EMAIL = styled.div`
   align-items: center;
   width: 100%;
   flex: 9;
+  color: grey;
+  @media screen and (max-width: 540px) {
+    padding-bottom: 1rem;
+  }
 `;
 export const WITHDRAWAL_BOX = styled.div`
   display: flex;
@@ -233,15 +226,26 @@ export const WITHDRAWAL_BUTTON = styled(Withdrawal)`
 export const MOBILE_BUTTON = styled.div`
   display: none;
 
-  @media screen and (max-width: 532px) {
+  @media screen and (max-width: 768px) {
     display: flex;
     position: absolute;
     left: 50%;
-    bottom: 1rem;
+    bottom: 6%;
     transform: translateX(-50%);
-    width: 50%;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    white-space: nowrap;
   }
 `;
-export const OPEN_SELL_BUTTON = styled(SSBUTTON)``;
-export const OPEN_PURCHASE_BUTTON = styled(SSBUTTON)``;
+export const OPEN_SELL_BUTTON = styled(SSBUTTON)`
+  margin-right: 1vw;
+  @media screen and (max-width: 540px) {
+    height: 16px;
+  }
+`;
+export const OPEN_PURCHASE_BUTTON = styled(SSBUTTON)`
+  @media screen and (max-width: 540px) {
+    height: 16px;
+  }
+`;

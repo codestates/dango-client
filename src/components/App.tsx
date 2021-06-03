@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import 'dotenv/config';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { io } from 'socket.io-client';
+import { RootState } from '../_reducer';
 import GlobalStyles from './GlobalStyles';
 import MapPage from './pages/MapPage/MapPage';
 import ChattingPage from './pages/ChattingPage/ChattingPage';
@@ -14,12 +17,25 @@ import SigninModal from './pages/SigninPage/SigninModal';
 import LandingPage from './pages/LandingPage/LandingPage';
 // import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
 
-// path뒤의 exact는 세부경로 페이지가 다른 라우트에 걸려있을때만 붙여준다.
-// ex) path="/" exact
-// ex) path="/main" exact (다른 라우트에 path="/main/:id" 와같은 path가 걸려있을때)
-//      -> /main 라우트에 exact를 걸어줬으니, /main/:id 라우트에는 굳이 exact 안걸어줘도 된다.
-//         (/main/:id/detail 처럼 또 겹치면 걸어줘야한다.)
 function App(): JSX.Element {
+  const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
+  const [connectSocket, setConnectSocket] = useState<any>();
+
+  useEffect(() => {
+    if (!userInfo) {
+      return;
+    }
+    const socket = io(`${process.env.REACT_APP_API_URL}/?clientId=${userInfo?.id}`, {
+      transports: ['websocket'],
+      path: '/socket.io',
+      withCredentials: true,
+    });
+    const connect = socket.on('connect', () => {
+      console.log('connectSocket! socket.id: ', socket.id);
+    });
+    setConnectSocket(connect);
+  }, []);
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -31,9 +47,12 @@ function App(): JSX.Element {
               <Route path="/" exact component={LandingPage} />
               <Route path="/signin" component={SigninModal} />
               <Route path="/map" component={MapPage} />
-              <Route path="/chatting" component={ChattingPage} />
+              <Route path="/chatting" render={(props) => <ChattingPage {...props} connectSocket={connectSocket} />} />
               <Route path="/register" component={TalentRegister} />
-              <Route path="/detail/:talentId" component={TalentDetailPage} />
+              <Route
+                path="/detail/:talentId"
+                render={(props) => <TalentDetailPage {...props} connectSocket={connectSocket} />}
+              />
               <Route path="/mypage" component={Mypage} />
             </Switch>
           </div>

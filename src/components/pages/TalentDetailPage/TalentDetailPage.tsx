@@ -64,7 +64,10 @@ declare global {
   }
 }
 
-function TalentDetailPage(): JSX.Element {
+interface Props {
+  connectSocket: any;
+}
+function TalentDetailPage({ connectSocket }: Props): JSX.Element {
   const { Kakao } = window;
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
   const { isFromDetail, isFirstChat } = useSelector((state: RootState) => state.chattings);
@@ -88,7 +91,7 @@ function TalentDetailPage(): JSX.Element {
     server
       .get(`/talents/detail/${talentId}`)
       .then((res) => {
-        console.log('dfdfdfdfdfdfdfdfdfdfdfdfdfdf', res.data);
+        console.log('디테일데이터:', res.data);
         let userRole: 'normal' | 'seller' | 'reviewer' = 'normal';
 
         // 작성자의 id와 유저의 id가 같으면 판매자
@@ -193,6 +196,12 @@ function TalentDetailPage(): JSX.Element {
       };
       server
         .post('/chats/createchat', body)
+        //  상대방에게 새방이 만들어졌음을 알린다.
+        .then((res) => {
+          console.log('채팅방 생겼다고 상대방한테 보내기');
+          connectSocket.emit('initChat', body.otherId, res.data.roomId);
+          return res;
+        })
         .then((res) => {
           const payload: UpdateChatRoomsPayload = {
             chatRooms: {
