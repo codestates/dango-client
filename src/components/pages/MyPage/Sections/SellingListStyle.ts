@@ -47,6 +47,10 @@ export const SELLINGLIST = styled.div<{ showSell: boolean }>`
         background-color: white;
       `}
   }
+  @media screen and (max-width: 540px) {
+    grid-row: 3/10;
+    font-size: 0.8rem;
+  }
 `;
 
 export const HEADER = styled.header`
@@ -71,6 +75,7 @@ export const LIST = styled.div`
   overflow: hidden;
   overflow-y: auto;
   width: 100%;
+  padding: 0.5vw;
 `;
 
 export const ITEM = styled(Link)`
@@ -93,8 +98,11 @@ export const CATEGORY_IMG = styled.div`
   flex: 3;
   display: flex;
   justify-content: center;
-  /* border: 1px solid; */
+  align-items: center;
   font-size: 50px;
+  @media screen and (max-width: 540px) {
+    font-size: 38px;
+  }
 `;
 
 export const SELLINFO = styled.div`

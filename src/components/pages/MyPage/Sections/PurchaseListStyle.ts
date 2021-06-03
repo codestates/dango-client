@@ -23,7 +23,6 @@ export const PURCHASELIST = styled.div<{ showPurchase: boolean }>`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: relative;
   overflow: hidden;
-  /* min-width: 261px; */
 
   transition: all 0.2s ease-in-out;
   &:hover {
@@ -45,6 +44,11 @@ export const PURCHASELIST = styled.div<{ showPurchase: boolean }>`
         position: relative;
         background-color: white;
       `}
+  }
+
+  @media screen and (max-width: 540px) {
+    grid-row: 3/10;
+    font-size: 0.8rem;
   }
 `;
 

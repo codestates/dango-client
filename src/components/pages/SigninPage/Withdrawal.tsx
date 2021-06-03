@@ -12,6 +12,9 @@ const WITHDRAWAL_BUTTON = styled.button`
   &:hover {
     font-weight: bold;
   }
+  @media screen and (max-width: 540px) {
+    font-size: 0.5rem;
+  }
 `;
 
 function Withdrawal(): JSX.Element {

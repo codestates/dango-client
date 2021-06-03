@@ -15,7 +15,7 @@ const MYPAGE = styled.div`
   transform: translate(-50%, -50%);
 
   @media screen and (max-width: 768px) {
-    min-width: 516px;
+    min-width: 320px;
   }
 `;
 
