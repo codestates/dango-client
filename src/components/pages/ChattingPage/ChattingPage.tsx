@@ -55,13 +55,16 @@ interface ChatInfo {
   _id: string;
 }
 
-function ChattingRoomsList(): JSX.Element {
+interface Props {
+  connectSocket: any;
+}
+
+function ChattingRoomsList({ connectSocket }: Props): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const { isFromDetail, isFirstChat, talentId } = useSelector((state: RootState) => state.chattings);
   const [curOtherId, setCurOtherId] = useState<string>('');
   const [curRoomId, setCurRoomId] = useState<string>('');
-  const [connectSocket, setConnectSocket] = useState<any>();
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
   const [lastChat, setLastChat] = useState<ChatInfo | null>(null);
   const [showChatList, setShowChatList] = useState<boolean>(false);
@@ -72,16 +75,6 @@ function ChattingRoomsList(): JSX.Element {
   const talentIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.talentId);
 
   useEffect(() => {
-    const socket = io(`${process.env.REACT_APP_API_URL}/?clientId=${userInfo?.id}`, {
-      transports: ['websocket'],
-      path: '/socket.io',
-      withCredentials: true,
-    });
-    const connect = socket.on('connect', () => {
-      console.log('connectSocket', socket.id);
-    });
-    setConnectSocket(connect);
-
     // 상세페이지에서 [채팅으로 거래하기] 버튼을 통해 들어온 경우
     if (isFromDetail) {
       // 첫 채팅일 경우, 채팅방을 바로 열어주고 isFirstChat 변경
