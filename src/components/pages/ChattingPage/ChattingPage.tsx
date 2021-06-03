@@ -4,6 +4,7 @@ import { io } from 'socket.io-client';
 import styled from 'styled-components';
 import { RootState } from '../../../_reducer';
 import { setIsFirstChat, newChattingRoom } from '../../../_reducer/chattings';
+import { initCount } from '../../../_reducer/user';
 import ChattingOption from './Sections/ChattingOption';
 import ChattingRoom from './Sections/ChattingRoom';
 import Modal from '../../../utils/modal';
@@ -133,6 +134,8 @@ function ChattingRoomsList(): JSX.Element {
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
     setShowChatList(false);
+    // 채팅방에 들어가면 안 읽은 메시지 수를 0으로 만들어준다.
+    dispatch(initCount({ index }));
   };
 
   return (
@@ -141,11 +144,22 @@ function ChattingRoomsList(): JSX.Element {
       <CONTAINER>
         <CHATLIST show={showChatList}>
           <CHATLISTTITLE>
-            <CHATLISTTEXT>채팅목록</CHATLISTTEXT>
+            <CHATLISTTEXT>채팅 목록</CHATLISTTEXT>
             <CHATLISTESC show={showChatList} onClick={() => setShowChatList(false)}>
               ✕
             </CHATLISTESC>
           </CHATLISTTITLE>
+          {!userInfo && <USER hover={false}>로그인이 필요한 서비스입니다.</USER>}
+          {userInfo?.chatRooms.length === 0 && (
+            <USER hover={false} style={{ textAlign: 'center' }}>
+              현재 참여하고 계신 채팅방이 없습니다! <br />
+              <br />
+              지금 바로 우리동네 이웃들과 재능을 나눠보세요!!
+              <br />
+              <br />
+              😊
+            </USER>
+          )}
           {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
             <USERBOX
               key={index}

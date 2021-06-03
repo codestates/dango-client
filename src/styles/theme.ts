@@ -10,6 +10,7 @@ const colors = {
   lightpurple: '#DEDCEE',
   lightgray: '#F6F6F6',
   yellow: '#fbd14b',
+  lightyellow: '#fffcf0',
   mustard: '#ab8406',
 };
 

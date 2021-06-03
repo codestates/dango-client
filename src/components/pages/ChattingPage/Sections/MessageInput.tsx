@@ -25,10 +25,10 @@ const SUBMIT = styled(SendSvg)`
   cursor: pointer;
   min-width: 1.2rem;
   min-height: 1.2rem;
-  fill: ${({ theme }) => theme.colors.middlepurple};
+  fill: ${({ theme }) => theme.colors.purple};
 
   &:hover {
-    fill: ${({ theme }) => theme.colors.mustard};
+    fill: #fa697c;
   }
   &:active {
     fill: ${({ theme }) => theme.colors.lightpurple};
@@ -52,6 +52,7 @@ function MessageInput({ callback }: Props): JSX.Element {
       callback(message);
       if (inputRef.current) {
         inputRef.current.value = '';
+        setMessage('');
       }
     }
   };

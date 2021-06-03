@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import styled from 'styled-components';
 import { RootState } from '../../../_reducer';
 import { postData } from '../../../_reducer/map';
 import MapSection from './Sections/MapSection';
 import TalentsSection from './Sections/TalentsSection';
 import server from '../../../api';
 import Modal from '../../../utils/modal';
-
-const CONTAINER = styled.div`
-  //display: grid;
-  height: 93vh;
-  // grid-template-columns: repeat(6, 1fr);
-  margin-top: 4rem;
-  // border: 3px solid;
-  display: flex;
-`;
+import CONTAINER from './MapPageStyle';
 
 function MapPage(): JSX.Element {
   const dispatch = useDispatch();

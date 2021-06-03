@@ -5,10 +5,35 @@ import { modifyNickname } from '../../../../_reducer/user';
 import { openModal } from '../../../../_reducer/modal';
 import Withdrawal from '../../SigninPage/Withdrawal';
 import server from '../../../../api';
-import { USERINFO, WRAPIMG, PROFILEIMG, INFO } from './UserInfoStyle';
+import getToday from '../../../../utils/getToday';
+import {
+  HELLO,
+  HELLO_TEXT,
+  PURPLE,
+  PROFILE_BOX,
+  USERINFO,
+  WRAPIMG,
+  PROFILEIMG,
+  INFO,
+  NICKNAME_BOX,
+  EMAIL,
+  NICKNAME,
+  NICKNAME_INPUT,
+  NICKNAME_MODIFYBOX,
+  MODIFY_BUTTON,
+  MODIFYCHECK_BUTTON,
+  MODIFY_ESC_BUTTON,
+  WITHDRAWAL_BOX,
+  MOBILE_BUTTON,
+  OPEN_SELL_BUTTON,
+  OPEN_PURCHASE_BUTTON,
+} from './UserInfoStyle';
 
-// 로그인방식에 따라 카카오이미지 같은거 붙이기
-export default function UserInfo(): JSX.Element {
+interface Props {
+  setShowSell: (show: boolean) => void;
+  setShowPurchase: (show: boolean) => void;
+}
+export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo, accessToken } = useSelector((state: RootState) => state.user, shallowEqual);
   const [modifyMode, setModifyMode] = useState<boolean>(false);
@@ -93,39 +118,47 @@ export default function UserInfo(): JSX.Element {
 
   return (
     <USERINFO>
-      <WRAPIMG>
-        <PROFILEIMG alt="prifileImage" src={userInfo?.image} />
-      </WRAPIMG>
-      <INFO>
-        <div>
-          <span>닉네임:</span>
-
-          <span>
-            <input
+      <HELLO>
+        <HELLO_TEXT>
+          반갑습니다 <PURPLE>{userInfo?.nickname}</PURPLE>님,
+        </HELLO_TEXT>
+        <HELLO_TEXT>
+          {getToday('weekend')}도 <PURPLE>DANGO</PURPLE>와 함께!
+        </HELLO_TEXT>
+      </HELLO>
+      <PROFILE_BOX>
+        <WRAPIMG>
+          <PROFILEIMG alt="prifileImage" src={userInfo?.image} />
+        </WRAPIMG>{' '}
+        <NICKNAME_BOX>
+          <NICKNAME modify={modifyMode}>
+            <NICKNAME_INPUT
               type="text"
+              maxLength={8}
               ref={inputRef}
               disabled={!modifyMode}
               defaultValue={userInfo?.nickname}
-              style={{ all: 'unset' }}
             />
-            {modifyMode ? (
-              <span>
-                <button type="button" onClick={handleNicknameCheck}>
-                  중복확인
-                </button>
-                <button type="button" onClick={handleClickChangeNickname}>
-                  수정완료
-                </button>
-              </span>
+            {!modifyMode ? (
+              <MODIFY_BUTTON onClick={handleClickModify} />
             ) : (
-              <span style={{ height: '100%' }} onClick={handleClickModify}>
-                <img style={{ height: '1rem' }} alt="nicknameEdit" src="/images/edit.png" />
-              </span>
+              <MODIFY_ESC_BUTTON onClick={() => setModifyMode(false)}>✕</MODIFY_ESC_BUTTON>
             )}
-          </span>
-        </div>
-        <div>
-          <span>email:</span>
+            {modifyMode && (
+              <NICKNAME_MODIFYBOX>
+                <MODIFYCHECK_BUTTON type="button" onClick={handleNicknameCheck}>
+                  중복확인
+                </MODIFYCHECK_BUTTON>
+                <MODIFYCHECK_BUTTON type="button" onClick={handleClickChangeNickname}>
+                  수정완료
+                </MODIFYCHECK_BUTTON>
+              </NICKNAME_MODIFYBOX>
+            )}
+          </NICKNAME>
+        </NICKNAME_BOX>
+      </PROFILE_BOX>
+      <INFO>
+        <EMAIL>
           <span>
             <img
               alt="loginTypeImage"
@@ -134,11 +167,15 @@ export default function UserInfo(): JSX.Element {
             />
           </span>
           <span>{userInfo?.email}</span>
-        </div>
-        <div>
+        </EMAIL>
+        <WITHDRAWAL_BOX>
           <Withdrawal />
-        </div>
+        </WITHDRAWAL_BOX>
       </INFO>
+      <MOBILE_BUTTON>
+        <OPEN_SELL_BUTTON onClick={() => setShowSell(true)}>판매 목록</OPEN_SELL_BUTTON>
+        <OPEN_PURCHASE_BUTTON onClick={() => setShowPurchase(true)}>구매 목록</OPEN_PURCHASE_BUTTON>
+      </MOBILE_BUTTON>
     </USERINFO>
   );
 }

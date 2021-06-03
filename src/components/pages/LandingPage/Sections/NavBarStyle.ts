@@ -32,7 +32,7 @@ export const LINK = styled(Link)<{ current: boolean; disPlay: boolean }>`
             `
           : '#F6F6F6'};
   }
-  @media screen and (max-width: 895px) {
+  @media screen and (max-width: 768px) {
     border-bottom: none;
     display: ${({ disPlay }) => (disPlay ? 'flex' : 'none')};
     &:hover {
@@ -50,7 +50,7 @@ export const NAV = styled('ul')`
   padding-left: 0;
   display: inline-flex;
   position: relative;
-  @media screen and (max-width: 895px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     display: flex;
     align-items: center;
@@ -67,7 +67,7 @@ export const MENUBARS = styled('button')`
   color: #83818c;
   padding: 9px 25px 0 0;
   right: 25px;
-  @media screen and (max-width: 895px) {
+  @media screen and (max-width: 768px) {
     display: flex;
     position: absolute;
     &:hover {
@@ -87,7 +87,7 @@ export const LOGO = styled('div')`
 export const LOGOCONTAINER = styled('div')`
   display: flex;
   margin-right: 5px;
-  @media screen and (max-width: 895px) {
+  @media screen and (max-width: 768px) {
   }
 `;
 
@@ -105,7 +105,7 @@ export const CONTAINER = styled('header')`
   ${NAV}:first-child {
     margin-right: auto;
   }
-  @media screen and (max-width: 895px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
   }

@@ -1,23 +1,81 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
-export const PURCHASELIST = styled.div`
-  grid-column: 7/10;
-  grid-row: 2/10;
+const showModal = keyframes`
+  from {
+    opacity: 0.5;
+    transform: translateY(3%);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0%);
+  }
+`;
 
+export const PURCHASELIST = styled.div<{ showPurchase: boolean }>`
+  grid-column: 5/7;
+  grid-row: 2/11;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 0.2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: relative;
-  top: 0;
+  overflow: hidden;
 
   transition: all 0.2s ease-in-out;
   &:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-    top: -0.5rem;
+    top: -0.1rem;
   }
 
   @media screen and (max-width: 768px) {
-    grid-column: 6/10;
-    grid-row: 6/10;
+    display: none;
+    z-index: 5;
+    animation: ${showModal} 0.5s forwards;
+
+    ${({ showPurchase }) =>
+      showPurchase &&
+      css`
+        display: flex;
+        grid-column: 2/6;
+        grid-row: 2/11;
+        position: relative;
+        background-color: white;
+      `}
+  }
+
+  @media screen and (max-width: 540px) {
+    grid-row: 3/10;
+    font-size: 0.8rem;
   }
 `;
 
-export const tmp = {};
+export const STAR = styled.div`
+  color: grey;
+`;
+
+export const GO_TO_REVIEW = styled.div`
+  color: ${({ theme }) => theme.colors.purple};
+
+  &:hover {
+    font-weight: bold;
+    color: ${({ theme }) => theme.colors.yellow};
+  }
+`;
+
+// -----------모바일 버튼 -------------- //
+
+export const MOBILE_ESC = styled.div<{ showPurchase: boolean }>`
+  display: none;
+  color: black;
+  position: absolute;
+  top: 50%;
+  right: 0.7rem;
+  transform: translateY(-50%);
+  margin-left: auto;
+  cursor: pointer;
+  color: black;
+  ${(props) => props.showPurchase && 'display:block;'}
+`;
