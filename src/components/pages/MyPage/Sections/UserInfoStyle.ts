@@ -45,11 +45,6 @@ export const USERINFO = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    grid-column: 1/7;
-    grid-row: 1/6;
-    margin-bottom: 1rem;
-  }
-  @media screen and (max-width: 532px) {
     grid-column: 2/6;
     grid-row: 2/11;
   }
@@ -67,15 +62,6 @@ export const HELLO = styled.div`
   color: #4c4c4c;
   font-weight: bold;
   /* white-space: nowrap; */
-
-  @media screen and (max-width: 768px) {
-    grid-column: 6/11;
-    grid-row: 1/6;
-  }
-  @media screen and (max-width: 532px) {
-    grid-column: 1/11;
-    grid-row: 1/4;
-  }
 `;
 
 export const HELLO_TEXT = styled.div`
@@ -94,16 +80,6 @@ export const PROFILE_BOX = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  @media screen and (max-width: 768px) {
-    grid-column: 1/6;
-    grid-row: 1/11;
-  }
-  @media screen and (max-width: 532px) {
-    grid-column: 1/11;
-    grid-row: 4/9;
-  }
-
-  /* background-color: ${({ theme }) => theme.colors.middlepurple}; */
 `;
 export const INFO = styled.div`
   grid-column: 1/11;
@@ -113,14 +89,6 @@ export const INFO = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  @media screen and (max-width: 768px) {
-    grid-column: 6/11;
-    grid-row: 6/11;
-  }
-  @media screen and (max-width: 532px) {
-    grid-column: 1/11;
-    grid-row: 9/11;
-  }
 `;
 
 // ------------PROFILE_BOX 안 ----------------//
@@ -233,7 +201,7 @@ export const WITHDRAWAL_BUTTON = styled(Withdrawal)`
 export const MOBILE_BUTTON = styled.div`
   display: none;
 
-  @media screen and (max-width: 532px) {
+  @media screen and (max-width: 768px) {
     display: flex;
     position: absolute;
     left: 50%;

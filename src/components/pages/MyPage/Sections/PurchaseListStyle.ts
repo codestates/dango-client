@@ -30,12 +30,8 @@ export const PURCHASELIST = styled.div<{ showPurchase: boolean }>`
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     top: -0.1rem;
   }
+
   @media screen and (max-width: 768px) {
-    margin-bottom: 1rem;
-    grid-column: 4/7;
-    grid-row: 6/11;
-  }
-  @media screen and (max-width: 532px) {
     display: none;
     z-index: 5;
     animation: ${showModal} 0.5s forwards;
