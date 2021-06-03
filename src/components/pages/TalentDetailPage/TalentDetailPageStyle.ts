@@ -256,7 +256,7 @@ export const PHOTO = styled.img`
   // height: 122px;
   // border: 2px solid #dadce0;
   cursor: pointer;
-  &:active {
+  &:hover {
     position: absolute;
     bottom: 2rem;
     max-width: 400px;

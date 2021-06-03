@@ -44,7 +44,7 @@ export const STAR = styled.span`
 
 export const NICKNAME = styled.span`
   margin-right: 1rem;
-  font-weight: bold;
+  font-weight: 500;
 `;
 export const DATE = styled.div`
   color: gray;
@@ -84,7 +84,7 @@ export const REPLYTOP = styled.div`
 `;
 
 export const REPLYNAME = styled.span`
-  font-weight: bold;
+  font-weight: 500;
   margin-right: 10px;
 `;
 
