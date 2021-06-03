@@ -6,6 +6,8 @@ import server from '../../../../api';
 import Signup from '../Signup';
 import { signin, UserState } from '../../../../_reducer/user';
 
+import kakaoLoginBtn from '../../../../images/kakaoLoginBtn.png';
+
 function KakaoSignin(): JSX.Element {
   const { Kakao } = window;
   const dispatch = useDispatch();
@@ -87,12 +89,21 @@ function KakaoSignin(): JSX.Element {
 
   // 카카오,구글 로그인 컴포넌트에서 SignUp컴포넌트를 각각 리턴합니다.(social 종류와, 토큰과 setIsUser을 props로 담아서)
   return (
-    <>
-      <button type="button" onClick={handleKakaoSignin}>
-        Kakao Login
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <button
+        type="button"
+        onClick={handleKakaoSignin}
+        style={{
+          border: 'none',
+          borderRadius: '2px',
+          backgroundColor: '#FEE500',
+          boxShadow: 'rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px',
+        }}
+      >
+        <img alt="" src={kakaoLoginBtn} style={{ width: 180, height: 39, cursor: 'pointer' }} />
       </button>
       {isUser || <Signup social="kakao" accessToken={kakaoAccessToken} setIsUser={setIsUser} />}
-    </>
+    </div>
   );
 }
 

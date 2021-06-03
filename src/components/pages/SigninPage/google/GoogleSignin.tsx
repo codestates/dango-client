@@ -82,20 +82,10 @@ function GoogleSignin(): JSX.Element {
   }, [googleIdToken]);
 
   return (
-    <div>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
       <GoogleLogin
         clientId={GOOGLE_CLIENT_ID}
-        render={(renderProps: any) => (
-          <button
-            type="button"
-            onClick={renderProps.onClick}
-            disabled={renderProps.disabled}
-            style={{ backgroundColor: '#DB4437', color: 'white', border: 'none' }}
-          >
-            Google Login
-          </button>
-        )}
-        buttonText="Login"
+        buttonText="Google 계정으로 로그인"
         onSuccess={(result) => responseGoogle(result)}
         onFailure={(result) => console.log('failure', result)}
         cookiePolicy="single_host_origin"
