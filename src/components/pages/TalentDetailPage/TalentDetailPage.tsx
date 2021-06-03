@@ -194,19 +194,23 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
       };
       server
         .post('/chats/createchat', body)
+        //  상대방에게 새방이 만들어졌음을 알린다.
         .then((res) => {
-          const payload: UpdateChatRoomsPayload = {
-            chatRooms: {
-              talentId,
-              roomId: res.data.roomId,
-              count: 0,
-              otherId: detailData.userInfo._id,
-              otherNickname: detailData.userInfo.nickname,
-              profileImage: detailData.userInfo.socialData.image,
-              clickPurchase: [false, false],
-            },
-          };
-          dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
+          connectSocket.emit('initChat', body.otherId, res.data.roomId);
+        })
+        .then(() => {
+          // const payload: UpdateChatRoomsPayload = {
+          //   chatRooms: {
+          //     talentId,
+          //     roomId: res.data.roomId,
+          //     count: 0,
+          //     otherId: detailData.userInfo._id,
+          //     otherNickname: detailData.userInfo.nickname,
+          //     profileImage: detailData.userInfo.socialData.image,
+          //     clickPurchase: [false, false],
+          //   },
+          // };
+          // dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
           dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: true, talentId }));
         })
         .then(() => {

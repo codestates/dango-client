@@ -51,7 +51,7 @@ interface ChatInfo {
     nickname: string;
     _id: string;
   };
-  type: 'text' | 'confirm';
+  type: 'text' | 'confirm' | 'init';
   _id: string;
 }
 
