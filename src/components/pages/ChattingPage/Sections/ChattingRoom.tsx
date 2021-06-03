@@ -1,11 +1,13 @@
 import React, { useEffect, useState, memo, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '../../../../_reducer';
+import { updateChatRooms } from '../../../../_reducer/user';
 import getChatTime from '../../../../utils/getChatTime';
 import MessageInput from './MessageInput';
 import Chats from './Chats';
+import server from '../../../../api';
 
 // 실제로 기능구현이 되는 컴포넌트
 const CHATTINGROOM = styled.div`
@@ -48,19 +50,20 @@ export interface ChatInfo {
     nickname: string;
     _id: string;
   };
-  type: 'text' | 'confirm';
+  type: 'text' | 'confirm' | 'init';
   _id: string;
 }
 
 export interface ChatsLists {
   id: string;
-  type: 'text' | 'confirm';
+  type: 'text' | 'confirm' | 'init';
   time: string;
   message: string;
   image: string;
 }
 
 function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastChat }: ChattingRoomProps): JSX.Element {
+  const dispatch = useDispatch();
   const [chatsLists, setChatsLists] = useState<ChatsLists[]>([]);
   const { userInfo } = useSelector((state: RootState) => state.user);
   const chattingRoomRef = useRef<HTMLDivElement>(null);
@@ -97,6 +100,15 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
     // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
     connectSocket.on('messageFromOther', (receivedChats: ChatInfo) => {
       console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
+
+      // 새방이 만들어졌다는 메시지라면 서버에서 새 chatRooms를 받아서
+      if (receivedChats.type === 'init') {
+        console.log('채팅방 만들어졌음 이제 서버에서 룸데이터받을꺼임');
+        server.get(`/users/chatinfo/${userInfo?.id}`).then((res) => {
+          dispatch(updateChatRooms({ chatRooms: res.data.chatrooms[res.data.chatrooms.length - 1] }));
+        });
+        return;
+      }
       setLastChat(receivedChats);
     });
   }, []);
