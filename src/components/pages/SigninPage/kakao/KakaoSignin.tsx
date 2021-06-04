@@ -61,7 +61,7 @@ function KakaoSignin(): JSX.Element {
 
             dispatch(signin(payload));
             console.log(payload);
-            dispatch(openModal({ type: 'ok', text: '로그인되었습니다.' }));
+            dispatch(openModal({ type: 'ok', text: '로그인되었습니다.', callbackName: 'renewPage' }));
             history.push('/');
           })
           .catch((err) => {

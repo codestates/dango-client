@@ -54,22 +54,24 @@ interface ChatInfo {
     nickname: string;
     _id: string;
   };
+  roomId: string;
   type: 'text' | 'confirm' | 'init';
   _id: string;
 }
 
 interface Props {
   connectSocket: any;
+  lastChat: ChatInfo | null;
+  setLastChat: (lastChat: ChatInfo) => void;
 }
 
-function ChattingRoomsList({ connectSocket }: Props): JSX.Element {
+function ChattingRoomsList({ connectSocket, lastChat, setLastChat }: Props): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const { isFromDetail, isFirstChat, talentId } = useSelector((state: RootState) => state.chattings);
   const [curOtherId, setCurOtherId] = useState<string>('');
   const [curRoomId, setCurRoomId] = useState<string>('');
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
-  const [lastChat, setLastChat] = useState<ChatInfo | null>(null);
   const [showChatList, setShowChatList] = useState<boolean>(false);
   const [hover, setHover] = useState<number>(-1);
 
@@ -78,35 +80,35 @@ function ChattingRoomsList({ connectSocket }: Props): JSX.Element {
   const talentIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.talentId);
 
   useEffect(() => {
-    if (!connectSocket) {
-      return;
-    }
-    connectSocket.emit(
-      'joinroom',
-      userInfo?.chatRooms.map((chatRoom: any) => chatRoom.otherId),
-    );
-    connectSocket.on('hasjoined', (data: any) => {
-      console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
-    });
+    // if (!connectSocket) {
+    //   return;
+    // }
+    // connectSocket.emit(
+    //   'joinroom',
+    //   userInfo?.chatRooms.map((chatRoom: any) => chatRoom.otherId),
+    // );
+    // connectSocket.on('hasjoined', (data: any) => {
+    //   console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
+    // });
 
-    // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
-    connectSocket.on('messageFromOther', (receivedChats: ChatInfo) => {
-      console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
+    // // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
+    // connectSocket.on('messageFromOther', (receivedChats: ChatInfo) => {
+    //   console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
 
-      // 새방이 만들어졌다는 메시지라면 서버에서 새 chatRooms를 받아서
-      if (receivedChats.type === 'init') {
-        console.log('채팅방 만들어졌음 이제 서버에서 룸데이터받을꺼임');
-        server
-          .get(`/users/chatinfo/${userInfo?.id}`)
-          .then((res) => {
-            console.log('서버에서받은 룸데이터', res.data);
-            dispatch(renewChatRooms({ chatRooms: res.data.chatrooms }));
-          })
-          .catch((err) => console.log(err));
-        return;
-      }
-      setLastChat(receivedChats);
-    });
+    //   // 새방이 만들어졌다는 메시지라면 서버에서 새 chatRooms를 받아서
+    //   if (receivedChats.type === 'init') {
+    //     console.log('채팅방 만들어졌음 이제 서버에서 룸데이터받을꺼임');
+    //     server
+    //       .get(`/users/chatinfo/${userInfo?.id}`)
+    //       .then((res) => {
+    //         console.log('서버에서받은 룸데이터', res.data);
+    //         dispatch(renewChatRooms({ chatRooms: res.data.chatrooms }));
+    //       })
+    //       .catch((err) => console.log(err));
+    //     return;
+    //   }
+    //   setLastChat(receivedChats);
+    // });
 
     // 상세페이지에서 [채팅으로 거래하기] 버튼을 통해 들어온 경우
     if (isFromDetail) {
@@ -214,6 +216,7 @@ function ChattingRoomsList({ connectSocket }: Props): JSX.Element {
               setLastChat={setLastChat}
               showChatList={showChatList}
               setShowChatList={setShowChatList}
+              connectSocket={connectSocket}
             />
           )}
           {curRoomId ? (

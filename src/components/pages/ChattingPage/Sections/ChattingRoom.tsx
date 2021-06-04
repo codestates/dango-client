@@ -45,6 +45,7 @@ export interface ChatInfo {
     nickname: string;
     _id: string;
   };
+  roomId: string;
   type: 'text' | 'confirm' | 'init';
   _id: string;
 }
