@@ -15,6 +15,7 @@ import theme from '../styles/theme';
 import Navbar from './pages/LandingPage/Sections/Navbar';
 import SigninModal from './pages/SigninPage/SigninModal';
 import LandingPage from './pages/LandingPage/LandingPage';
+// import Loading from './pages/LandingPage/Sections/Loading';
 // import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
 
 function App(): JSX.Element {
