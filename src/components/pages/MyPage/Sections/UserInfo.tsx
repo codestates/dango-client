@@ -5,6 +5,7 @@ import { modifyNickname } from '../../../../_reducer/user';
 import { openModal } from '../../../../_reducer/modal';
 import Withdrawal from '../../SigninPage/Withdrawal';
 import server from '../../../../api';
+import validateNickname from '../../../../utils/validateNickname';
 import getToday from '../../../../utils/getToday';
 import {
   HELLO,
@@ -67,27 +68,37 @@ export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.E
       });
   };
 
+  const handleClickEscape = () => {
+    setModifyMode(false);
+    if (inputRef.current && userInfo) {
+      inputRef.current.value = userInfo.nickname;
+    }
+  };
+
   const handleNicknameCheck = () => {
-    if (inputRef.current && (inputRef.current.value.length < 2 || inputRef.current.value.length > 8)) {
-      dispatch(openModal({ type: 'error', text: '2글자 이상, 8글자 이하의 닉네임을 작성해주세요.' }));
-      inputRef.current.focus();
-    } else {
-      // 서버에 닉네임 중복체크 요청
-      const data = { nickname: inputRef.current?.value };
-      server
-        .post('/users/doublecheck', data)
-        .then((response) => {
-          dispatch(openModal({ type: 'ok', text: response.data.message }));
-          setNicknameCheck(true);
-        })
-        .catch((err) => {
-          setNicknameCheck(false);
-          if (!err.response) {
-            console.log(err);
-            return;
-          }
-          dispatch(openModal({ type: 'error', text: err.response.data.message }));
-        });
+    if (inputRef.current) {
+      if (validateNickname(inputRef.current.value) !== '통과') {
+        dispatch(openModal({ type: 'error', text: validateNickname(inputRef.current.value) }));
+        setNicknameCheck(false);
+        inputRef.current.focus();
+      } else {
+        // 서버에 닉네임 중복체크 요청
+        const data = { nickname: inputRef.current?.value };
+        server
+          .post('/users/doublecheck', data)
+          .then((response) => {
+            dispatch(openModal({ type: 'ok', text: response.data.message }));
+            setNicknameCheck(true);
+          })
+          .catch((err) => {
+            setNicknameCheck(false);
+            if (!err.response) {
+              console.log(err);
+              return;
+            }
+            dispatch(openModal({ type: 'error', text: err.response.data.message }));
+          });
+      }
     }
   };
 
@@ -142,7 +153,7 @@ export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.E
             {!modifyMode ? (
               <MODIFY_BUTTON onClick={handleClickModify} />
             ) : (
-              <MODIFY_ESC_BUTTON onClick={() => setModifyMode(false)}>✕</MODIFY_ESC_BUTTON>
+              <MODIFY_ESC_BUTTON onClick={handleClickEscape}>✕</MODIFY_ESC_BUTTON>
             )}
             {modifyMode && (
               <NICKNAME_MODIFYBOX>
