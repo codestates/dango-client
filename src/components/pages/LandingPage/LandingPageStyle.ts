@@ -127,12 +127,18 @@ to{
 `;
 
 const ROTATE1 = keyframes`
+from {
+  opacity: 0;
+}
 to {
     opacity: 1;
     transform: rotate(35deg);
 }
 `;
 const ROTATE2 = keyframes`
+from {
+  opacity: 0;
+}
 to {
     opacity: 1;
     transform: rotate(38deg);
@@ -194,6 +200,17 @@ to {
     opacity: 1
 }
 `;
+
+const TALENTFADEIN = keyframes`
+from {
+    opacity: 0;
+    left: 1200px;
+    max-width: 100%;
+}
+to {
+    opacity: 1;
+}
+`;
 // ::::::::::::::::::::: 인트로 DIV :::::::::::::::::::::
 
 export const DIV = styled('div')`
@@ -201,9 +218,9 @@ export const DIV = styled('div')`
   text-align: center;
   font-weight: 300;
   font-size: 65px;
-  padding-top: 20vh;
+  padding-top: 8vh;
   height: 70vh;
-  @media screen and (max-width: 690px) {
+  @media screen and (max-width: 768px) {
     display: flex;
     flex-direction: column;
     padding: auto;
@@ -329,18 +346,16 @@ export const CIRCLE_6 = styled(CIRCLE_3)`
 `;
 
 // ::::::::::::::::::::: 지도 :::::::::::::::::::::
-
 export const MAPCONTAINER = styled(CIRCLECONTAINER)<{ scrollY: number }>`
   animation: ${({ scrollY }) =>
-    scrollY > 326
+    scrollY > 350
       ? css`
-          ${FADEIN} 1s forwards
+          ${FADEIN} 1s forwards;
         `
       : css`
           ${NONE} 2s forwards
         `};
 `;
-
 export const PATH = styled('svg')<{ scrollY: number }>`
   overflow: inherit;
   position: absolute;
@@ -352,26 +367,38 @@ export const PATH = styled('svg')<{ scrollY: number }>`
   top: 720px;
   left: 600px;
   animation: ${LINE} 2s linear infinite;
-  /* width: 1000px;
-  height: 200px; */
 `;
-
-export const TRIANGLE1 = styled('div')`
+export const TRIANGLE1 = styled('div')<{ scrollY: number }>`
   width: 0px;
   height: 0px;
   border-top: 300px solid transparent;
   border-right: 600px solid ${({ theme }) => theme.colors.lightpurple};
   border-bottom: 300px solid transparent;
-  animation: ${ROTATE1} 1s forwards;
+  animation: ${({ scrollY }) =>
+    scrollY > 97
+      ? css`
+          /* ${FADEIN} 1s forwards */
+          ${ROTATE1} 4s forwards
+        `
+      : css`
+          ${NONE} 6s forwards
+        `};
   position: absolute;
   top: 750px;
   left: 20px;
 `;
-
-export const TRIANGLE2 = styled(TRIANGLE1)`
+export const TRIANGLE2 = styled(TRIANGLE1)<{ scrollY: number }>`
   border-right: 600px solid ${({ theme }) => theme.colors.purple};
   border-bottom: 300px solid transparent;
-  animation: ${ROTATE2} 1s forwards;
+  animation: ${({ scrollY }) =>
+    scrollY > 97
+      ? css`
+          /* ${FADEIN} 1s forwards; */
+          ${ROTATE2} 4s forwards;
+        `
+      : css`
+          ${NONE} 6s forwards
+        `};
   top: 750px;
   left: 20px;
 `;
@@ -613,95 +640,171 @@ TALENTIMG2.defaultProps = {
   src: talentTest,
 };
 
-export const SQUARE1 = styled('div')`
+export const SQUARE1 = styled('div')<{ scrollY: number }>`
   width: 800px;
   height: 20px;
   position: absolute;
   background: ${({ theme }) => theme.colors.purple};
   top: 3070px;
   left: 620px;
+  animation: ${({ scrollY }) =>
+    scrollY > 1910
+      ? css`
+          ${MAPFADEIN1} 2.1s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE2 = styled(SQUARE1)`
+export const SQUARE2 = styled(SQUARE1)<{ scrollY: number }>`
   width: 600px;
   height: 20px;
   background: ${({ theme }) => theme.colors.lightpurple};
   top: 3055px;
   left: 650px;
+  animation: ${({ scrollY }) =>
+    scrollY > 1950
+      ? css`
+          ${TALENTFADEIN} 2.1s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE3 = styled(SQUARE2)`
+export const SQUARE3 = styled(SQUARE2)<{ scrollY: number }>`
   width: 500px;
   height: 20px;
   background: ${({ theme }) => theme.colors.lightgray};
   top: 2980px;
   left: 900px;
 `;
-
-export const SQUARE4 = styled(SQUARE1)`
+export const SQUARE4 = styled(SQUARE1)<{ scrollY: number }>`
   width: 200px;
   height: 20px;
   top: 2975px;
   left: 60px;
+  animation: ${({ scrollY }) =>
+    scrollY > 2200
+      ? css`
+          ${MAPFADEIN1} 2s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE5 = styled(SQUARE2)`
+export const SQUARE5 = styled(SQUARE2)<{ scrollY: number }>`
   width: 700px;
   height: 20px;
   top: 2990px;
   left: 30px;
+  animation: ${({ scrollY }) =>
+    scrollY > 2230
+      ? css`
+          ${MAPFADEIN1} 2.7s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE6 = styled(SQUARE3)`
+export const SQUARE6 = styled(SQUARE3)<{ scrollY: number }>`
   width: 200px;
   height: 20px;
   top: 2530px;
   left: 900px;
+  animation: ${({ scrollY }) =>
+    scrollY > 1810
+      ? css`
+          ${TALENTFADEIN} 1.8s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE7 = styled(SQUARE1)`
+export const SQUARE7 = styled(SQUARE1)<{ scrollY: number }>`
   width: 600px;
   height: 20px;
   top: 2580px;
   left: 100px;
+  animation: ${({ scrollY }) =>
+    scrollY > 1890
+      ? css`
+          ${MAPFADEIN1} 2.7s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE8 = styled(SQUARE2)`
+export const SQUARE8 = styled(SQUARE2)<{ scrollY: number }>`
   width: 600px;
   height: 20px;
   top: 2550px;
   left: 800px;
+  animation: ${({ scrollY }) =>
+    scrollY > 1910
+      ? css`
+          ${TALENTFADEIN} 1.8s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE9 = styled(SQUARE3)`
+export const SQUARE9 = styled(SQUARE3)<{ scrollY: number }>`
   width: 900px;
   height: 20px;
   top: 2500px;
   left: 20px;
+  animation: ${({ scrollY }) =>
+    scrollY > 1930
+      ? css`
+          ${MAPFADEIN1} 2.3s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE10 = styled(SQUARE1)`
+export const SQUARE10 = styled(SQUARE1)<{ scrollY: number }>`
   width: 200px;
   height: 20px;
   top: 2542px;
   left: 1080px;
+  animation: ${({ scrollY }) =>
+    scrollY > 1970
+      ? css`
+          ${TALENTFADEIN} 2.1s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE11 = styled(SQUARE2)`
+export const SQUARE11 = styled(SQUARE2)<{ scrollY: number }>`
   width: 400px;
   height: 20px;
   top: 3180px;
   left: 1000px;
+  animation: ${({ scrollY }) =>
+    scrollY > 2480
+      ? css`
+          ${TALENTFADEIN} 1.8s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
-
-export const SQUARE12 = styled(SQUARE3)`
+export const SQUARE12 = styled(SQUARE3)<{ scrollY: number }>`
   width: 900px;
   height: 20px;
   top: 3120px;
   left: 50px;
+  animation: ${({ scrollY }) =>
+    scrollY > 2400
+      ? css`
+          ${MAPFADEIN1} 1.5s forwards
+        `
+      : css`
+          ${NONE} 2s forwards
+        `};
 `;
 // ::::::::::::::::::::: 마지막 :::::::::::::::::::::
-
 export const LASTCONTAINER = styled(CIRCLECONTAINER)<{ scrollY: number }>`
   animation: ${({ scrollY }) =>
     scrollY > 2770
@@ -712,22 +815,18 @@ export const LASTCONTAINER = styled(CIRCLECONTAINER)<{ scrollY: number }>`
           ${NONE} 2s forwards
         `};
 `;
-
 export const LASTDESCRIPTION1 = styled(CIRCLEDESCRIPTION)`
   left: 520px;
   top: 3600px;
 `;
-
 export const LASTDESCRIPTION2 = styled(CIRCLEDESCRIPTION)`
   left: 630px;
   top: 3650px;
 `;
-
 export const LASTSVGCONTAINER = styled(IMGCONTAINER)`
   left: 600px;
   top: 3700px;
 `;
-
 export const LASTSVG = styled('img')<{ scrollY: number }>`
   width: 300px;
   height: 200px;
@@ -740,17 +839,15 @@ export const LASTSVG = styled('img')<{ scrollY: number }>`
           ${NONE} 2s forwards
         `};
 `;
-
 LASTSVG.defaultProps = {
   src: lastSVG,
 };
-
 export const STARTBTN = styled(LBUTTON)`
   position: absolute;
-  left: 700px;
-  top: 3940px;
+  left: 630px;
+  top: 4050px;
+  width: 200px;
 `;
-
 export const CIRCLE7 = styled(CIRCLE)`
   width: 370px;
   height: 370px;
@@ -758,33 +855,27 @@ export const CIRCLE7 = styled(CIRCLE)`
   top: 3560px;
   background: ${({ theme }) => theme.colors.lightpurple};
 `;
-
 export const CIRCLE8 = styled(CIRCLE7)`
   left: 670px;
   top: 3580px;
 `;
-
 export const CIRCLE9 = styled(CIRCLE7)`
   width: 200px;
   height: 200px;
   left: 370px;
   top: 3720px;
 `;
-
 export const CIRCLE10 = styled(CIRCLE9)`
   width: 100px;
   height: 100px;
   left: 320px;
   top: 3720px;
 `;
-
 export const CIRCLE11 = styled(CIRCLE9)`
   left: 700px;
   top: 3450px;
 `;
-
 // ::::::::::::::::::::: FOOTER :::::::::::::::::::::
-
 export const FOOTERCONTAINER = styled(CIRCLECONTAINER)`
   border-top: 0.5px solid #efefef;
   height: 120px;
@@ -795,16 +886,13 @@ export const FOOTERCONTAINER = styled(CIRCLECONTAINER)`
   padding-top: 40px;
   justify-content: center;
 `;
-
 export const TEAMNAME = styled('div')`
   font-weight: 320;
   padding: 15px 20px;
 `;
-
 export const CONTRIBUTERS = styled('div')`
   padding: 15px 20px;
 `;
-
 export const OURS = styled('a')`
   padding: 15px 20px;
 `;
