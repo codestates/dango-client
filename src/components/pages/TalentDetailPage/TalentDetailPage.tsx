@@ -271,26 +271,13 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
       <DETAIL>
         {isClicked ? (
           <>
-            <TOP>
-              <CATEGORY>
-                <EDITCATEGORY ref={select} onChange={changeInput('category')} defaultValue={editDetail?.category}>
-                  {categoryList.map((category) => (
-                    <OPTION key={category}>{category}</OPTION>
-                  ))}
-                </EDITCATEGORY>
-              </CATEGORY>
-              <PRICE>
-                <PRICEINPUT
-                  type="number"
-                  ref={input}
-                  defaultValue={editDetail?.price}
-                  onChange={changeInput('price')}
-                  placeholder="입력값이 없으면 무료재능기부가 됩니다!"
-                  min="0"
-                />
-                원
-              </PRICE>
-            </TOP>
+            <CATEGORY>
+              <EDITCATEGORY ref={select} onChange={changeInput('category')} defaultValue={editDetail?.category}>
+                {categoryList.map((category) => (
+                  <OPTION key={category}>{category}</OPTION>
+                ))}
+              </EDITCATEGORY>
+            </CATEGORY>
             <TITLE>
               <TITLEINPUT
                 ref={input}
@@ -299,6 +286,17 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
                 placeholder="제목을 입력해주세요."
               />
             </TITLE>
+            <PRICE>
+              <PRICEINPUT
+                type="number"
+                ref={input}
+                defaultValue={editDetail?.price}
+                onChange={changeInput('price')}
+                placeholder="입력값이 없으면 무료재능기부가 됩니다!"
+                min="0"
+              />
+              원
+            </PRICE>
 
             <EDITDESC>
               <TEXTAREA
@@ -317,12 +315,9 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
           </>
         ) : (
           <>
-            <TOP>
-              <CATEGORY>{editDetail?.category}</CATEGORY>
-              <PRICE>{editDetail?.price}원</PRICE>
-            </TOP>
-
+            <CATEGORY>카테고리 : {editDetail?.category}</CATEGORY>
             <TITLE>{editDetail?.title}</TITLE>
+            <PRICE>{editDetail?.price}원</PRICE>
             <DESCRIPTION>{editDetail?.description}</DESCRIPTION>
 
             <BOTTOM>

@@ -20,7 +20,7 @@ export const CONTAINER = styled.div`
 export const SELLER = styled.div`
   grid-column: 1/3;
   grid-row: 1/4;
-  box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.lightpurple};
+  box-shadow: 0 0 3px 1px ${({ theme }) => theme.colors.lightpurple};
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -30,6 +30,8 @@ export const SELLER = styled.div`
 export const PROFILE = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
   height: 40%;
+  // border: 1px solid;
+  // margin-top: 1rem;
 `;
 
 export const PROFILEIMG = styled.div`
@@ -44,7 +46,7 @@ export const IMG = styled.img`
 export const NICKNAME = styled.div`
   font-size: 1.25rem;
   font-weight: bold;
-  margin-top: 1rem;
+  margin-top: 2rem;
 `;
 
 export const GRADE = styled.div`
@@ -52,12 +54,14 @@ export const GRADE = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  height: 30%;
+  height: 20%;
 `;
 
 export const RATING = styled.div``;
 
-export const COUNT = styled.div``;
+export const COUNT = styled.div`
+  margin-top: 1rem;
+`;
 
 export const BUTTONDIV = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
@@ -68,20 +72,12 @@ export const DETAIL = styled.div`
   grid-column: 3/7;
   grid-row: 1/4;
   // box-shadow: 1px 1px 3px 1px #dadce0;
-  box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.lightpurple};
+  box-shadow: 0 0 3px 1px ${({ theme }) => theme.colors.lightpurple};
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   // align-items: center;
-  padding: 1rem 0;
-`;
-
-export const ADDRESS = styled.div`
-  ${({ theme }) => theme.common.flexCenter};
-  height: 10%;
-  padding: 0 1rem;
-  color: gray;
-  font-size: 0.8rem;
+  padding: 1.5rem;
 `;
 
 export const TOP = styled.div`
@@ -93,39 +89,65 @@ export const TOP = styled.div`
   margin-bottom: 2rem;
 `;
 
-export const CATEGORY = styled.div``;
+export const CATEGORY = styled.div`
+  margin-left: auto;
+  margin-right: 0.5rem;
+  color: gray;
+  margin-bottom: 2.5rem;
+`;
 
-export const PRICE = styled.div``;
+export const PRICE = styled.div`
+  margin-left: auto;
+  margin-right: 0.5rem;
+  color: ${({ theme }) => theme.colors.purple};
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+`;
 
 export const TITLE = styled.div`
   height: 10%;
   ${({ theme }) => theme.common.flexCenter};
-  color: ${({ theme }) => theme.colors.purple};
   font-size: 1.25rem;
   font-weight: bold;
 `;
 
 export const DESCRIPTION = styled.div`
   // border: 1px solid;
-  padding: 0 3rem;
+  padding-right: 0.4rem;
+  padding-left: 0.7rem;
   // margin: 0 1rem;
-  height: 50%;
+  height: 45%;
   display: flex;
-  align-items: center;
+  // align-items: center;
   // box-shadow: 1px 1px 3px 1px #dadce0;
   // background-color: ${({ theme }) => theme.colors.lightgray};
   white-space: pre-wrap;
   line-height: 180%;
+  // border: 1px solid;
+  margin-top: 2rem;
 `;
 
 export const BOTTOM = styled.div`
-  padding: 0 1rem;
+  padding: 0 0.5rem;
   height: 10%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   // margin-left: auto;
   margin-top: 2rem;
+  //border: 1px solid;
+`;
+
+export const ADDRESS = styled.div`
+  height: 100%;
+  margin-right: 1rem;
+  color: gray;
+  font-size: 0.8rem;
+  display: flex;
+  // border: 1px solid;
+  align-items: center;
 `;
 
 export const SHAREBOX = styled.div`
@@ -198,7 +220,7 @@ export const TITLEINPUT = styled.input`
     box-shadow: 1px 1px 3px 1px #835af1;
   }
   text-align: center;
-  width: 85%;
+  width: 100%;
   padding: 0.5rem 1rem;
 `;
 
@@ -214,28 +236,29 @@ export const EDITDESC = styled.div`
   // background-color: ${({ theme }) => theme.colors.lightgray};
   white-space: pre-wrap;
   line-height: 180%;
+  margin-top: 1rem;
 `;
 
 export const TEXTAREA = styled.textarea`
   all: unset;
   height: 90%;
-  width: 85%;
+  width: 100%;
   box-shadow: 1px 1px 3px 1px #dadce0;
   &:focus {
     box-shadow: 1px 1px 3px 1px #835af1;
   }
-  padding: 1rem;
+  padding: 1rem 0.5rem;
   line-height: 180%;
 `;
 
 export const PHOTOS = styled.div`
   grid-column: 1/7;
   grid-row: 4/5;
-  box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.purple};
+  // box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.lightpurple};
   display: flex;
   justify-content: space-evenly;
   padding: 1rem 0;
-  // border: 5px solid ${({ theme }) => theme.colors.lightpurple};
+  border: 3px solid ${({ theme }) => theme.colors.lightpurple};
 `;
 
 export const PHOTODIV = styled.div`
