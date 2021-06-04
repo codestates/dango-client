@@ -187,7 +187,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
         //  상대방에게 새방이 만들어졌음을 알린다.
         .then((res) => {
           console.log('채팅방 생겼다고 상대방한테 보내기 서버데이터:', res.data);
-          connectSocket.emit('initChat', res.data.roomId, body.otherId);
+          connectSocket.emit('initChat', body.otherId, res.data.roomId);
           return res;
         })
         .then((res) => {

@@ -214,6 +214,7 @@ function ChattingRoomsList({ connectSocket }: Props): JSX.Element {
               setLastChat={setLastChat}
               showChatList={showChatList}
               setShowChatList={setShowChatList}
+              connectSocket={connectSocket}
             />
           )}
           {curRoomId ? (

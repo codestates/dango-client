@@ -21,6 +21,7 @@ function App(): JSX.Element {
   const id = useSelector((state: RootState) => state.user.userInfo?.id, shallowEqual);
   const [connectSocket, setConnectSocket] = useState<any | null>(null);
 
+  // id가 제대로 안들어갈때가있어서 deps를 빈배열로넣고 로그인할때마다 페이지 새로고침시킴
   useEffect(() => {
     if (!id) {
       return;
@@ -35,7 +36,7 @@ function App(): JSX.Element {
       console.log('connectSocket! socket.id: ', socket.id);
     });
     setConnectSocket(connect);
-  }, [id]);
+  }, []);
 
   return (
     <>

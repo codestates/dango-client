@@ -21,6 +21,7 @@ interface ChattingOptionProps {
   setLastChat: (lastChat: ChatInfo) => void;
   showChatList: boolean;
   setShowChatList: (boolean: boolean) => void;
+  connectSocket: any;
 }
 
 export default function ChattingOption({
@@ -29,6 +30,7 @@ export default function ChattingOption({
   setLastChat,
   showChatList,
   setShowChatList,
+  connectSocket,
 }: ChattingOptionProps): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -39,14 +41,17 @@ export default function ChattingOption({
       userId: roomInfo?.userId,
       chatroomId: roomInfo?.chatRoomId,
     };
+
     server
       .post('/users/confirm', data)
       .then((response) => {
-        setLastChat(response.data.confirmedChat);
-        if (roomInfo?.talentId) {
+        // setLastChat(response.data.confirmedChat);
+        if (roomInfo) {
+          connectSocket.emit('confirm', roomInfo.talentId, roomInfo.userId, roomInfo.chatRoomId, roomInfo.otherId);
           dispatch(purchaseComplete({ talentId: roomInfo.talentId, confirmed: response.data.confirmed }));
+
+          dispatch(openModal({ type: 'ok', text: '거래완료 신청이 성공적으로 접수되었습니다!' }));
         }
-        dispatch(openModal({ type: 'ok', text: '거래완료 신청이 성공적으로 접수되었습니다!' }));
       })
       .catch((err) => {
         if (!err.response) {
