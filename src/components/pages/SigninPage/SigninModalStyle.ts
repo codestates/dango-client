@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 
-import DANGO from '../../../images/dangoImage.jpeg';
 import loginsvg from '../../../images/loginsvg.svg';
 
 export const SHOWMODAL = keyframes`
@@ -41,6 +40,7 @@ export const SIGNINCONTAINER = styled('div')`
   align-items: center;
   justify-content: center;
   padding: 30px;
+  padding-top: 40px;
   min-width: 400px;
   flex: 1 1 0%;
   position: relative;
@@ -64,7 +64,7 @@ export const XBTN = styled('button')`
 `;
 
 export const IMG = styled('img')`
-  height: 120px;
+  height: 135px;
   width: 300px;
 `;
 
@@ -73,7 +73,7 @@ IMG.defaultProps = {
 };
 
 export const WELCOME = styled('div')`
-  margin-top: 25px;
+  margin-top: 45px;
 `;
 
 export const DESCRIPTION = styled('div')`
@@ -89,7 +89,6 @@ export const DESCRIPTION = styled('div')`
 export const BTNCONTAINER = styled('div')`
   width: 80%;
   margin: 20px;
-  margin-top: 31px;
   justify-content: center;
   display: flex;
   flex-direction: column;

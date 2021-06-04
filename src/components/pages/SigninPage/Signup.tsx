@@ -150,6 +150,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           };
           dispatch(signin(payload)); // 유저정보 저장
           setIsUser(true); // 닉네임창 없앤다.
+          history.push('/');
           dispatch(
             openModal({
               type: 'ok',
@@ -188,7 +189,6 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           </CLOSEBTN>
           <SIGNUP_FORM>
             <SIGNUP_SPAN>사용하실 닉네임을 적어주세요. </SIGNUP_SPAN>
-            {/* <SIGNUP_DIV /> */}
             <SIGNUP_INPUT name="닉네임" onChange={handleInput} />
             <SIGNUP_BTN type="submit" onClick={handleNicknameSubmit}>
               닉네임 등록
