@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { IoIosMenu, IoIosClose } from 'react-icons/io';
 import { RootState } from '../../../../_reducer';
+import { openModal } from '../../../../_reducer/modal';
 import SignOut from '../../SigninPage/Signout';
 
 import { LINK, CONTAINER, LOGOCONTAINER, LOGO, NAV, MENUBARS } from './NavBarStyle';
 
 function Navbar(): JSX.Element {
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const [disPlay, setDisPlay] = useState<boolean>(false);
   const location = useLocation();
@@ -22,7 +24,9 @@ function Navbar(): JSX.Element {
       key={index}
       current={location.pathname === `${li}`}
       disPlay={disPlay}
-      onClick={() => setDisPlay(false)}
+      onClick={() => {
+        setDisPlay(false);
+      }}
     >
       {navList[index]}{' '}
     </LINK>

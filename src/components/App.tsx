@@ -18,14 +18,15 @@ import LandingPage from './pages/LandingPage/LandingPage';
 // import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
 
 function App(): JSX.Element {
-  const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
-  const [connectSocket, setConnectSocket] = useState<any>();
+  const id = useSelector((state: RootState) => state.user.userInfo?.id, shallowEqual);
+  const [connectSocket, setConnectSocket] = useState<any | null>(null);
 
   useEffect(() => {
-    if (!userInfo) {
+    if (!id) {
       return;
     }
-    const socket = io(`${process.env.REACT_APP_API_URL}/?clientId=${userInfo?.id}`, {
+    console.log('app에서 소켓생성 ----------------------');
+    const socket = io(`${process.env.REACT_APP_API_URL}/?clientId=${id}`, {
       transports: ['websocket'],
       path: '/socket.io',
       withCredentials: true,
@@ -34,7 +35,7 @@ function App(): JSX.Element {
       console.log('connectSocket! socket.id: ', socket.id);
     });
     setConnectSocket(connect);
-  }, []);
+  }, [id]);
 
   return (
     <>

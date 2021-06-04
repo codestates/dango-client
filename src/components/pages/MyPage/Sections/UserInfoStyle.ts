@@ -111,7 +111,6 @@ export const WRAPIMG = styled.div`
   min-width: 188px;
   min-height: 188px;
   margin-bottom: 1vw;
-  box-shadow: 0 7px 28px rgba(0, 0, 0, 0.16), 0 7px 10px rgba(0, 0, 0, 0.16);
 
   @media screen and (max-width: 540px) {
     min-width: 128px;
