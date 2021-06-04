@@ -103,40 +103,47 @@ function LandingPage(): JSX.Element {
     history.push('/map');
   };
 
+  // const topBtn = () => {
+  //   window.scrollTo(0, 0);
+  // };
+
   return (
     <div>
       <Modal />
-      <DIV>
-        <TITLECONTAINER>
-          <HELLO>Say Hello to</HELLO>
-          <TITLE>DANGO!</TITLE>
-        </TITLECONTAINER>
-      </DIV>
+      {/* <div onClick={topBtn}> test </div> */}
+      <div>
+        <DIV>
+          <TITLECONTAINER>
+            <HELLO>Say Hello to</HELLO>
+            <TITLE>DANGO!</TITLE>
+          </TITLECONTAINER>
+        </DIV>
 
-      <CIRCLECONTAINER>
-        <CIRCLETITLE>누구나 재능은 있다!</CIRCLETITLE>
-        <CIRCLEDESCRIPTION>
-          {' '}
-          DANGO는 누구나 자신만의 재능을 가지고 있다는 생각에서 출발했습니다. <br /> <br /> 나만의 재능을 당신의 근처
-          이웃들과 서로 나눠보세요!
-        </CIRCLEDESCRIPTION>
-        <IMGCONTAINER>
-          <MAINIMG />
-        </IMGCONTAINER>
-        <CIRCLE_4 />
-        <CIRCLE_5 />
-        <CIRCLE_6 />
-        <CIRCLE />
-        <CIRCLE_2 />
-        <CIRCLE_3 />
-      </CIRCLECONTAINER>
+        <CIRCLECONTAINER>
+          <CIRCLETITLE>누구나 재능은 있다!</CIRCLETITLE>
+          <CIRCLEDESCRIPTION>
+            {' '}
+            DANGO는 누구나 자신만의 재능을 가지고 있다는 생각에서 출발했습니다. <br /> <br /> 나만의 재능을 당신의 근처
+            이웃들과 서로 나눠보세요!
+          </CIRCLEDESCRIPTION>
+          <IMGCONTAINER>
+            <MAINIMG />
+          </IMGCONTAINER>
+          <CIRCLE_4 />
+          <CIRCLE_5 />
+          <CIRCLE_6 />
+          <CIRCLE />
+          <CIRCLE_2 />
+          <CIRCLE_3 />
+        </CIRCLECONTAINER>
+      </div>
 
       <MAPCONTAINER scrollY={scrollY}>
         <PATH scrollY={scrollY}>
           <path d="M 135 300 Q 50 470 100 500 Q 270 500 250 450 Q 250 200 550 150 C 600 150 750 150 750 350 A 50 50 0 1 1 450 450" />
         </PATH>
-        <TRIANGLE1 />
-        <TRIANGLE2 />
+        <TRIANGLE1 scrollY={scrollY} />
+        <TRIANGLE2 scrollY={scrollY} />
         <>
           <MAPIMG1 scrollY={scrollY} /> {/* 지역 3개 목록들 나오게 캡쳐? */}
           <MAPIMG2 scrollY={scrollY} />
@@ -166,19 +173,19 @@ function LandingPage(): JSX.Element {
         <TALENTSVGCONTAINER>
           <TALENTSVG scrollY={scrollY} />
         </TALENTSVGCONTAINER>
-        <SQUARE1 />
-        <SQUARE2 />
-        <SQUARE3 />
-        <SQUARE5 />
-        <SQUARE4 />
-        <SQUARE5 />
-        <SQUARE6 />
-        <SQUARE7 />
-        <SQUARE8 />
-        <SQUARE9 />
-        <SQUARE10 />
-        <SQUARE11 />
-        <SQUARE12 />
+        <SQUARE1 scrollY={scrollY} />
+        <SQUARE2 scrollY={scrollY} />
+        <SQUARE3 scrollY={scrollY} />
+        <SQUARE5 scrollY={scrollY} />
+        <SQUARE4 scrollY={scrollY} />
+        <SQUARE5 scrollY={scrollY} />
+        <SQUARE6 scrollY={scrollY} />
+        <SQUARE7 scrollY={scrollY} />
+        <SQUARE8 scrollY={scrollY} />
+        <SQUARE9 scrollY={scrollY} />
+        <SQUARE10 scrollY={scrollY} />
+        <SQUARE11 scrollY={scrollY} />
+        <SQUARE12 scrollY={scrollY} />
         <TALENTDESCRIPTION1>사소한 재능이라도 좋습니다.</TALENTDESCRIPTION1>
         <TALENTDESCRIPTION2>
           이웃과 함께 할 수 있는 재능이라면 <br /> 그 재능은 이미 훌륭한 재능입니다.
