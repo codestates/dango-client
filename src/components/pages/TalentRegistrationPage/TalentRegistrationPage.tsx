@@ -105,7 +105,7 @@ export default function TalentRegistrationPage(): JSX.Element {
         <FORM>
           <TITLEBOX>
             <TITLE_SPAN>제목</TITLE_SPAN>
-            <TITLE onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" />
+            <TITLE onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" maxLength={20} />
           </TITLEBOX>
 
           <SEARCHBOX>
@@ -142,6 +142,7 @@ export default function TalentRegistrationPage(): JSX.Element {
             <DESCRIPTION
               onChange={handleChange('description')}
               placeholder="ex) 비좁아진 냉장고의 공간을 되찾아 드립니다! &#13;&#10; 주부 경력 20년!!"
+              maxLength={170}
             />
           </DESCRIPTIONBOX>
         </FORM>
