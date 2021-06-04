@@ -34,20 +34,16 @@ function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: ChatsP
 
   const getChats = useCallback(
     (page = 0) => {
-      console.log('getChats실행될 때 chatlist', chatsLists);
       const body = {
         id: userInfo?.id,
         skip: chatsLists.length,
         limit: 10,
         page,
       };
-      console.log('서버에보내는body', body);
-      console.log('서버에보내는roomId', curRoomId);
 
       server
         .post(`/chats/${curRoomId}`, body)
         .then((response) => {
-          console.log('response.data.data', response.data.data);
           dispatch(getChattingData({ data: response.data.data }));
         })
         .then(() => {

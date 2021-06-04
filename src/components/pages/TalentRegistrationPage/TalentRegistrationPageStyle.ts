@@ -148,6 +148,12 @@ export const PRICEINPUT = styled.input`
   &:focus {
     box-shadow: 3px 3px 6px 1px #dadce0;
   }
+
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
 export const FREE = styled.div`

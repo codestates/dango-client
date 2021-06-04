@@ -189,6 +189,12 @@ export const PRICEINPUT = styled.input`
   }
   text-align: end;
   width: 6rem;
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  padding-right: 0.5rem;
 `;
 
 export const TITLEINPUT = styled.input`

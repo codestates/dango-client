@@ -26,13 +26,13 @@ function Signout(): JSX.Element {
       .post('/users/kakao/signout', null, config)
       .then(() => {
         dispatch(signout());
-        dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.' }));
+        dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.', callbackName: 'renewPage' }));
       })
       .catch((err) => {
         // 토큰이 유효하지 않을 때에도 로그아웃시켜준다. 어차피 다시 로그인 해야하기 때문!
         if (err.response?.data.message === '유효하지 않은 토큰입니다.') {
           dispatch(signout());
-          dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.' }));
+          dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.', callbackName: 'renewPage' }));
         } else if (err.response) {
           dispatch(openModal({ type: 'error', text: err.response.data.message }));
         } else {
@@ -44,7 +44,7 @@ function Signout(): JSX.Element {
   const handleGoogleSignout = () => {
     console.log('-----logout success!-----');
     dispatch(signout());
-    dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.' }));
+    dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.', callbackName: 'renewPage' }));
   };
 
   // 구글과 카카오 signout 컴포넌트를 따로 만들고 social에 따라서 버튼 렌더를 분기한다..

@@ -31,6 +31,8 @@ export default function Modal(): JSX.Element {
         googleWithdrawal();
       } else if (callbackName === 'kakaoWithdrawal') {
         kakaoWithdrawal();
+      } else if (callbackName === 'renewPage') {
+        window.location.reload();
       } else if (callbackName === 'goToRoot') {
         history.push('/');
       }

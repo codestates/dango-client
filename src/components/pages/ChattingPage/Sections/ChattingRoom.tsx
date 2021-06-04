@@ -1,13 +1,11 @@
 import React, { useEffect, useState, memo, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '../../../../_reducer';
-import { renewChatRooms } from '../../../../_reducer/user';
 import getChatTime from '../../../../utils/getChatTime';
 import MessageInput from './MessageInput';
 import Chats from './Chats';
-import server from '../../../../api';
 
 // 실제로 기능구현이 되는 컴포넌트
 const CHATTINGROOM = styled.div`
@@ -29,9 +27,6 @@ const CHATINPUT = styled.div`
   display: flex;
   justify-content: stretch;
   align-items: stretch;
-  /*   transform: rotate(180deg);
-  direction: ltr; */
-  /* overflow: auto; */
 `;
 
 interface ChattingRoomProps {
@@ -63,14 +58,11 @@ export interface ChatsLists {
 }
 
 function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastChat }: ChattingRoomProps): JSX.Element {
-  const dispatch = useDispatch();
   const [chatsLists, setChatsLists] = useState<ChatsLists[]>([]);
-  const { userInfo } = useSelector((state: RootState) => state.user);
   const chattingRoomRef = useRef<HTMLDivElement>(null);
 
   // TODO: 4. 메시지와 시간,이미지를 담아서 chatsLists 배열안에 넣는다.
   const createNewChats = async (lastChat: ChatInfo) => {
-    const now = new Date();
     const newChat = {
       id: lastChat.postedBy._id,
       type: lastChat.type,
@@ -84,38 +76,6 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
       chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
     }
   };
-
-  // 실제 사용 로직
-  useEffect(() => {
-    // 내가 가진 상대방의 아이디 목록을 전부 서버 소켓으로 보낸 뒤 연결한다.
-    connectSocket.emit(
-      'joinroom',
-      userInfo?.chatRooms.map((chatRoom: any) => chatRoom.otherId),
-    );
-    connectSocket.on('hasjoined', (data: any) => {
-      console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
-    });
-
-    // 모든 메세지(내가 보낸거 + 상대방이 보낸거)를 받아온 뒤 렌더링 할 수 있게 state를 바꿔준다.
-    // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
-    connectSocket.on('messageFromOther', (receivedChats: ChatInfo) => {
-      console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
-
-      // 새방이 만들어졌다는 메시지라면 서버에서 새 chatRooms를 받아서
-      if (receivedChats.type === 'init') {
-        console.log('채팅방 만들어졌음 이제 서버에서 룸데이터받을꺼임');
-        server
-          .get(`/users/chatinfo/${userInfo?.id}`)
-          .then((res) => {
-            console.log('서버에서받은 룸데이터', res.data);
-            dispatch(renewChatRooms({ chatRooms: res.data.chatrooms }));
-          })
-          .catch((err) => console.log(err));
-        return;
-      }
-      setLastChat(receivedChats);
-    });
-  }, [userInfo]);
 
   // 바뀐 state를 활용해서 메세지를 보낸다.(상대방 아이디, 메세지, 상대방과 함께 들어가 있는 roomId)
   // TODO: 1. 입력창에 메시지를 보낸다.
