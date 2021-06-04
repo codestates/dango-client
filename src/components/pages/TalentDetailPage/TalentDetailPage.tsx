@@ -272,6 +272,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
         {isClicked ? (
           <>
             <CATEGORY>
+              카테고리 :
               <EDITCATEGORY ref={select} onChange={changeInput('category')} defaultValue={editDetail?.category}>
                 {categoryList.map((category) => (
                   <OPTION key={category}>{category}</OPTION>

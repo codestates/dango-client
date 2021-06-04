@@ -8,8 +8,6 @@ export const CONTAINER = styled.div`
   grid-gap: 20px;
   margin: 1.25rem auto;
   width: 75%;
-  // border: 2px solid;
-
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(6, 1fr);
     width: 95%;
@@ -30,8 +28,6 @@ export const SELLER = styled.div`
 export const PROFILE = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
   height: 40%;
-  // border: 1px solid;
-  // margin-top: 1rem;
 `;
 
 export const PROFILEIMG = styled.div`
@@ -71,12 +67,10 @@ export const BUTTONDIV = styled.div`
 export const DETAIL = styled.div`
   grid-column: 3/7;
   grid-row: 1/4;
-  // box-shadow: 1px 1px 3px 1px #dadce0;
   box-shadow: 0 0 3px 1px ${({ theme }) => theme.colors.lightpurple};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  // align-items: center;
   padding: 1.5rem;
 `;
 
@@ -114,18 +108,12 @@ export const TITLE = styled.div`
 `;
 
 export const DESCRIPTION = styled.div`
-  // border: 1px solid;
   padding-right: 0.4rem;
   padding-left: 0.7rem;
-  // margin: 0 1rem;
   height: 45%;
   display: flex;
-  // align-items: center;
-  // box-shadow: 1px 1px 3px 1px #dadce0;
-  // background-color: ${({ theme }) => theme.colors.lightgray};
   white-space: pre-wrap;
   line-height: 180%;
-  // border: 1px solid;
   margin-top: 2rem;
 `;
 
@@ -135,9 +123,7 @@ export const BOTTOM = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // margin-left: auto;
   margin-top: 2rem;
-  //border: 1px solid;
 `;
 
 export const ADDRESS = styled.div`
@@ -146,7 +132,6 @@ export const ADDRESS = styled.div`
   color: gray;
   font-size: 0.8rem;
   display: flex;
-  // border: 1px solid;
   align-items: center;
 `;
 
@@ -191,7 +176,9 @@ export const EDITCATEGORY = styled.select`
   border: none;
   outline: none;
   box-shadow: 1px 1px 3px 1px #dadce0;
-  padding-left: 1rem;
+  height: 130%;
+  margin-left: 0.5rem;
+  color: gray;
 `;
 
 export const OPTION = styled.option`
@@ -225,15 +212,10 @@ export const TITLEINPUT = styled.input`
 `;
 
 export const EDITDESC = styled.div`
-  // border: 1px solid;
-  // padding: 0 1rem;
-  // margin: 0 1rem;
   height: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  // box-shadow: 1px 1px 3px 1px #dadce0;
-  // background-color: ${({ theme }) => theme.colors.lightgray};
   white-space: pre-wrap;
   line-height: 180%;
   margin-top: 1rem;
@@ -254,7 +236,6 @@ export const TEXTAREA = styled.textarea`
 export const PHOTOS = styled.div`
   grid-column: 1/7;
   grid-row: 4/5;
-  // box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.lightpurple};
   display: flex;
   justify-content: space-evenly;
   padding: 1rem 0;
@@ -262,7 +243,6 @@ export const PHOTOS = styled.div`
 `;
 
 export const PHOTODIV = styled.div`
-  // border: 1px solid #dadce0;
   box-shadow: 0px 0px 2px 0.5px ${({ theme }) => theme.colors.lightpurple};
   background-color: white;
   width: 30%;
