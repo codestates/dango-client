@@ -88,6 +88,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             openModal({
               type: 'ok',
               text: '회원가입이 완료되었습니다.',
+              callbackName: 'renewPage',
             }),
           );
         })
@@ -153,6 +154,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
             openModal({
               type: 'ok',
               text: '회원가입이 완료되었습니다.',
+              callbackName: 'renewPage',
             }),
           );
         })
