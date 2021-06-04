@@ -156,6 +156,7 @@ export const PRICE = styled.div`
 
 export const PRICEINPUT = styled.input`
   all: unset;
+
   // height: 10%;
   // border-bottom: 1px solid white;
   box-shadow: 1px 1px 3px 1px #dadce0;
@@ -166,6 +167,12 @@ export const PRICEINPUT = styled.input`
   transition: all 0.2s ease-in-out;
   &:focus {
     box-shadow: 3px 3px 6px 1px #dadce0;
+  }
+
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
 

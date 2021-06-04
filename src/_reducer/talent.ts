@@ -38,7 +38,6 @@ export const talentSlice = createSlice({
   initialState,
   reducers: {
     postTalentData: (state, action: PayloadAction<TalentState>) => {
-      console.log('post talent data');
       return action.payload;
     },
     updateReply: (state, action: PayloadAction<UpdateReplyPayload>) => {

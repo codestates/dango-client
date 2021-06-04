@@ -87,6 +87,7 @@ export const userSlice = createSlice({
       }
     },
     renewChatRooms: (state, action: PayloadAction<RenewChatRoomsPayload>) => {
+      console.log('리덕스 renewChatRooms 페이로드:::::', action.payload);
       if (state.userInfo) {
         state.userInfo.chatRooms = action.payload.chatRooms;
       }

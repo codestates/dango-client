@@ -57,21 +57,6 @@ export default function ChattingOption({
       });
   };
 
-  // 현재유저가 해당채팅방에서 구매중/판매중인사람인지 거래가 끝난사람인지 확인
-  // FIXME: confirmed에 접근해서 내유저정보가있는지확인
-  // const checkSellingOrBuying = (): boolean => {
-  //   const isBuying = buying.indexOf(roomInfo?.talentId) !== -1;
-  //   const isSelling = selling.indexOf(roomInfo?.talentId) !== -1;
-
-  //   // 판매중도 아니고 구매중도 아니면 거래가 끝난 것이므로 false를 리턴한다.
-  //   if (!isBuying && !isSelling) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
-  // 채팅방나가기누르면 user정보에서 buying에서 지워주고, chatRooms에서도 지워줘야함.
-  // const { userId, otherId, chatRoomId } = req.body;
   const handleEscape = () => {
     const config = {
       data: {

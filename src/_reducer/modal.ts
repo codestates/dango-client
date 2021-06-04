@@ -12,7 +12,7 @@ export interface OpenPayload {
   type: 'ok' | 'error' | 'danger';
   text: string;
   // 콜백네임 추가할때마다 여기에도 넣어야함.
-  callbackName?: 'goToRoot' | 'googleWithdrawal' | 'kakaoWithdrawal';
+  callbackName?: 'goToRoot' | 'googleWithdrawal' | 'kakaoWithdrawal' | 'renewPage';
   callbackData?: any;
 }
 
