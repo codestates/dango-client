@@ -8,13 +8,11 @@ export const CONTAINER = styled.div`
   display: grid;
   // grid-template-columns: 3fr 1fr;
   gap: 20px;
-  // font-size: 1.5rem;
   padding-bottom: 1rem;
   height: 85vh;
-  // margin: 1.25rem auto;
   margin-top: 3rem;
-  width: 75%;
-  // border: 3px solid;
+  //width: 75%;
+  width: 1080px;
   @media screen and (max-width: 1200px) {
     width: 95%;
   }
@@ -27,11 +25,8 @@ export const FORM = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  // align-items: center;
   grid-column: 1/10;
   grid-row: 1/11;
-  // border: 1px solid black;
-  // margin: 0 1rem;
   padding: 1rem;
   box-shadow: 1px 1px 3px 1px #dadce0;
   @media screen and (max-width: 768px) {
@@ -54,8 +49,6 @@ export const TITLE_SPAN = styled.span`
 
 export const TITLE = styled.input`
   all: unset;
-
-  // border-bottom: 1px solid white;
   box-shadow: 1px 1px 3px 1px #dadce0;
   transition: all 0.2s ease-in-out;
   &:focus {
@@ -63,21 +56,15 @@ export const TITLE = styled.input`
   }
   background-color: #fffcf0;
   padding: 0 1rem;
-  // color: #835af1;
   width: 368px;
   height: 2.5rem;
 `;
 
 export const SEARCHBOX = styled.div`
-  // display: grid;
   grid-template-columns: repeat(2, 1fr);
-  // justify-items: start;
-  // border: 1px solid black;
   width: 100%;
   height: 10%;
-  // margin-bottom: 8rem;
   display: flex;
-  // justify-content: space-between;
   align-items: center;
 `;
 
@@ -89,7 +76,6 @@ export const SEARCH_SPAN = styled.span`
 export const ADDRESSBOX = styled.div`
   height: 10%;
   display: flex;
-  // justify-content: space-between;
   align-items: center;
 `;
 
@@ -120,10 +106,8 @@ export const CATEGORY_SPAN = styled.span`
 export const CATEGORY = styled.select`
   border: none;
   outline: none;
-  // width: 40%;
   box-shadow: 1px 1px 3px 1px #dadce0;
   padding: 0 1rem;
-  // height: 10%;
   width: 400px;
   height: 2.5rem;
   transition: all 0.2s ease-in-out;
@@ -156,16 +140,19 @@ export const PRICE = styled.div`
 
 export const PRICEINPUT = styled.input`
   all: unset;
-  // height: 10%;
-  // border-bottom: 1px solid white;
   box-shadow: 1px 1px 3px 1px #dadce0;
   text-align: end;
   padding-right: 1rem;
-  // height: 120%;
   height: 2.5rem;
   transition: all 0.2s ease-in-out;
   &:focus {
     box-shadow: 3px 3px 6px 1px #dadce0;
+  }
+
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
 
@@ -191,7 +178,6 @@ export const FREELABEL = styled.label`
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
-    // font-size: 1rem;
     padding: 2px 6px 2px 2px;
   }
 `;
@@ -209,14 +195,11 @@ export const FREEINPUT = styled.input`
 export const DESCRIPTIONBOX = styled.div`
   height: 30%;
   display: flex;
-  // align-items: center;
 `;
 
 export const DESCRIPTION_SPAN = styled.span`
   width: 8rem;
   display: flex;
-  // flex-direction: column;
-  // border: 1px solid;
   align-items: stretch;
   justify-content: center;
   margin-top: 0.5rem;
@@ -224,8 +207,6 @@ export const DESCRIPTION_SPAN = styled.span`
 
 export const DESCRIPTION = styled.textarea`
   all: unset;
-  // height: 25%;
-  // border-bottom: 1px solid white;
   box-shadow: 1px 1px 3px 1px #dadce0;
   transition: all 0.2s ease-in-out;
   &:focus {
@@ -246,28 +227,23 @@ export const BUTTONDIV = styled.div`
     grid-column: 1/13;
     grid-row: 16/17;
   }
+  height: 6rem;
 `;
 
 export const BUTTON = styled.button`
   outline: none;
-  border: 2px solid ${({ theme }) => theme.colors.yellow};
-  border-radius: 0.5rem;
-  color: ${({ theme }) => theme.colors.yellow};
-  font-weight: bold;
+  border: none;
   cursor: pointer;
   padding-left: 1rem;
   padding-right: 1rem;
-
-  /* 색상 */
+  box-shadow: 1px 1px 3px 1px #dadce0;
   background: none;
+  color: gray;
   &:hover {
     color: ${({ theme }) => theme.colors.purple};
-    border: 2px solid ${({ theme }) => theme.colors.purple};
+    background-color: rgba(131, 90, 241, 0.1);
   }
-
-  /* 크기 */
-  height: 3rem;
-  line-height: 3rem; // 글자 수직 가운데 정렬
-  font-size: 1.25rem;
+  height: 100%;
+  font-size: 1.5rem;
   width: 100%;
 `;

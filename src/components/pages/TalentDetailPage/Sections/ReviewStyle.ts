@@ -5,8 +5,9 @@ const REVIEW = styled.div`
   grid-column: 7/10;
   grid-row: 1/5;
   // box-shadow: 1px 1px 3px 1px #dadce0;
-  box-shadow: 1px 1px 3px 1px ${({ theme }) => theme.colors.purple};
+  box-shadow: 0 0 3px 1px ${({ theme }) => theme.colors.lightpurple};
   flex-direction: column;
+  // border: 5px solid ${({ theme }) => theme.colors.lightpurple};
 
   @media screen and (max-width: 768px) {
     grid-column: 1/7;
@@ -44,7 +45,7 @@ export const STAR = styled.span`
 
 export const NICKNAME = styled.span`
   margin-right: 1rem;
-  font-weight: bold;
+  font-weight: 500;
 `;
 export const DATE = styled.div`
   color: gray;
@@ -84,7 +85,7 @@ export const REPLYTOP = styled.div`
 `;
 
 export const REPLYNAME = styled.span`
-  font-weight: bold;
+  font-weight: 500;
   margin-right: 10px;
 `;
 

@@ -39,29 +39,23 @@ import {
   EDITDESC,
   EDITCATEGORY,
   OPTION,
+  PHOTODIV,
+  PHOTO,
+  SPAN,
 } from './TalentDetailPageStyle';
 import Modal from '../../../utils/modal';
 import { SBUTTON } from '../../../styles/Buttons';
 
-// 여기서 해당 글의 정보를 서버에서 받고, 리덕스에 저장한다.
-// 서버요청의 useEffect의 deps배열안에는 변할수 있는 상태를 넣어준다.
-// 어떤걸 넣어줄까. 유저닉네임, 리뷰목록,거래완료?
-// FIXME:
-/*  talent Reducer = {talentId:'', seller: id, buyer:[id,id,id], 
- 랜더에필요한내용들, review: {[ id,닉네임,별점,날짜,내용,reply:{ 닉네임, 내용, 날짜 } ], [...], [...]} 
- } */
-// user reducer에 role추가. normal, seller, buyer
-
-// TODO: 구매자인경우 userReducer에서 구매내역의 talentId의 수와
-//       talet의 review를 작성한 내userId의 개수를 비교해야함
-//       내구매내역의 talentId의 갯수(또는 talent의 buyer안의 내 userId 갯수) > 리뷰작성한 내 userId의 갯수이면 리뷰작성창 나와야한다.
 declare global {
   interface Window {
     Kakao: any;
   }
 }
 
-function TalentDetailPage(): JSX.Element {
+interface Props {
+  connectSocket: any;
+}
+function TalentDetailPage({ connectSocket }: Props): JSX.Element {
   const { Kakao } = window;
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
   const { isFromDetail, isFirstChat } = useSelector((state: RootState) => state.chattings);
@@ -85,7 +79,7 @@ function TalentDetailPage(): JSX.Element {
     server
       .get(`/talents/detail/${talentId}`)
       .then((res) => {
-        console.log('dfdfdfdfdfdfdfdfdfdfdfdfdfdf', res.data);
+        console.log('디테일데이터:', res.data);
         let userRole: 'normal' | 'seller' | 'reviewer' = 'normal';
 
         // 작성자의 id와 유저의 id가 같으면 판매자
@@ -123,17 +117,16 @@ function TalentDetailPage(): JSX.Element {
       content: {
         title: `DANGO와 나누는 재능, ${detailData?.title}`,
         description: detailData?.description,
-        // 이미지 파일 url 형태로 올리거나 카카오 서버에 업로드된 이미지여야 한다.
-        imageUrl: 'http://k.kakaocdn.net/dn/bSbH9w/btqgegaEDfW/vD9KKV0hEintg6bZT4v4WK/kakaolink40_original.png',
+        imageUrl: 'https://dango.s3.amazonaws.com/image/original/5ab0cf1c1bdfb3ac9c8a66ded2c1a49b',
         link: {
           mobileWebUrl: `http://localhost:3000/detail/${talentId}`,
           webUrl: `http://localhost:3000/detail/${talentId}`,
         },
       },
       social: {
-        likeCount: 286,
-        commentCount: 45,
-        sharedCount: 845,
+        likeCount: 930,
+        commentCount: 75,
+        sharedCount: 401,
       },
       buttons: [
         {
@@ -191,6 +184,12 @@ function TalentDetailPage(): JSX.Element {
       };
       server
         .post('/chats/createchat', body)
+        //  상대방에게 새방이 만들어졌음을 알린다.
+        .then((res) => {
+          console.log('채팅방 생겼다고 상대방한테 보내기 서버데이터:', res.data);
+          connectSocket.emit('initChat', res.data.roomId, body.otherId);
+          return res;
+        })
         .then((res) => {
           const payload: UpdateChatRoomsPayload = {
             chatRooms: {
@@ -260,26 +259,14 @@ function TalentDetailPage(): JSX.Element {
       <DETAIL>
         {isClicked ? (
           <>
-            <TOP>
-              <CATEGORY>
-                <EDITCATEGORY ref={select} onChange={changeInput('category')} defaultValue={editDetail?.category}>
-                  {categoryList.map((category) => (
-                    <OPTION key={category}>{category}</OPTION>
-                  ))}
-                </EDITCATEGORY>
-              </CATEGORY>
-              <PRICE>
-                <PRICEINPUT
-                  type="number"
-                  ref={input}
-                  defaultValue={editDetail?.price}
-                  onChange={changeInput('price')}
-                  placeholder="입력값이 없으면 무료재능기부가 됩니다!"
-                  min="0"
-                />
-                원
-              </PRICE>
-            </TOP>
+            <CATEGORY>
+              카테고리 :
+              <EDITCATEGORY ref={select} onChange={changeInput('category')} defaultValue={editDetail?.category}>
+                {categoryList.map((category) => (
+                  <OPTION key={category}>{category}</OPTION>
+                ))}
+              </EDITCATEGORY>
+            </CATEGORY>
             <TITLE>
               <TITLEINPUT
                 ref={input}
@@ -288,6 +275,17 @@ function TalentDetailPage(): JSX.Element {
                 placeholder="제목을 입력해주세요."
               />
             </TITLE>
+            <PRICE>
+              <PRICEINPUT
+                type="number"
+                ref={input}
+                defaultValue={editDetail?.price}
+                onChange={changeInput('price')}
+                placeholder="입력값이 없으면 무료재능기부가 됩니다!"
+                min="0"
+              />
+              원
+            </PRICE>
 
             <EDITDESC>
               <TEXTAREA
@@ -306,12 +304,9 @@ function TalentDetailPage(): JSX.Element {
           </>
         ) : (
           <>
-            <TOP>
-              <CATEGORY>{editDetail?.category}</CATEGORY>
-              <PRICE>{editDetail?.price}원</PRICE>
-            </TOP>
-
+            <CATEGORY>카테고리 : {editDetail?.category}</CATEGORY>
             <TITLE>{editDetail?.title}</TITLE>
+            <PRICE>{editDetail?.price}원</PRICE>
             <DESCRIPTION>{editDetail?.description}</DESCRIPTION>
 
             <BOTTOM>
@@ -331,7 +326,17 @@ function TalentDetailPage(): JSX.Element {
           </>
         )}
       </DETAIL>
-      <PHOTOS>photos</PHOTOS>
+      <PHOTOS>
+        <PHOTODIV>
+          {detailData?.images[0] ? <PHOTO src={detailData.images[0]} alt="사진" /> : <SPAN>No image</SPAN>}
+        </PHOTODIV>
+        <PHOTODIV>
+          {detailData?.images[1] ? <PHOTO src={detailData.images[1]} alt="사진" /> : <SPAN>No image</SPAN>}
+        </PHOTODIV>
+        <PHOTODIV>
+          {detailData?.images[2] ? <PHOTO src={detailData.images[2]} alt="사진" /> : <SPAN>No image</SPAN>}
+        </PHOTODIV>
+      </PHOTOS>
       <Review />
     </CONTAINER>
   );

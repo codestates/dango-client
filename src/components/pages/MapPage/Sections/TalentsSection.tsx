@@ -44,6 +44,12 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
 
   // checkbox(filter)
   const handleCheckBox = (currentValue: any) => {
+    if (infoWindowGroup.length > 0) {
+      // 모든 인포윈도우를 닫고, 모든 마커를 기본마커이미지로바꾼다.
+      infoWindowGroup.forEach((infowindow) => {
+        infowindow[1].close();
+      });
+    }
     // null의 indexOf 못하므로 기본 설정.
     if (filter === null) {
       const payload: MapState = {
@@ -70,6 +76,12 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
 
   // radiobox(sort)
   const handleRadioBox = (event: any) => {
+    if (infoWindowGroup.length > 0) {
+      // 모든 인포윈도우를 닫고, 모든 마커를 기본마커이미지로바꾼다.
+      infoWindowGroup.forEach((infowindow) => {
+        infowindow[1].close();
+      });
+    }
     console.log(event.target.value);
     const payload: MapState = {
       sort: event.target.value,
@@ -148,7 +160,7 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
               <EMOJI>{emoticons.handleCategory(talent[0].category)}</EMOJI>
             </CATEGORY>
             <TEXT>
-              <TITLE>{talent[0].title}</TITLE>
+              <TITLE>{talent[0].title.slice(0, 16)}</TITLE>
               <PRICE>{talent[0].price}원</PRICE>
               <STARNICK>
                 <RATINGS>

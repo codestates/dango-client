@@ -1,5 +1,5 @@
 import React, { useEffect, useState, memo, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '../../../../_reducer';
@@ -27,9 +27,6 @@ const CHATINPUT = styled.div`
   display: flex;
   justify-content: stretch;
   align-items: stretch;
-  /*   transform: rotate(180deg);
-  direction: ltr; */
-  /* overflow: auto; */
 `;
 
 interface ChattingRoomProps {
@@ -48,13 +45,13 @@ export interface ChatInfo {
     nickname: string;
     _id: string;
   };
-  type: 'text' | 'confirm';
+  type: 'text' | 'confirm' | 'init';
   _id: string;
 }
 
 export interface ChatsLists {
   id: string;
-  type: 'text' | 'confirm';
+  type: 'text' | 'confirm' | 'init';
   time: string;
   message: string;
   image: string;
@@ -62,12 +59,10 @@ export interface ChatsLists {
 
 function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastChat }: ChattingRoomProps): JSX.Element {
   const [chatsLists, setChatsLists] = useState<ChatsLists[]>([]);
-  const { userInfo } = useSelector((state: RootState) => state.user);
   const chattingRoomRef = useRef<HTMLDivElement>(null);
 
   // TODO: 4. 메시지와 시간,이미지를 담아서 chatsLists 배열안에 넣는다.
   const createNewChats = async (lastChat: ChatInfo) => {
-    const now = new Date();
     const newChat = {
       id: lastChat.postedBy._id,
       type: lastChat.type,
@@ -82,32 +77,11 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat, setLastC
     }
   };
 
-  // 실제 사용 로직
-  useEffect(() => {
-    // 내가 가진 상대방의 아이디 목록을 전부 서버 소켓으로 보낸 뒤 연결한다.
-    connectSocket.emit(
-      'joinroom',
-      userInfo?.chatRooms.map((chatRoom: any) => chatRoom.otherId),
-    );
-    connectSocket.on('hasjoined', (data: any) => {
-      console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
-    });
-
-    // 모든 메세지(내가 보낸거 + 상대방이 보낸거)를 받아온 뒤 렌더링 할 수 있게 state를 바꿔준다.
-    // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
-    connectSocket.on('messageFromOther', (receivedChats: ChatInfo) => {
-      console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
-      setLastChat(receivedChats);
-    });
-  }, []);
-
   // 바뀐 state를 활용해서 메세지를 보낸다.(상대방 아이디, 메세지, 상대방과 함께 들어가 있는 roomId)
   // TODO: 1. 입력창에 메시지를 보낸다.
   const callback = (message: string) => {
     connectSocket.emit('messageToOther', curOtherId, message, curRoomId);
   };
-
-  console.log('userInfo:::', userInfo);
 
   // lastChat가 바뀔 때 함수 실행
   // TODO: 3. 메시지를 보내서 lastChat이바뀔때마다 creatNewChats을 실행시킨다.

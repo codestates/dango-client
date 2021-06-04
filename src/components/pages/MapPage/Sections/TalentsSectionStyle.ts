@@ -142,27 +142,25 @@ export const TALENTSLIST = styled.div`
 export const TALENT = styled.div`
   height: 12vh;
   display: flex;
-  // padding: 1rem 0;
   justify-content: center;
   color: #787878;
   align-items: center;
-  margin-bottom: 0.5rem;
-  box-shadow: 1px 1px 2px 2px ${({ theme }) => theme.colors.lightgray};
-
+  box-shadow: 1px 1px 2px 1px ${({ theme }) => theme.colors.lightgray};
   &:hover,
   &:focus,
   &:active {
-    // background-color: #835af1;
-    color: #835af1;
+    color: ${({ theme }) => theme.colors.purple};
     cursor: pointer;
-    box-shadow: 2px 2px 5px 3px ${({ theme }) => theme.colors.lightpurple};
+    box-shadow: 1px 1px 4px 1px ${({ theme }) => theme.colors.lightpurple};
   }
 `;
 
 export const CATEGORY = styled.div`
   height: 12vh;
   text-align: center;
-  line-height: 12vh;
+  line-height: 11vh;
+  //border: 1px solid;
+  margin-left: 0.5rem;
 `;
 
 export const EMOJI = styled.div`
@@ -173,6 +171,7 @@ export const EMOJI = styled.div`
 
 export const TEXT = styled.div`
   margin: 0 1rem;
+  margin-left: 0;
   height: 12vh;
   width: 100%;
   display: flex;

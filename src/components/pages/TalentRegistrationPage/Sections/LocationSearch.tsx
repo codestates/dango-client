@@ -113,7 +113,6 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
               return { address, lat, lng };
             });
 
-            console.log('locationDaTA::::::', locationData);
             setLocationList(locationData);
           } else {
             // 값이 없을경우 키워드검색으로 요청을 다시 보내본다.
@@ -136,7 +135,6 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
                     return { address, lat, lng };
                   });
 
-                  console.log('locationDaTA::::::', locationData);
                   setLocationList(locationData);
                 } else {
                   setLocationList([]);
@@ -167,7 +165,6 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
 
   // 엔터키 입력 시, 해당 인덱스의 값을 선택한다.
   const handleEnterKey = (event: React.KeyboardEvent) => {
-    console.log('엔터함수 event:::', event.key);
     if (event.key === 'Enter') {
       if (!inputValue || inputValue.length === 0 || locationList.length === 0) {
         dispatch(openModal({ type: 'error', text: '거래할 지역을 입력해주세요.' }));
@@ -194,7 +191,6 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
   // 이를위한 임시방편으로 시작idx를 -2로두고, 검색어 끝에 숫자가 오면 그대로 idx를 2 증가시키고
   // 검색어 끝에 한글이오면 2번실행되기때문에 1만증가시킨다. 영어는...
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    console.log('event.key::', event.key);
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       if (inputValue && event.key === 'ArrowDown' && liIdx < locationList.length - 1) {
         const numberArr = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];

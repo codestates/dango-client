@@ -56,9 +56,10 @@ export default function TalentRegistrationPage(): JSX.Element {
   const history = useHistory();
 
   useEffect(() => {
-    console.log('location::::', location);
-    console.log('address::::', address);
-  }, [location, address]);
+    if (!userInfo) {
+      dispatch(openModal({ type: 'error', text: '로그인이 필요한 서비스입니다.', callbackName: 'goToRoot' }));
+    }
+  }, []);
 
   const handleChange = (key: string) => (event: any) => {
     setRegisterData({
@@ -98,57 +99,60 @@ export default function TalentRegistrationPage(): JSX.Element {
   };
 
   return (
-    <CONTAINER>
+    <>
       <Modal />
-      <FORM>
-        <TITLEBOX>
-          <TITLE_SPAN>제목</TITLE_SPAN>
-          <TITLE onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" />
-        </TITLEBOX>
+      <CONTAINER>
+        <FORM>
+          <TITLEBOX>
+            <TITLE_SPAN>제목</TITLE_SPAN>
+            <TITLE onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" maxLength={20} />
+          </TITLEBOX>
 
-        <SEARCHBOX>
-          <SEARCH_SPAN>지역 검색</SEARCH_SPAN>
-          <LocationSearch setLocation={setLocation} setAddress={setAddress} addressRef={addressRef} />
-        </SEARCHBOX>
-        <ADDRESSBOX>
-          <ADDRESS_SPAN />
-          <ADDRESS ref={addressRef} />
-        </ADDRESSBOX>
+          <SEARCHBOX>
+            <SEARCH_SPAN>지역 검색</SEARCH_SPAN>
+            <LocationSearch setLocation={setLocation} setAddress={setAddress} addressRef={addressRef} />
+          </SEARCHBOX>
+          <ADDRESSBOX>
+            <ADDRESS_SPAN />
+            <ADDRESS ref={addressRef} />
+          </ADDRESSBOX>
 
-        <CATEGORYBOX>
-          <CATEGORY_SPAN>카테고리</CATEGORY_SPAN>
-          <CATEGORY onBlur={handleChange('category')}>
-            {categoryList.map((category) => (
-              <OPTION key={category}>{category}</OPTION>
-            ))}
-          </CATEGORY>
-        </CATEGORYBOX>
+          <CATEGORYBOX>
+            <CATEGORY_SPAN>카테고리</CATEGORY_SPAN>
+            <CATEGORY onBlur={handleChange('category')}>
+              {categoryList.map((category) => (
+                <OPTION key={category}>{category}</OPTION>
+              ))}
+            </CATEGORY>
+          </CATEGORYBOX>
 
-        <PRICEBOX>
-          <PRICE_SPAN>가격</PRICE_SPAN>
-          <PRICE>
-            <FREE onChange={handleFreeTalent}>
-              <FREEINPUT type="checkbox" id="free" />
-              <FREELABEL htmlFor="free">✓ 재능 기부</FREELABEL>
-            </FREE>
-            <PRICEINPUT onChange={handleChange('price')} value={registerData.price} type="number" />
-          </PRICE>
-        </PRICEBOX>
+          <PRICEBOX>
+            <PRICE_SPAN>가격</PRICE_SPAN>
+            <PRICE>
+              <FREE onChange={handleFreeTalent}>
+                <FREEINPUT type="checkbox" id="free" />
+                <FREELABEL htmlFor="free">✓ 재능 기부</FREELABEL>
+              </FREE>
+              <PRICEINPUT onChange={handleChange('price')} value={registerData.price} type="number" />
+            </PRICE>
+          </PRICEBOX>
 
-        <DESCRIPTIONBOX>
-          <DESCRIPTION_SPAN>설명</DESCRIPTION_SPAN>
-          <DESCRIPTION
-            onChange={handleChange('description')}
-            placeholder="ex) 비좁아진 냉장고의 공간을 되찾아 드립니다! &#13;&#10; 주부 경력 20년!!"
-          />
-        </DESCRIPTIONBOX>
-      </FORM>
-      <ImageUploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
-      <BUTTONDIV>
-        <BUTTON type="button" onClick={handleFormSubmit}>
-          재능 등록
-        </BUTTON>
-      </BUTTONDIV>
-    </CONTAINER>
+          <DESCRIPTIONBOX>
+            <DESCRIPTION_SPAN>설명</DESCRIPTION_SPAN>
+            <DESCRIPTION
+              onChange={handleChange('description')}
+              placeholder="ex) 비좁아진 냉장고의 공간을 되찾아 드립니다! &#13;&#10; 주부 경력 20년!!"
+              maxLength={170}
+            />
+          </DESCRIPTIONBOX>
+        </FORM>
+        <ImageUploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
+        <BUTTONDIV>
+          <BUTTON type="button" onClick={handleFormSubmit}>
+            재능 등록
+          </BUTTON>
+        </BUTTONDIV>
+      </CONTAINER>
+    </>
   );
 }

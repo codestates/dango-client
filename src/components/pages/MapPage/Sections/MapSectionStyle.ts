@@ -9,8 +9,8 @@ export const CONTAINER = styled.div`
 
 export const SEARCH = styled.div`
   position: absolute;
-  top: 3%;
-  left: 2%;
+  top: 2%;
+  left: 1.5%;
   width: 400px;
   z-index: 2;
   background-color: white;
