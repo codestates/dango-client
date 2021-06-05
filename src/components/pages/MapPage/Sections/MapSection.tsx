@@ -244,6 +244,7 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
           latLng: [center.getLat(), center.getLng()], // 지도중심의 [위도,경도]
           width: [bounds.qa, bounds.pa], // 지도범위의 [남,북]
         };
+        console.log('lat: ', payload.latLng[0], ',  lng: ', payload.latLng[1], ',  width: ', payload.width);
         dispatch(setMapConfig(payload));
       }
     },

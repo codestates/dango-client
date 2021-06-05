@@ -34,6 +34,7 @@ export const chattingsSlice = createSlice({
       state.render = [];
       state.page = 0;
     },
+
     clickMoreBtn: (state) => {
       state.page++;
     },
