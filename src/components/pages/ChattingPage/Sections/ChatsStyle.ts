@@ -71,6 +71,8 @@ export const MESSAGE = styled.div<ChatProps>`
   margin: 0.5vw 1vw;
 
   &:after {
+    box-shadow: 1.5px 0px 0px rgba(0, 0, 0, 0.03), 1.5px 0px 0px rgba(0, 0, 0, 0.06);
+
     content: '';
     position: absolute;
     border: 0 solid transparent;

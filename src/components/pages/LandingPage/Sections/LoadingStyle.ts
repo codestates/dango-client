@@ -9,12 +9,12 @@ to{
 }
 `;
 
-export const CONTAINER = styled('div')<{ loading: boolean }>`
+export const CONTAINER = styled('div')`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: ${({ loading }) => (loading ? 'flex' : 'none')};
+  display: flex;
   height: 100%;
   width: 100%;
   /* background-color: rgba(0, 0, 0, 0.2); */

@@ -62,12 +62,12 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
   }, [infiniteScroll]);
 
   return (
-    <RENDER>
+    <>
       {loading ? (
-        <Loading loading={true} size="12vh" />
+        <Loading size="12vh" />
       ) : (
-        [
-          render.map((chat, idx) => (
+        <RENDER>
+          {render.map((chat, idx) => (
             <CHAT key={idx} mine={chat.postedBy._id === userInfo?.id}>
               <WRAPIMG mine={chat.postedBy._id === userInfo?.id}>
                 <PROFILEIMG alt={chat.postedBy.image} src={chat.postedBy.image} />
@@ -79,8 +79,8 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
                 <TIME>{getChatTime(chat.createdAt)}</TIME>
               </MESSAGEBOX>
             </CHAT>
-          )),
-          chatsLists.length > 0 &&
+          ))}
+          {chatsLists.length > 0 &&
             chatsLists.map((chat, idx) => (
               <CHAT key={idx} mine={chat.id === userInfo?.id}>
                 <WRAPIMG mine={chat.id === userInfo?.id}>
@@ -93,10 +93,10 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
                   <TIME>{chat.time}</TIME>
                 </MESSAGEBOX>
               </CHAT>
-            )),
-        ]
+            ))}
+        </RENDER>
       )}
-    </RENDER>
+    </>
   );
 }
 
