@@ -12,54 +12,19 @@ import { RENDER, MOREBTNBOX, MOREBTN, CHAT, WRAPIMG, PROFILEIMG, MESSAGEBOX, MES
 
 interface ChatsProps {
   chatsLists: ChatsLists[];
-  setChatsLists: (chatsLists: ChatsLists[]) => void;
-  curRoomId: string;
-  chattingRoomRef: any;
+  getChats: any;
+  loading: boolean;
 }
 
-function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: ChatsProps): JSX.Element {
+function Chats({ chatsLists, getChats, loading }: ChatsProps): JSX.Element {
   const dispatch = useDispatch();
   const { page, render } = useSelector((state: RootState) => state.chattings, shallowEqual);
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
-  const [loading, setLoading] = useState(true);
-  // const [imageLoad, setImageLoad] = useState(false);
 
   useEffect(() => {
-    console.log('render:::::::::', render);
-    if (page === 0) {
-      setChatsLists([]);
-    }
-    getChats(page);
-  }, [curRoomId, page]);
-
-  const getChats = useCallback(
-    (page = 0) => {
-      const body = {
-        id: userInfo?.id,
-        skip: chatsLists.length,
-        limit: 10,
-        page,
-      };
-
-      server
-        .post(`/chats/${curRoomId}`, body)
-        .then((response) => {
-          dispatch(getChattingData({ data: response.data.data }));
-        })
-        .then(() => {
-          setLoading(false);
-          if (chattingRoomRef.current) {
-            if (page === 0) {
-              chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
-            } else {
-              chattingRoomRef.current.scrollTop = 0;
-            }
-          }
-        })
-        .catch((err) => console.log(err));
-    },
-    [userInfo, chatsLists, page, curRoomId, render],
-  );
+    // 더보기를 눌렀을때 서버에서 메시지 10개를 더 받아온다.
+    getChats(page, chatsLists.length);
+  }, [page]);
 
   const loadMoreHandler = useCallback((): void => {
     dispatch(clickMoreBtn());
