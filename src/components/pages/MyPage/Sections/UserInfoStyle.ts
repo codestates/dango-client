@@ -164,7 +164,7 @@ export const MODIFY_BUTTON = styled(ModifySvg)`
   transform: translateY(-50%);
 
   &:hover {
-    fill: ${({ theme }) => theme.colors.mustard};
+    fill: #fa697c;
   }
   &:active {
     fill: ${({ theme }) => theme.colors.lightpurple};
@@ -184,7 +184,7 @@ export const MODIFYCHECK_BUTTON = styled(SSBUTTON)`
   border: none;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.mustard};
+    color: #fa697c;
   }
 `;
 export const MODIFY_ESC_BUTTON = styled.div`

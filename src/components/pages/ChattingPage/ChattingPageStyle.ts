@@ -105,7 +105,7 @@ export const CHATLISTTITLE = styled.div`
   height: 10%;
   display: flex;
   justify-content: center;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.6rem;
   /* border-bottom: 1px solid rgba(0, 0, 0, 0.2); */
 `;
 export const CHATLISTTEXT = styled.div`

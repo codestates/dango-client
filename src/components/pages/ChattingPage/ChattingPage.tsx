@@ -7,7 +7,6 @@ import { initCount } from '../../../_reducer/user';
 import ChattingOption from './Sections/ChattingOption';
 import ChattingRoom from './Sections/ChattingRoom';
 import Modal from '../../../utils/modal';
-import server from '../../../api';
 
 import {
   CONTAINER,
@@ -190,10 +189,8 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
             <ChattingRoom
               curOtherId={curOtherId}
               curRoomId={curRoomId}
-              setCurRoomId={setCurRoomId}
               connectSocket={connectSocket}
               lastChat={lastChat}
-              setLastChat={setLastChat}
             />
           ) : (
             <EMPTYBOX>
