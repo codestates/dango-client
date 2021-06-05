@@ -23,6 +23,10 @@ function Chats({ chatsLists, getChats, loading }: ChatsProps): JSX.Element {
 
   useEffect(() => {
     // 더보기를 눌렀을때 서버에서 메시지 10개를 더 받아온다.
+    // page가 0일때는 방에 처음 들어왔을 때이므로, room컴포넌트의 함수만 실행되도록한다.
+    if (page === 0) {
+      return;
+    }
     getChats(page, chatsLists.length);
   }, [page]);
 

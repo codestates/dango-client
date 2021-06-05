@@ -79,8 +79,9 @@ function ChattingRoom({
 
   useEffect(() => {
     console.log('방바꿈~~~~~~~~~~~~~~~');
-    console.log('lastChat null로바꾸기');
-    getChats();
+    if (curRoomId !== '') {
+      getChats();
+    }
     return () => {
       console.log('+++++++++++++++++++방청소~~~~~~~~~~~~~~~');
       // soon)방옮겼을때 room unmount하면서 render,page,chatsLists 초기화 시켜야함.
@@ -115,9 +116,7 @@ function ChattingRoom({
     server
       .post(`/chats/${curRoomId}`, body)
       .then((response) => {
-        if (page === 0) {
-          dispatch(newChattingRoom());
-        }
+        console.log('서버에서 온chatting data ::::', response.data.data);
         dispatch(getChattingData({ data: response.data.data }));
       })
       .then(() => {
