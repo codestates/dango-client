@@ -19,7 +19,7 @@ interface ChatsProps {
 
 function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: ChatsProps): JSX.Element {
   const dispatch = useDispatch();
-  const { page, render } = useSelector((state: RootState) => state.chattings, shallowEqual);
+  const { page, render, otherId, roomId, isJoined } = useSelector((state: RootState) => state.chattings, shallowEqual);
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
   const [loading, setLoading] = useState(true);
   // const [imageLoad, setImageLoad] = useState(false);
@@ -100,6 +100,7 @@ function Chats({ chatsLists, setChatsLists, curRoomId, chattingRoomRef }: ChatsP
                       {chat.message}
                     </MESSAGE>
                     <TIME>{chat.time}</TIME>
+                    {/* {isJoined ? <div>읽음</div> : <div>안읽음</div>} */}
                   </MESSAGEBOX>
                 </CHAT>
               ))}

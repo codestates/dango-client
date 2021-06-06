@@ -7,6 +7,7 @@ import { io } from 'socket.io-client';
 import server from '../api';
 import { RootState } from '../_reducer';
 import { renewChatRooms, updatePurchase } from '../_reducer/user';
+import { setIsJoined } from '../_reducer/chattings';
 import GlobalStyles from './GlobalStyles';
 import MapPage from './pages/MapPage/MapPage';
 import ChattingPage from './pages/ChattingPage/ChattingPage';
@@ -60,6 +61,12 @@ function App(): JSX.Element {
     );
     connect.on('hasjoined', (data: any) => {
       console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
+    });
+
+    // FIXME:
+    connect.on('otherIsJoined', (otherId: string, roomId: string, isJoined: boolean) => {
+      console.log('otherIsJoined::::: otherId:', otherId, 'roomId:', roomId, isJoined);
+      dispatch(setIsJoined({ otherId, roomId, isJoined }));
     });
 
     // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
