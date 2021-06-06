@@ -73,6 +73,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
   const [showChatList, setShowChatList] = useState<boolean>(false);
   const [hover, setHover] = useState<number>(-1);
+  const [clickedRoom, setClickedRoom] = useState<number>(-1);
 
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
   const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
@@ -113,8 +114,10 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
     connectSocket.emit('joinchat', curOtherId, curRoomId);
     // 이 방을 떠날 때(방 바꿀때마다) leavechat 실행.
     return () => {
+      console.log('방바뀜??????????????return함수안임.!');
       connectSocket.emit('leavechat', curOtherId, curRoomId);
       connectSocket.emit('updateReadBy', curOtherId, curRoomId);
+      // setClickedRoom(-1);
     };
   }, [curRoomId]);
 
@@ -137,6 +140,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
     setShowChatList(false);
+    setClickedRoom(index);
     // 채팅방에 들어가면 안 읽은 메시지 수를 0으로 만들어준다.
     dispatch(initCount({ index }));
     // 실시간으로 갱신되던 lastChat도 초기화시켜준다. (서버에서 불러와서 render에 저장해서 렌더할꺼기때문에 냅두면 겹친다.)
@@ -171,6 +175,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
               onClick={() => changeRoom(index)}
               onMouseEnter={() => setHover(index)}
               onMouseLeave={() => setHover(-1)}
+              clicked={clickedRoom === index}
             >
               <WRAPIMG>
                 <PROFILEIMG src={chatRoom.profileImage} alt="profile image," />
