@@ -8,14 +8,7 @@ interface ChatProps {
 export const RENDER = styled.div`
   width: 100%;
   padding: 0.3rem;
-  /* height: 100%; */
 `;
-export const MOREBTNBOX = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-export const MOREBTN = styled.button``;
 
 export const CHAT = styled.div<ChatProps>`
   /* border: 1px solid blue; */
@@ -25,6 +18,7 @@ export const CHAT = styled.div<ChatProps>`
   /* height: 90%; */
   min-height: 4.5vw;
   padding: 0.1rem 0;
+  margin-top: 0.4rem; // 첫화면에서도 스크롤을 주기 위해서
 `;
 export const WRAPIMG = styled.div<ChatProps>`
   // 프로필이미지 크기
@@ -77,6 +71,8 @@ export const MESSAGE = styled.div<ChatProps>`
   margin: 0.5vw 1vw;
 
   &:after {
+    box-shadow: 1.5px 0px 0px rgba(0, 0, 0, 0.03), 1.5px 0px 0px rgba(0, 0, 0, 0.06);
+
     content: '';
     position: absolute;
     border: 0 solid transparent;

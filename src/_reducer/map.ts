@@ -26,8 +26,8 @@ const initialState: MapState = {
   mapLevel: 6,
   sort: null,
   filter: [],
-  latLng: [37.489455183958114, 126.722336451675],
-  width: [37.46195123771726, 37.51695659436168],
+  latLng: [37.55682745904257, 126.92371975514399],
+  width: [37.531162581254904, 37.5824729630769],
   clickedMarkerLatLng: [0, 0],
   talentData: [
     {

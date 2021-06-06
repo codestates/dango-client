@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ChatInfo } from './ChattingRoom';
 import { RootState } from '../../../../_reducer';
 import { openModal } from '../../../../_reducer/modal';
-import { purchaseComplete, escapeRoom } from '../../../../_reducer/user';
+import { escapeRoom } from '../../../../_reducer/user';
 import server from '../../../../api';
 import { CHATTINGOPTION, COMPLETEBTN, COMPLETED, ESCAPEBTN, CHATLISTBTN } from './ChattingOptionStyle';
 
@@ -21,6 +21,7 @@ interface ChattingOptionProps {
   setLastChat: (lastChat: ChatInfo) => void;
   showChatList: boolean;
   setShowChatList: (boolean: boolean) => void;
+  connectSocket: any;
 }
 
 export default function ChattingOption({
@@ -29,6 +30,7 @@ export default function ChattingOption({
   setLastChat,
   showChatList,
   setShowChatList,
+  connectSocket,
 }: ChattingOptionProps): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -39,22 +41,14 @@ export default function ChattingOption({
       userId: roomInfo?.userId,
       chatroomId: roomInfo?.chatRoomId,
     };
-    server
-      .post('/users/confirm', data)
-      .then((response) => {
-        setLastChat(response.data.confirmedChat);
-        if (roomInfo?.talentId) {
-          dispatch(purchaseComplete({ talentId: roomInfo.talentId, confirmed: response.data.confirmed }));
-        }
-        dispatch(openModal({ type: 'ok', text: '거래완료 신청이 성공적으로 접수되었습니다!' }));
-      })
-      .catch((err) => {
-        if (!err.response) {
-          console.log(err);
-          return;
-        }
-        dispatch(openModal({ type: 'error', text: err.response.data.message }));
-      });
+
+    // setLastChat(response.data.confirmedChat);
+    if (roomInfo) {
+      connectSocket.emit('confirm', roomInfo.talentId, roomInfo.userId, roomInfo.chatRoomId, roomInfo.otherId);
+      // dispatch(purchaseComplete({ talentId: roomInfo.talentId, confirmed: response.data.confirmed }));
+
+      dispatch(openModal({ type: 'ok', text: '거래완료 신청이 성공적으로 접수되었습니다!' }));
+    }
   };
 
   const handleEscape = () => {
@@ -87,7 +81,7 @@ export default function ChattingOption({
     if (roomInfo?.clickPurchase[0] === false) {
       return <COMPLETEBTN onClick={handleComplete}>거래 완료</COMPLETEBTN>;
     }
-    if (roomInfo?.clickPurchase[1] === false) {
+    if (roomInfo?.clickPurchase[0] === true && roomInfo?.clickPurchase[1] === false) {
       return <COMPLETED>상대방의 거래 완료를 기다리고 있어요. 😃</COMPLETED>;
     }
     return <COMPLETED>거래가 완료된 채팅방입니다. 👍</COMPLETED>;

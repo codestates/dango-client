@@ -29,7 +29,7 @@ export interface UpdateChatRoomsPayload {
     otherId: string;
     otherNickname: string;
     profileImage: string;
-    // [내가 구매완료 눌렀는지 정보, 모두 눌렀는지에 대한 정보]
+    // [내가 구매완료 눌렀는지 정보, 상대가눌렀는지 정보]
     clickPurchase: boolean[];
   };
 }
@@ -41,7 +41,6 @@ export interface RenewChatRoomsPayload {
     otherId: string;
     otherNickname: string;
     profileImage: string;
-    // [내가 구매완료 눌렀는지 정보, 모두 눌렀는지에 대한 정보]
     clickPurchase: boolean[];
   }[];
 }
@@ -93,24 +92,44 @@ export const userSlice = createSlice({
       }
     },
 
-    purchaseComplete: (state, action: PayloadAction<{ talentId: string; confirmed: boolean }>) => {
+    updatePurchase: (state, action: PayloadAction<{ roomId: string; who: 'mine' | 'other'; talentId: string }>) => {
       // 거래완료버튼을 눌렀을때 서버에서 confirmed를 boolean값으로 준다.
 
-      const { talentId, confirmed } = action.payload;
-      // 거래완료여부에 상관없이 해당 채팅룸의 clickPurchase를 true로 바꿔준다.
+      const { roomId, who, talentId } = action.payload;
       if (state.userInfo) {
-        const roomIndex = state.userInfo.chatRooms.findIndex((room: any) => room.talentId === talentId);
-        console.log('찾은 roomIndex의 chatRooms', state.userInfo.chatRooms[roomIndex]);
-        state.userInfo.chatRooms[roomIndex].clickPurchase[0] = true;
+        const roomIndex = state.userInfo.chatRooms.findIndex((room: any) => room.roomId === roomId);
 
-        // confirmed가 true면 거래완료된 것이므로 buying에있던 talentId를 unreviewed로 옮겨준다.
-        if (confirmed) {
-          state.userInfo.chatRooms[roomIndex].clickPurchase[1] = true;
+        const { clickPurchase } = state.userInfo.chatRooms[roomIndex];
+        if (who === 'mine') {
+          clickPurchase[0] = true;
+          // who가 'other'이고 내가 이미 구매완료버튼을 누른경우, buying의 talentId를 unreviewed로 옮겨준다.
+        } else {
+          clickPurchase[1] = true;
+        }
+
+        if (clickPurchase[0] === true && clickPurchase[1] === true) {
           const index = state.userInfo.buying.indexOf(talentId);
           state.userInfo.buying.splice(index, 1);
           state.userInfo.unreviewed.push(talentId);
         }
       }
+
+      // const { talentId, confirmed } = action.payload;
+      // // 거래완료여부에 상관없이 해당 채팅룸의 clickPurchase를 true로 바꿔준다.
+      // if (state.userInfo) {
+      //   const roomIndex = state.userInfo.chatRooms.findIndex((room: any) => room.talentId === talentId);
+      //   console.log('찾은 roomIndex의 chatRooms', state.userInfo.chatRooms[roomIndex]);
+
+      //   state.userInfo.chatRooms[roomIndex].clickPurchase[0] = true;
+
+      //   // confirmed가 true면 거래완료된 것이므로 buying에있던 talentId를 unreviewed로 옮겨준다.
+      //   if (confirmed) {
+      //     state.userInfo.chatRooms[roomIndex].clickPurchase[1] = true;
+      //     const index = state.userInfo.buying.indexOf(talentId);
+      //     state.userInfo.buying.splice(index, 1);
+      //     state.userInfo.unreviewed.push(talentId);
+      //   }
+      // }
     },
 
     escapeRoom: (state, action: PayloadAction<{ talentId: string }>) => {
@@ -142,7 +161,7 @@ export const {
   modifyNickname,
   updateChatRooms,
   renewChatRooms,
-  purchaseComplete,
+  updatePurchase,
   escapeRoom,
   initCount,
 } = userSlice.actions;
