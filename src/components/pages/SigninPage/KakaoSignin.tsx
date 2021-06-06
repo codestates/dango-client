@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { openModal } from '../../../../_reducer/modal';
-import server from '../../../../api';
-import Signup from '../Signup';
-import { signin, UserState } from '../../../../_reducer/user';
+import { openModal } from '../../../_reducer/modal';
+import server from '../../../api';
+import Signup from './Signup';
+import { signin, UserState } from '../../../_reducer/user';
 
-import kakaoLoginBtn from '../../../../images/kakaoLoginBtn.png';
+import kakaoLoginBtn from '../../../images/kakaoLoginBtn.png';
 
 function KakaoSignin(): JSX.Element {
   const { Kakao } = window;
