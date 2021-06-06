@@ -16,6 +16,7 @@ interface ChattingOptionProps {
     otherId: string;
     talentId: string;
     clickPurchase: boolean[];
+    otherIsJoined: boolean;
   } | null;
   setCurRoomId: (roomId: string) => void;
   setLastChat: (lastChat: ChatInfo) => void;
@@ -79,6 +80,9 @@ export default function ChattingOption({
   };
 
   const checkPurchase = () => {
+    if (roomInfo?.otherIsJoined === false) {
+      return <COMPLETED>상대방이 채팅방을 나갔습니다. 😅</COMPLETED>;
+    }
     if (roomInfo?.clickPurchase[0] === false) {
       return <COMPLETEBTN onClick={handleComplete}>거래 완료</COMPLETEBTN>;
     }

@@ -76,7 +76,9 @@ function App(): JSX.Element {
             dispatch(renewChatRooms({ chatRooms: res.data.chatrooms }));
           })
           .catch((err) => console.log(err));
-        return;
+        if (receivedChats.message === '거래가 시작됐습니다.') {
+          return;
+        }
       }
 
       // 메시지타입이 confirm인경우

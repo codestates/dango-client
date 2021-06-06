@@ -202,6 +202,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
               otherNickname: detailData.userInfo.nickname,
               profileImage: detailData.userInfo.socialData.image,
               clickPurchase: [false, false],
+              otherIsJoined: true,
             },
           };
           dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가

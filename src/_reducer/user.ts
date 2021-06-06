@@ -31,6 +31,7 @@ export interface UpdateChatRoomsPayload {
     profileImage: string;
     // [내가 구매완료 눌렀는지 정보, 상대가눌렀는지 정보]
     clickPurchase: boolean[];
+    otherIsJoined: boolean;
   };
 }
 export interface RenewChatRoomsPayload {
@@ -42,6 +43,7 @@ export interface RenewChatRoomsPayload {
     otherNickname: string;
     profileImage: string;
     clickPurchase: boolean[];
+    otherIsJoined: boolean;
   }[];
 }
 

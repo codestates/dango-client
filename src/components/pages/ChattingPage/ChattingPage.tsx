@@ -27,12 +27,14 @@ import {
 } from './ChattingPageStyle';
 
 export interface RoomType {
+  talentId: string;
   roomId: string;
+  count: number;
   otherId: string;
   otherNickname: string;
-  count: number;
-  talentId: string;
   profileImage: string;
+  clickPurchase: boolean[];
+  otherIsJoined: boolean;
 }
 interface RoomInfo {
   userId: string | undefined;
@@ -40,6 +42,7 @@ interface RoomInfo {
   otherId: string;
   talentId: string;
   clickPurchase: boolean[];
+  otherIsJoined: boolean;
 }
 
 interface ChatInfo {
@@ -119,6 +122,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
         otherId: currentRoomInfo.otherId,
         talentId: currentRoomInfo.talentId,
         clickPurchase: currentRoomInfo.clickPurchase,
+        otherIsJoined: currentRoomInfo.otherIsJoined,
       };
     }
     return null;
