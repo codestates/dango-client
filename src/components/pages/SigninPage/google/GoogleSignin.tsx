@@ -90,7 +90,14 @@ function GoogleSignin(): JSX.Element {
             type="button"
             onClick={renderProps.onClick}
             disabled={renderProps.disabled}
-            style={{ backgroundColor: 'white', color: '#1a1700c7', border: 'none', width: '120px', height: '40px' }}
+            style={{
+              backgroundColor: 'white',
+              color: '#1a1700c7',
+              border: 'none',
+              width: '120px',
+              height: '40px',
+              cursor: 'pointer',
+            }}
           >
             구글 로그인
           </button>
