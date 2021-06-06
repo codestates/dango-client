@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { IoIosClose } from 'react-icons/io';
-import GoogleSignin from './google/GoogleSignin';
-import KakaoSignin from './kakao/KakaoSignin';
+import GoogleSignin from './GoogleSignin';
+import KakaoSignin from './KakaoSignin';
 import Modal from '../../../utils/modal';
 
 import {

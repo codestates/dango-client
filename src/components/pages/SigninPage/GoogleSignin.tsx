@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
-import { openModal } from '../../../../_reducer/modal';
-import server from '../../../../api/index';
-import Signup from '../Signup';
-import { signin, UserState } from '../../../../_reducer/user';
+import { openModal } from '../../../_reducer/modal';
+import server from '../../../api/index';
+import Signup from './Signup';
+import { signin, UserState } from '../../../_reducer/user';
 
 function GoogleSignin(): JSX.Element {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-export const LINK = styled(Link)<{ current: boolean; disPlay: boolean }>`
+export const LINK = styled(Link)<{ current: boolean; show: boolean }>`
   padding: 15px 20px;
   color: ${(props) =>
     props.current
@@ -34,7 +34,7 @@ export const LINK = styled(Link)<{ current: boolean; disPlay: boolean }>`
   }
   @media screen and (max-width: 768px) {
     border-bottom: none;
-    display: ${({ disPlay }) => (disPlay ? 'flex' : 'none')};
+    display: ${({ show }) => (show ? 'flex' : 'none')};
     &:hover {
       border-bottom: none;
     }
