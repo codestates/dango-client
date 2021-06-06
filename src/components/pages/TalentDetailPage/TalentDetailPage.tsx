@@ -96,6 +96,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
         const payload: TalentState = {
           talentId,
           sellerId: res.data.userInfo._id,
+          sellerNickname: res.data.userInfo.nickname,
           reviews: res.data.reviews.reverse(),
           userId: userInfo?.id,
           userRole,

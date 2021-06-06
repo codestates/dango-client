@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface TalentState {
   talentId: string;
   sellerId: string;
+  sellerNickname: string;
   reviews: {
     _id: string;
     reviewId: string;
@@ -28,6 +29,7 @@ interface UpdateReplyPayload {
 const initialState: TalentState = {
   talentId: '',
   sellerId: '',
+  sellerNickname: '',
   reviews: [],
   userId: '',
   userRole: 'normal',
