@@ -98,10 +98,15 @@ export const SSBUTTON = styled.button`
 
   /* 색상 */
   color: ${({ theme }) => theme.colors.purple};
-  border: 0.12rem solid;
+  border: 0.12rem solid ${({ theme }) => theme.colors.purple};
   background: white;
   &:hover {
     color: ${({ theme }) => theme.colors.yellow};
+    border: 0.12rem solid ${({ theme }) => theme.colors.yellow};
+  }
+  &:active {
+    color: ${({ theme }) => theme.colors.lightpurple};
+    border: 0.12rem solid ${({ theme }) => theme.colors.lightpurple};
   }
 
   /* 크기 */

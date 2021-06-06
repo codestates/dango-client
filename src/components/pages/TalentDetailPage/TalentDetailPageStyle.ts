@@ -8,9 +8,13 @@ export const CONTAINER = styled.div`
   grid-gap: 20px;
   margin: 1.25rem auto;
   width: 75%;
+  @media screen and (max-width: 1024px) {
+    width: 95%;
+  }
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(6, 1fr);
     width: 95%;
+    height: 120vh;
   }
   margin-top: 5.5rem;
 `;
@@ -22,7 +26,7 @@ export const SELLER = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  min-width: 180px;
+  // min-width: 180px;
 `;
 
 export const PROFILE = styled.div`
@@ -73,6 +77,8 @@ export const DETAIL = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem;
+  // margin-left: 0.5rem;
+  // min-width: 180px;
 `;
 
 export const TOP = styled.div`

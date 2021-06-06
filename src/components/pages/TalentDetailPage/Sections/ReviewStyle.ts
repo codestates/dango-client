@@ -11,7 +11,7 @@ const REVIEW = styled.div`
 
   @media screen and (max-width: 768px) {
     grid-column: 1/7;
-    grid-row: 6/10;
+    grid-row: 5/10;
   }
   padding: 1rem;
   min-width: 300px;
