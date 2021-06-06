@@ -192,6 +192,7 @@ const TEXT = styled.p`
   color: grey;
   white-space: pre-wrap;
   text-align: center;
+  line-height: 140%;
 `;
 
 const BUTTONBOX = styled.div`

@@ -32,6 +32,7 @@ export const PROFILE = styled.div`
 
 export const PROFILEIMG = styled.div`
   ${({ theme }) => theme.common.flexCenter};
+  width: 50%;
 `;
 
 export const IMG = styled.img`

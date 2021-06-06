@@ -15,6 +15,7 @@ const REVIEW = styled.div`
   }
   padding: 1rem;
   min-width: 300px;
+  overflow: auto;
 `;
 
 // ReviewList

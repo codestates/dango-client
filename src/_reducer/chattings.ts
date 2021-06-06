@@ -6,6 +6,9 @@ export interface ChattingsState {
   talentId: string;
   render: any[];
   page: number;
+  otherId: string;
+  roomId: string;
+  isJoined: boolean;
 }
 
 const initialState: ChattingsState = {
@@ -14,6 +17,9 @@ const initialState: ChattingsState = {
   talentId: '',
   render: [],
   page: 0,
+  otherId: '',
+  roomId: '',
+  isJoined: false,
 };
 
 interface setIsFirstChatPayLoad {
@@ -21,6 +27,13 @@ interface setIsFirstChatPayLoad {
   isFirstChat: boolean;
   talentId: string;
 }
+
+interface setIsJoinedPayLoad {
+  otherId: string;
+  roomId: string;
+  isJoined: boolean;
+}
+
 export const chattingsSlice = createSlice({
   name: 'chattings',
   initialState,
@@ -46,8 +59,13 @@ export const chattingsSlice = createSlice({
       const newState = { ...state, render: [...action.payload.data, ...state.render] };
       return newState;
     },
+    setIsJoined: (state, action: PayloadAction<setIsJoinedPayLoad>) => {
+      state.otherId = action.payload.otherId;
+      state.roomId = action.payload.roomId;
+      state.isJoined = action.payload.isJoined;
+    },
   },
 });
 
-export const { setIsFirstChat, newChattingRoom, nextPage, getChattingData } = chattingsSlice.actions;
+export const { setIsFirstChat, newChattingRoom, nextPage, getChattingData, setIsJoined } = chattingsSlice.actions;
 export default chattingsSlice.reducer;

@@ -50,6 +50,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'import/no-mutable-exports': 0,
     'consistent-return': 'off',
+    'no-lonely-if': 0,
     'import/no-unresolved': 0,
   },
   settings: {

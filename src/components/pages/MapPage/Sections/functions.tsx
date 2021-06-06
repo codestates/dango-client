@@ -5,7 +5,7 @@ import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 export function handleCategory(category: string): string {
   switch (category) {
     case '홈/리빙':
-      return '🏠';
+      return '🏡';
     case '비즈니스':
       return '📄';
     case '개발/디자인':
@@ -17,7 +17,7 @@ export function handleCategory(category: string): string {
     case '반려동물':
       return '🐶';
     case '기타':
-      return '🤔';
+      return '🍡';
     default:
       return '🍡';
   }

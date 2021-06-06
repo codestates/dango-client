@@ -69,13 +69,13 @@ export const GO_TO_REVIEW = styled.div`
 
 export const MOBILE_ESC = styled.div<{ showPurchase: boolean }>`
   display: none;
-  color: black;
   position: absolute;
   top: 50%;
   right: 0.7rem;
   transform: translateY(-50%);
   margin-left: auto;
+  margin-right: 0.5rem;
   cursor: pointer;
-  color: black;
+  color: white;
   ${(props) => props.showPurchase && 'display:block;'}
 `;
