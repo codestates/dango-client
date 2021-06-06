@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { GoogleLogout } from 'react-google-login';
 import { IoIosLogOut } from 'react-icons/io';
@@ -8,9 +7,10 @@ import { openModal } from '../../../_reducer/modal';
 import { RootState } from '../../../_reducer';
 import server from '../../../api';
 
-function Signout(): JSX.Element {
+import { LINK } from '../LandingPage/Sections/NavBarStyle';
+
+function Signout({ show }: { show: boolean }): JSX.Element {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { userInfo, accessToken } = useSelector((state: RootState) => state.user);
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_LOGIN_KEY as string;
 
@@ -49,36 +49,40 @@ function Signout(): JSX.Element {
 
   // 구글과 카카오 signout 컴포넌트를 따로 만들고 social에 따라서 버튼 렌더를 분기한다..
   return (
-    <div>
+    <>
       {userInfo?.social === 'kakao' ? (
-        <IoIosLogOut type="button" size="20" onClick={handleKakaoSignout} />
+        <LINK to="/" current={false} show={show} onClick={handleKakaoSignout}>
+          <IoIosLogOut type="div" size="20" />
+        </LINK>
       ) : (
-        <GoogleLogout
-          clientId={GOOGLE_CLIENT_ID}
-          onLogoutSuccess={handleGoogleSignout}
-          render={(renderProps) => (
-            <button
-              type="button"
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-              style={{
-                border: 'none',
-                backgroundColor: '#fff',
-                zIndex: 0,
-                color: '#83818c',
-                position: 'relative',
-                cursor: 'pointer',
-                marginRight: 'auto',
-                justifyContent: 'center',
-                padding: '0 25px 0 0',
-              }}
-            >
-              <IoIosLogOut size="20" />
-            </button>
-          )}
-        />
+        <LINK to="/" current={false} show={show} onClick={handleGoogleSignout}>
+          <GoogleLogout
+            clientId={GOOGLE_CLIENT_ID}
+            onLogoutSuccess={handleGoogleSignout}
+            render={(renderProps) => (
+              <button
+                type="button"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                style={{
+                  border: 'none',
+                  backgroundColor: '#fff',
+                  zIndex: 0,
+                  color: '#83818c',
+                  position: 'relative',
+                  cursor: 'pointer',
+                  marginRight: 'auto',
+                  justifyContent: 'center',
+                  padding: '0 0 0 7px',
+                }}
+              >
+                <IoIosLogOut size="20" />
+              </button>
+            )}
+          />
+        </LINK>
       )}
-    </div>
+    </>
   );
 }
 
