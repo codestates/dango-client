@@ -174,44 +174,48 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
 
   // [채팅으로 거래하기] 버튼 눌렀을 때
   const handleChat = () => {
-    // 처음 누르면 새로운 채팅방 만들어주기
-    if (userInfo?.chatRooms?.find((room: any) => room.talentId === talentId) === undefined) {
-      const body = {
-        userId: userInfo?.id, // buyer id (동네 이웃 id)
-        otherId: detailData.userInfo._id, // seller id (동네 고수 id)
-        talentId,
-      };
-      server
-        .post('/chats/createchat', body)
-        //  상대방에게 새방이 만들어졌음을 알린다.
-        .then((res) => {
-          console.log('채팅방 생겼다고 상대방한테 보내기 서버데이터:', res.data);
-          connectSocket.emit('initChat', body.otherId, res.data.roomId);
-          return res;
-        })
-        .then((res) => {
-          const payload: UpdateChatRoomsPayload = {
-            chatRooms: {
-              talentId,
-              roomId: res.data.roomId,
-              count: 0,
-              otherId: detailData.userInfo._id,
-              otherNickname: detailData.userInfo.nickname,
-              profileImage: detailData.userInfo.socialData.image,
-              clickPurchase: [false, false],
-            },
-          };
-          dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
-          dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: true, talentId }));
-        })
-        .then(() => {
-          history.push('/chatting');
-        })
-        .catch((err) => console.log(err));
+    if (!userInfo) {
+      dispatch(openModal({ type: 'error', text: '로그인이 필요한 서비스입니다.' }));
     } else {
-      // 두번째부터는 기존 채팅방으로 이동
-      dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: false, talentId }));
-      history.push('/chatting');
+      // 처음 누르면 새로운 채팅방 만들어주기
+      if (userInfo?.chatRooms?.find((room: any) => room.talentId === talentId) === undefined) {
+        const body = {
+          userId: userInfo?.id, // buyer id (동네 이웃 id)
+          otherId: detailData.userInfo._id, // seller id (동네 고수 id)
+          talentId,
+        };
+        server
+          .post('/chats/createchat', body)
+          //  상대방에게 새방이 만들어졌음을 알린다.
+          .then((res) => {
+            console.log('채팅방 생겼다고 상대방한테 보내기 서버데이터:', res.data);
+            connectSocket.emit('initChat', body.otherId, res.data.roomId);
+            return res;
+          })
+          .then((res) => {
+            const payload: UpdateChatRoomsPayload = {
+              chatRooms: {
+                talentId,
+                roomId: res.data.roomId,
+                count: 0,
+                otherId: detailData.userInfo._id,
+                otherNickname: detailData.userInfo.nickname,
+                profileImage: detailData.userInfo.socialData.image,
+                clickPurchase: [false, false],
+              },
+            };
+            dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
+            dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: true, talentId }));
+          })
+          .then(() => {
+            history.push('/chatting');
+          })
+          .catch((err) => console.log(err));
+      } else {
+        // 두번째부터는 기존 채팅방으로 이동
+        dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: false, talentId }));
+        history.push('/chatting');
+      }
     }
   };
 
