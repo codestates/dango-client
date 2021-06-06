@@ -145,7 +145,7 @@ export const NICKNAME_INPUT = styled.input`
   font-weight: 700;
   text-align: center;
   width: 9rem;
-  height: 19px;
+  height: 25px;
 
   ${(props) => props.disabled && 'margin-bottom:19px;'} // modifyBox만큼 미리 마진을줘서 수정할때 위치안변하게
 

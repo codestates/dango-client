@@ -36,7 +36,11 @@ export const chattingsSlice = createSlice({
     },
 
     nextPage: (state) => {
-      state.page++;
+      if (state.page === 0) {
+        state.page += 2;
+      } else {
+        state.page++;
+      }
     },
     getChattingData: (state, action: PayloadAction<{ data: any[] }>) => {
       const newState = { ...state, render: [...action.payload.data, ...state.render] };
