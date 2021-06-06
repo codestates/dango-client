@@ -21,7 +21,7 @@ interface ChatsProps {
 
 function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, lastData }: ChatsProps): JSX.Element {
   const dispatch = useDispatch();
-  const { page, render } = useSelector((state: RootState) => state.chattings, shallowEqual);
+  const { page, render, otherId, roomId, isJoined } = useSelector((state: RootState) => state.chattings, shallowEqual);
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
   const currentScroll = useRef<number>(0);
 

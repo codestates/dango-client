@@ -80,15 +80,12 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
     if (isFromDetail) {
       // 첫 채팅일 경우, 채팅방을 바로 열어주고 isFirstChat 변경
       if (isFirstChat) {
-        console.log('첫 채팅방');
         setCurOtherId(otherList[otherList.length - 1]);
         setCurRoomId(roomIdList[roomIdList.length - 1]);
         dispatch(setIsFirstChat({ isFromDetail: false, isFirstChat: false, talentId }));
       } else {
         // 기존 채팅방이 있으면, 그 채팅방을 열어준다.
         // chatRooms에서 해당 talentId에 해당하는 인덱스를 알아내서 roomID를 찾는다.
-        console.log('talentIdList', talentIdList);
-        console.log('index::::', talentIdList.indexOf(talentId));
         const chatIndex = talentIdList.indexOf(talentId);
         setCurOtherId(otherList[chatIndex]);
         setCurRoomId(roomIdList[chatIndex]);
@@ -108,6 +105,14 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
     }
     // room의 정보를 ChattingOption에 전달해주기위한 함수
     setRoomInfo(getRoomInfo());
+
+    // joinchat 실행.
+    connectSocket.emit('joinchat', curOtherId, curRoomId);
+    // 이 방을 떠날 때(방 바꿀때마다) leavechat 실행.
+    return () => {
+      connectSocket.emit('leavechat', curOtherId, curRoomId);
+      connectSocket.emit('updateReadBy', curOtherId, curRoomId);
+    };
   }, [curRoomId]);
 
   const getRoomInfo = () => {
@@ -125,7 +130,6 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   };
 
   const changeRoom = (index: number): void => {
-    console.log('클릭된 idx::', index);
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
     setShowChatList(false);
