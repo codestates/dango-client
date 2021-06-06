@@ -100,7 +100,7 @@ function KakaoSignin(): JSX.Element {
           boxShadow: 'rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px',
         }}
       >
-        <img alt="" src={kakaoLoginBtn} style={{ width: 180, height: 39, cursor: 'pointer' }} />
+        <img alt="" src={kakaoLoginBtn} style={{ width: 160, height: 40, cursor: 'pointer' }} />
       </button>
       {isUser || <Signup social="kakao" accessToken={kakaoAccessToken} setIsUser={setIsUser} />}
     </div>
