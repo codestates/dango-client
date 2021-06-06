@@ -26,7 +26,6 @@ export const SELLER = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  // min-width: 180px;
 `;
 
 export const PROFILE = styled.div`
@@ -41,7 +40,8 @@ export const PROFILEIMG = styled.div`
 
 export const IMG = styled.img`
   border-radius: 50%;
-  width: 100%;
+  width: 110px;
+  height: 110px;
 `;
 
 export const NICKNAME = styled.div`
@@ -77,8 +77,6 @@ export const DETAIL = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem;
-  // margin-left: 0.5rem;
-  // min-width: 180px;
 `;
 
 export const TOP = styled.div`
