@@ -139,7 +139,7 @@ export const CHATLISTESC = styled.div<{ show: boolean }>`
   }
 `;
 
-export const USERBOX = styled.div`
+export const USERBOX = styled.div<{ clicked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -150,6 +150,12 @@ export const USERBOX = styled.div`
   padding: 1vw;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   white-space: nowrap;
+
+  // 채팅방 클릭시 리스트의 이펙트
+  ${({ clicked, theme }) =>
+    clicked &&
+    `box-shadow: 1px 1px 4px 1px ${theme.colors.lightpurple};
+    border: 1px solid rgba(131, 90, 241, 0.4);`}
 `;
 export const WRAPIMG = styled.div`
   // 프로필이미지 크기
