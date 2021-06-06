@@ -108,19 +108,18 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
 
   // 카카오톡으로 공유하기
   useEffect(() => {
-    console.log(detailData?.address.split('(')[0]);
     Kakao.Link.createDefaultButton({
       container: '.create-kakao-link-btn', // 버튼 class name
       objectType: 'location',
-      address: detailData ? detailData.address.split('(')[0] : '경기 성남시 분당구 판교역로 235 에이치스퀘어 N동 8층', // required라서 없으면 에러가 난다.
+      address: detailData ? detailData.address.split('(')[0] : '홍대입구역', // required라서 없으면 에러가 난다.
       addressTitle: 'DANGO', // 지도에서 표시될 이름
       content: {
         title: `DANGO와 나누는 재능, ${detailData?.title}`,
         description: detailData?.description,
         imageUrl: 'https://dango.s3.amazonaws.com/image/original/5ab0cf1c1bdfb3ac9c8a66ded2c1a49b',
         link: {
-          mobileWebUrl: `http://localhost:3000/detail/${talentId}`,
-          webUrl: `http://localhost:3000/detail/${talentId}`,
+          mobileWebUrl: `http://dango.kr/detail/${talentId}`,
+          webUrl: `http://dango.kr/detail/${talentId}`,
         },
       },
       social: {
@@ -132,8 +131,8 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
         {
           title: '웹으로 보기',
           link: {
-            mobileWebUrl: `http://localhost:3000/detail/${talentId}`,
-            webUrl: `http://localhost:3000/detail/${talentId}`,
+            mobileWebUrl: `http://dango.kr/detail/${talentId}`,
+            webUrl: `http://dango.kr/detail/${talentId}`,
           },
         },
       ],
