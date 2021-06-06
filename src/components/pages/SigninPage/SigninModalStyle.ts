@@ -30,6 +30,7 @@ export const CONTAINER = styled('div')`
   height: 60%;
   outline: 0;
   max-width: 600px;
+  height: 460px;
   background-color: white;
   animation: ${SHOWMODAL} 0.7s forwards;
 `;
@@ -88,13 +89,34 @@ export const DESCRIPTION = styled('div')`
 
 export const BTNCONTAINER = styled('div')`
   width: 80%;
-  margin: 20px;
+  margin: 1rem;
+  margin-top: 2rem;
   justify-content: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 export const BTNDIV = styled('div')`
   padding: 10px;
+  display: flex;
   justify-content: center;
+  width: 100%;
+  cursor: pointer;
+`;
+
+export const GOOGLE = styled('div')`
+  box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px;
+  display: flex;
+  align-items: center;
+  height: 45px;
+  width: 172px;
+  padding: 10px;
+`;
+
+export const LOGO = styled('img')`
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.25rem;
 `;

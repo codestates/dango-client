@@ -16,6 +16,8 @@ import {
   DESCRIPTION,
   BTNCONTAINER,
   BTNDIV,
+  GOOGLE,
+  LOGO,
 } from './SigninModalStyle';
 
 function SigninModal(): JSX.Element {
@@ -50,11 +52,14 @@ function SigninModal(): JSX.Element {
               <IoIosClose size="200" color="#83818c" />
             </XBTN>
             <IMG />
-            <WELCOME> WELCOME! DANGO </WELCOME>
-            <DESCRIPTION> 당신 근처의 고수들을 찾아보세요</DESCRIPTION>
+            <WELCOME> WELCOME, DANGO! </WELCOME>
+            <DESCRIPTION> 당신 근처의 고수들을 찾아보세요.</DESCRIPTION>
             <BTNCONTAINER>
               <BTNDIV>
-                <GoogleSignin />
+                <GOOGLE>
+                  <LOGO src="/images/google_myinfo.png" alt="G" />
+                  <GoogleSignin />
+                </GOOGLE>
               </BTNDIV>
               <BTNDIV>
                 <KakaoSignin />
