@@ -170,7 +170,7 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
                                   <img class='image' src='/images/dango1.png' alt='dango'/>                                                                
                                 </div>
                                 <div class="top-right">
-                                  <div class="title">${talentData[i]?.title.slice(0, 13)}</div>
+                                  <div class="title">${talentData[i]?.title.slice(0, 17)}</div>
                                   <div class="category">${talentData[i]?.category}</div>
                                   <div class="price">${talentData[i]?.price}원</div>
                                 </div>

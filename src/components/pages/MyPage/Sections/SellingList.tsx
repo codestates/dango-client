@@ -13,7 +13,7 @@ interface Props {
 export default function SellingList({ selling, showSell, setShowSell }: Props): JSX.Element {
   const limitTitle = (title: string): string => {
     if (title.length > 10) {
-      return `${title.slice(0, 20)}...`;
+      return `${title.slice(0, 18)}...`;
     }
     return title;
   };

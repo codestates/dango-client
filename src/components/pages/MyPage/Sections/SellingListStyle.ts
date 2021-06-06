@@ -56,15 +56,17 @@ export const SELLINGLIST = styled.div<{ showSell: boolean }>`
 export const HEADER = styled.header`
   width: 100%;
   flex: 1;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  ${({ theme }) => theme.common.flexCenter};
   /* background-color: ${({ theme }) => theme.colors.middlepurple}; */
-  border-bottom: 5px solid rgba(0, 0, 0, 0.1);
+  // border-bottom: 5px solid rgba(0, 0, 0, 0.1);
   font-weight: 600;
   padding: 0 1vw;
   min-height: 3rem;
   position: relative;
+  color: ${({ theme }) => theme.colors.purple};
+  background-color: ${({ theme }) => theme.colors.purple};
+  color: white;
+  font-size: 1.25rem;
 `;
 export const LIST = styled.div`
   flex: 8;
@@ -75,22 +77,23 @@ export const LIST = styled.div`
   overflow: hidden;
   overflow-y: auto;
   width: 100%;
-  padding: 0.5vw;
+  // padding: 0.5vw;
 `;
 
 export const ITEM = styled(Link)`
   display: flex;
+  justify-content: space-between;
   /* border: 1px solid; */
   width: 100%;
   height: auto;
   min-height: 72px;
-  border-bottom: 3px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 1px 1px 2px 1px ${({ theme }) => theme.colors.lightgray};
   &:hover,
   &:focus,
   &:active {
-    color: #835af1;
+    color: ${({ theme }) => theme.colors.purple};
     cursor: pointer;
-    box-shadow: 2px 2px 5px 3px ${({ theme }) => theme.colors.lightpurple};
+    box-shadow: 1px 1px 4px 1px ${({ theme }) => theme.colors.lightpurple};
   }
 `;
 
@@ -103,6 +106,7 @@ export const CATEGORY_IMG = styled.div`
   @media screen and (max-width: 540px) {
     font-size: 38px;
   }
+  border-right: 1px solid ${({ theme }) => theme.colors.lightgray};
 `;
 
 export const SELLINFO = styled.div`
@@ -124,13 +128,13 @@ export const PRICE = styled.div`
 
 export const MOBILE_ESC = styled.div<{ showSell: boolean }>`
   display: none;
-  color: black;
   position: absolute;
   top: 50%;
   right: 0.7rem;
   transform: translateY(-50%);
   margin-left: auto;
+  margin-right: 0.5rem;
   cursor: pointer;
-  color: black;
+  color: white;
   ${(props) => props.showSell && 'display:block;'}
 `;
