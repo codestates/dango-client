@@ -144,6 +144,7 @@ export const PRICEINPUT = styled.input`
   text-align: end;
   padding-right: 1rem;
   height: 2.5rem;
+  width: 170px; // FIXME:
   transition: all 0.2s ease-in-out;
   &:focus {
     box-shadow: 3px 3px 6px 1px #dadce0;
