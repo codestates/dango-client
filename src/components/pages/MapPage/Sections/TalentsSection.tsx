@@ -160,7 +160,7 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
               <EMOJI>{emoticons.handleCategory(talent[0].category)}</EMOJI>
             </CATEGORY>
             <TEXT>
-              <TITLE>{talent[0].title.slice(0, 16)}</TITLE>
+              <TITLE>{talent[0].title}</TITLE>
               <PRICE>{talent[0].price}원</PRICE>
               <STARNICK>
                 <RATINGS>
