@@ -63,6 +63,7 @@ export default function ChattingOption({
       .delete('/chats/delete', config)
       .then(() => setCurRoomId('')) // 방을 나갔으므로 curRoomId도 초기값으로 초기화해준다.
       .then(() => {
+        connectSocket.emit('initChat', roomInfo?.otherId, roomInfo?.chatRoomId, true);
         if (roomInfo?.talentId) {
           dispatch(escapeRoom({ talentId: roomInfo.talentId }));
         }

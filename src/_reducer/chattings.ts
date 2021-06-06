@@ -35,7 +35,7 @@ export const chattingsSlice = createSlice({
       state.page = 0;
     },
 
-    clickMoreBtn: (state) => {
+    nextPage: (state) => {
       state.page++;
     },
     getChattingData: (state, action: PayloadAction<{ data: any[] }>) => {
@@ -45,5 +45,5 @@ export const chattingsSlice = createSlice({
   },
 });
 
-export const { setIsFirstChat, newChattingRoom, clickMoreBtn, getChattingData } = chattingsSlice.actions;
+export const { setIsFirstChat, newChattingRoom, nextPage, getChattingData } = chattingsSlice.actions;
 export default chattingsSlice.reducer;

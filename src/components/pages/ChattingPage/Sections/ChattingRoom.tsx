@@ -21,7 +21,7 @@ const CHATTINGROOM = styled.div`
 `;
 const CHATLANDING = styled.div`
   flex: 9;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 0.5rem;
 `;
 

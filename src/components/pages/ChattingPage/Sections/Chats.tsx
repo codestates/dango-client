@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { ChatsLists } from './ChattingRoom';
 import { RootState } from '../../../../_reducer';
-import { clickMoreBtn } from '../../../../_reducer/chattings';
+import { nextPage } from '../../../../_reducer/chattings';
 import getChatTime from '../../../../utils/getChatTime';
 import { RENDER, CHAT, WRAPIMG, PROFILEIMG, MESSAGEBOX, MESSAGE, TIME } from './ChatsStyle';
 import Loading from '../../LandingPage/Sections/Loading';
@@ -29,9 +29,12 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
     // 더보기를 눌렀을때 서버에서 메시지 10개를 더 받아온다.
     // page가 0일때는 방에 처음 들어왔을 때이므로, room컴포넌트의 함수만 실행되도록한다.
     if (page === 0) {
+      if (chattingRoomRef.current) {
+        chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
+      }
+
       return;
     }
-    console.log('무한무한');
     getChats(page, chatsLists.length);
   }, [page]);
 
@@ -51,14 +54,16 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
         // if (page !== 0) {
         //   setLoading(true);
         // }
-        dispatch(clickMoreBtn());
+        dispatch(nextPage());
       }
     }
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', infiniteScroll, true);
-    return () => window.removeEventListener('scroll', infiniteScroll, true);
+    chattingRoomRef.current?.addEventListener('scroll', infiniteScroll, true);
+    // window.addEventListener('scroll', infiniteScroll);
+    // return () => window.removeEventListener('scroll', infiniteScroll);
+    return () => chattingRoomRef.current?.removeEventListener('scroll', infiniteScroll, true);
   }, [infiniteScroll]);
 
   return (
