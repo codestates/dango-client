@@ -179,7 +179,9 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
                               <div class="middle">
                                 <div class="middle-top">
                                   <div class="nickname">${talentData[i]?.nickname}</div>
-                                  <div class="ratings">별점 : ${talentData[i]?.ratings[0] ?? '0'} / 5</div>
+                                  <div class="ratings">별점 : ${
+                                    Math.round(talentData[i]?.ratings[0] * 10) / 10 ?? '0'
+                                  } / 5</div>
                                 </div>
                                 <div class="description">${talentData[i]?.description.slice(0, 50)}</div>
                                 <div class="address">${talentData[i]?.address}</div>

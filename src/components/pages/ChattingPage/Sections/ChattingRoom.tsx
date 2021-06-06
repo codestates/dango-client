@@ -8,6 +8,7 @@ import { newChattingRoom, getChattingData } from '../../../../_reducer/chattings
 import getChatTime from '../../../../utils/getChatTime';
 import MessageInput from './MessageInput';
 import Chats from './Chats';
+import Loading from '../../LandingPage/Sections/Loading';
 
 // 실제로 기능구현이 되는 컴포넌트
 const CHATTINGROOM = styled.div`
@@ -15,13 +16,13 @@ const CHATTINGROOM = styled.div`
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  position: relative;
+  overflow-y: hidden;
 `;
 const CHATLANDING = styled.div`
   flex: 9;
-  overflow: auto;
-  /*   transform: rotate(180deg);
-  direction: ltr; */
+  overflow-y: auto;
+  padding: 0.5rem;
 `;
 
 const CHATINPUT = styled.div`
@@ -54,28 +55,20 @@ export interface ChatsLists {
 interface ChattingRoomProps {
   curOtherId: string;
   curRoomId: string;
-  setCurRoomId: (curRoomId: string) => void;
   connectSocket: any;
   lastChat: ChatInfo | null;
-  setLastChat: (any: any) => void;
 }
 
-function ChattingRoom({
-  curOtherId,
-  curRoomId,
-  setCurRoomId,
-  connectSocket,
-  lastChat,
-  setLastChat,
-}: ChattingRoomProps): JSX.Element {
+function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat }: ChattingRoomProps): JSX.Element {
   const dispatch = useDispatch();
-  const { page, render } = useSelector((state: RootState) => state.chattings, shallowEqual);
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
 
   const [chatsLists, setChatsLists] = useState<ChatsLists[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lastData, setLastData] = useState(false);
 
   const chattingRoomRef = useRef<HTMLDivElement>(null);
+  const currentScroll = useRef<number>(0);
 
   useEffect(() => {
     console.log('방바꿈~~~~~~~~~~~~~~~');
@@ -116,18 +109,35 @@ function ChattingRoom({
     server
       .post(`/chats/${curRoomId}`, body)
       .then((response) => {
+        if (chattingRoomRef.current) {
+          // 데이터를 불러올때의 스크롤위치를 current에 저장
+          currentScroll.current = chattingRoomRef.current.clientHeight;
+        }
+        return response;
+      })
+      .then((response) => {
         console.log('서버에서 온chatting data ::::', response.data.data);
         dispatch(getChattingData({ data: response.data.data }));
+        if (response.data.data.length < 10) {
+          setLastData(true);
+        } else {
+          setLastData(false);
+        }
       })
       .then(() => {
-        setLoading(false);
-        if (chattingRoomRef.current) {
-          if (page === 0) {
-            chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
-          } else {
-            chattingRoomRef.current.scrollTop = 0;
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          if (chattingRoomRef.current) {
+            if (page === 0) {
+              // 방에 방금 들어온거라면(page===0) 스크롤을 맨밑으로 내린다.
+              chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
+            } else {
+              // 그게아니라 상단으로올려 함수를 호출한거면, current에 저장한 위치로 스크롤을 이동시킨다.
+              chattingRoomRef.current.scrollTop = currentScroll.current;
+            }
           }
-        }
+        }, 200);
       })
       .catch((err) => console.log(err));
   };
@@ -143,6 +153,7 @@ function ChattingRoom({
     };
     await setChatsLists([...chatsLists, newChat]);
 
+    // 글쓸때마다 스크롤을 가장 하단으로 내린다.
     if (chattingRoomRef.current) {
       chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
     }
@@ -153,10 +164,20 @@ function ChattingRoom({
     connectSocket.emit('messageToOther', curOtherId, message, curRoomId);
   };
 
+  // 여기서 loading?<Loading/> : Chats 했더니
+  // loading상태가 갱신될때마다 Chats컴포넌트가 새로 랜더링되면서 Chats 컴포넌트의 useEffect effect들이 계속 실행됨.   ㄷ ㅐ환장파티,
+  // 해결: loading 상태에따라 분기하는 부분을 Chats안으로 옮겨서 컴포넌트 자체가 리랜더링 되지 않도록 함.
   return (
     <CHATTINGROOM>
       <CHATLANDING ref={chattingRoomRef}>
-        <Chats chatsLists={chatsLists} getChats={getChats} loading={loading} />
+        <Chats
+          chatsLists={chatsLists}
+          getChats={getChats}
+          loading={loading}
+          setLoading={setLoading}
+          chattingRoomRef={chattingRoomRef}
+          lastData={lastData}
+        />
       </CHATLANDING>
       <CHATINPUT>
         <MessageInput callback={callback} />

@@ -63,7 +63,7 @@ export const CHATLISTBTN = styled(ChatListSvg)`
 
   fill: grey;
   &:hover {
-    fill: ${({ theme }) => theme.colors.mustard};
+    fill: #fa697c;
   }
   &:active {
     fill: ${({ theme }) => theme.colors.lightpurple};
