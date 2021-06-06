@@ -180,7 +180,7 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
         const { address, lat, lng } = locationList[index];
         selectLocationData(address, lat, lng);
         setLiIdx(-2);
-        inputRef.current?.blur();
+        inputRef.current?.focus();
         event.preventDefault();
       }
     }

@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { io } from 'socket.io-client';
-import styled from 'styled-components';
 import { RootState } from '../../../_reducer';
-import { setIsFirstChat, newChattingRoom } from '../../../_reducer/chattings';
+import { setIsFirstChat } from '../../../_reducer/chattings';
 import { initCount } from '../../../_reducer/user';
-import { renewChatRooms } from '../../../_reducer/user';
 
 import ChattingOption from './Sections/ChattingOption';
 import ChattingRoom from './Sections/ChattingRoom';
 import Modal from '../../../utils/modal';
-import server from '../../../api';
 
 import {
   CONTAINER,
@@ -62,10 +58,10 @@ interface ChatInfo {
 interface Props {
   connectSocket: any;
   lastChat: ChatInfo | null;
-  setLastChat: (lastChat: ChatInfo) => void;
+  setLastChat: (any: any) => void;
 }
 
-function ChattingRoomsList({ connectSocket, lastChat, setLastChat }: Props): JSX.Element {
+function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const { isFromDetail, isFirstChat, talentId } = useSelector((state: RootState) => state.chattings);
@@ -80,36 +76,6 @@ function ChattingRoomsList({ connectSocket, lastChat, setLastChat }: Props): JSX
   const talentIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.talentId);
 
   useEffect(() => {
-    // if (!connectSocket) {
-    //   return;
-    // }
-    // connectSocket.emit(
-    //   'joinroom',
-    //   userInfo?.chatRooms.map((chatRoom: any) => chatRoom.otherId),
-    // );
-    // connectSocket.on('hasjoined', (data: any) => {
-    //   console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
-    // });
-
-    // // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
-    // connectSocket.on('messageFromOther', (receivedChats: ChatInfo) => {
-    //   console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
-
-    //   // 새방이 만들어졌다는 메시지라면 서버에서 새 chatRooms를 받아서
-    //   if (receivedChats.type === 'init') {
-    //     console.log('채팅방 만들어졌음 이제 서버에서 룸데이터받을꺼임');
-    //     server
-    //       .get(`/users/chatinfo/${userInfo?.id}`)
-    //       .then((res) => {
-    //         console.log('서버에서받은 룸데이터', res.data);
-    //         dispatch(renewChatRooms({ chatRooms: res.data.chatrooms }));
-    //       })
-    //       .catch((err) => console.log(err));
-    //     return;
-    //   }
-    //   setLastChat(receivedChats);
-    // });
-
     // 상세페이지에서 [채팅으로 거래하기] 버튼을 통해 들어온 경우
     if (isFromDetail) {
       // 첫 채팅일 경우, 채팅방을 바로 열어주고 isFirstChat 변경
@@ -137,8 +103,6 @@ function ChattingRoomsList({ connectSocket, lastChat, setLastChat }: Props): JSX
     if (curRoomId === '') {
       return;
     }
-    // 해당채팅룸의 render와 page를 초기화시킨다.
-    dispatch(newChattingRoom());
     // room의 정보를 ChattingOption에 전달해주기위한 함수
     setRoomInfo(getRoomInfo());
 
@@ -171,6 +135,8 @@ function ChattingRoomsList({ connectSocket, lastChat, setLastChat }: Props): JSX
     setShowChatList(false);
     // 채팅방에 들어가면 안 읽은 메시지 수를 0으로 만들어준다.
     dispatch(initCount({ index }));
+    // 실시간으로 갱신되던 lastChat도 초기화시켜준다. (서버에서 불러와서 render에 저장해서 렌더할꺼기때문에 냅두면 겹친다.)
+    setLastChat(null);
   };
 
   return (
@@ -229,7 +195,6 @@ function ChattingRoomsList({ connectSocket, lastChat, setLastChat }: Props): JSX
               curRoomId={curRoomId}
               connectSocket={connectSocket}
               lastChat={lastChat}
-              setLastChat={setLastChat}
             />
           ) : (
             <EMPTYBOX>
@@ -243,4 +208,4 @@ function ChattingRoomsList({ connectSocket, lastChat, setLastChat }: Props): JSX
   );
 }
 
-export default ChattingRoomsList;
+export default ChattingPage;

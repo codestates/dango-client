@@ -179,7 +179,9 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
                               <div class="middle">
                                 <div class="middle-top">
                                   <div class="nickname">${talentData[i]?.nickname}</div>
-                                  <div class="ratings">별점 : ${talentData[i]?.ratings[0] ?? '0'} / 5</div>
+                                  <div class="ratings">별점 : ${
+                                    Math.round(talentData[i]?.ratings[0] * 10) / 10 ?? '0'
+                                  } / 5</div>
                                 </div>
                                 <div class="description">${talentData[i]?.description.slice(0, 50)}</div>
                                 <div class="address">${talentData[i]?.address}</div>
@@ -244,6 +246,7 @@ function MapSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: MapSec
           latLng: [center.getLat(), center.getLng()], // 지도중심의 [위도,경도]
           width: [bounds.qa, bounds.pa], // 지도범위의 [남,북]
         };
+        console.log('lat: ', payload.latLng[0], ',  lng: ', payload.latLng[1], ',  width: ', payload.width);
         dispatch(setMapConfig(payload));
       }
     },

@@ -1,10 +1,14 @@
 import React from 'react';
 import { CONTAINER, LOADING } from './LoadingStyle';
 
-function Loading(): JSX.Element {
+interface Props {
+  size: string;
+}
+
+function Loading({ size }: Props): JSX.Element {
   return (
     <CONTAINER>
-      <LOADING />
+      <LOADING size={size} />
     </CONTAINER>
   );
 }
