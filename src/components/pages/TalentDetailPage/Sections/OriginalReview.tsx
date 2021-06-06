@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 import ReplyReview from './ReplyReview';
@@ -38,7 +38,7 @@ interface OriginalReviewProps {
 
 // 한개의 리뷰
 export default function OriginalReview({ review }: OriginalReviewProps): JSX.Element {
-  const userRole = useSelector((state: RootState) => state.talent.userRole);
+  const { userRole, sellerNickname } = useSelector((state: RootState) => state.talent);
 
   const [postReplyBox, setPostReplyBox] = useState<boolean>(false);
   const [replyBox, setReplyBox] = useState<boolean>(false);
@@ -125,7 +125,7 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
         <REPLYBOX>
           <REPLY>
             <REPLYTOP>
-              <REPLYNAME>고수</REPLYNAME>
+              <REPLYNAME>{sellerNickname}</REPLYNAME>
               <REPLYDATE>{review.reply.replyDate}</REPLYDATE>
             </REPLYTOP>
             <REPLYCONTENT>{review.reply.replyDescription}</REPLYCONTENT>

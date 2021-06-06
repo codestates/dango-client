@@ -16,6 +16,7 @@ interface ChattingOptionProps {
     otherId: string;
     talentId: string;
     clickPurchase: boolean[];
+    otherIsJoined: boolean;
   } | null;
   setCurRoomId: (roomId: string) => void;
   setLastChat: (lastChat: ChatInfo) => void;
@@ -63,6 +64,7 @@ export default function ChattingOption({
       .delete('/chats/delete', config)
       .then(() => setCurRoomId('')) // 방을 나갔으므로 curRoomId도 초기값으로 초기화해준다.
       .then(() => {
+        connectSocket.emit('initChat', roomInfo?.otherId, roomInfo?.chatRoomId, true);
         if (roomInfo?.talentId) {
           dispatch(escapeRoom({ talentId: roomInfo.talentId }));
         }
@@ -78,6 +80,9 @@ export default function ChattingOption({
   };
 
   const checkPurchase = () => {
+    if (roomInfo?.otherIsJoined === false) {
+      return <COMPLETED>상대방이 채팅방을 나갔습니다. 😅</COMPLETED>;
+    }
     if (roomInfo?.clickPurchase[0] === false) {
       return <COMPLETEBTN onClick={handleComplete}>거래 완료</COMPLETEBTN>;
     }
