@@ -83,17 +83,20 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
         let userRole: 'normal' | 'seller' | 'reviewer' = 'normal';
 
         // 작성자의 id와 유저의 id가 같으면 판매자
-        if (res.data.userInfo._id === userInfo?.id) {
-          userRole = 'seller';
+        if (userInfo) {
+          if (res.data.userInfo._id === userInfo.id) {
+            userRole = 'seller';
 
-          // 유저의 unreviewed 에 해당 글의 id가있으면 리뷰작성가능자
-        } else if (userInfo?.unreviewed.indexOf(talentId) !== -1) {
-          userRole = 'reviewer';
+            // 유저의 unreviewed 에 해당 글의 id가있으면 리뷰작성가능자
+          } else if (userInfo.unreviewed.indexOf(talentId) !== -1) {
+            userRole = 'reviewer';
+          }
         }
 
         const payload: TalentState = {
           talentId,
           sellerId: res.data.userInfo._id,
+          sellerNickname: res.data.userInfo.nickname,
           reviews: res.data.reviews.reverse(),
           userId: userInfo?.id,
           userRole,
@@ -202,6 +205,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
                 otherNickname: detailData.userInfo.nickname,
                 profileImage: detailData.userInfo.socialData.image,
                 clickPurchase: [false, false],
+                otherIsJoined: true,
               },
             };
             dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가

@@ -21,7 +21,7 @@ const CHATTINGROOM = styled.div`
 `;
 const CHATLANDING = styled.div`
   flex: 9;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 0.5rem;
 `;
 
@@ -102,7 +102,7 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat }: Chatti
     const body = {
       id: userInfo?.id,
       skip,
-      limit: 10,
+      limit: page === 0 ? 20 : 10,
       page,
     };
 
@@ -118,10 +118,11 @@ function ChattingRoom({ curOtherId, curRoomId, connectSocket, lastChat }: Chatti
       .then((response) => {
         console.log('서버에서 온chatting data ::::', response.data.data);
         dispatch(getChattingData({ data: response.data.data }));
-        if (response.data.data.length < 10) {
-          setLastData(true);
+
+        if (page === 0) {
+          response.data.data.length < 20 ? setLastData(true) : setLastData(false);
         } else {
-          setLastData(false);
+          response.data.data.length < 10 ? setLastData(true) : setLastData(false);
         }
       })
       .then(() => {
