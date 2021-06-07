@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../_reducer';
 import { setIsFirstChat } from '../../../_reducer/chattings';
 import { initCount } from '../../../_reducer/user';
@@ -72,7 +72,6 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   const [curRoomId, setCurRoomId] = useState<string>('');
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
   const [showChatList, setShowChatList] = useState<boolean>(false);
-  const [hover, setHover] = useState<number>(-1);
   const [clickedRoom, setClickedRoom] = useState<number>(-1);
 
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
@@ -114,10 +113,8 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
     connectSocket.emit('joinchat', curOtherId, curRoomId);
     // 이 방을 떠날 때(방 바꿀때마다) leavechat 실행.
     return () => {
-      console.log('방바뀜??????????????return함수안임.!');
       connectSocket.emit('leavechat', curOtherId, curRoomId);
       connectSocket.emit('updateReadBy', curOtherId, curRoomId);
-      // setClickedRoom(-1);
     };
   }, [curRoomId]);
 
@@ -158,9 +155,9 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
               ✕
             </CHATLISTESC>
           </CHATLISTTITLE>
-          {!userInfo && <USER hover={false}>로그인이 필요한 서비스입니다.</USER>}
+          {!userInfo && <USER clicked={false}>로그인이 필요한 서비스입니다.</USER>}
           {userInfo?.chatRooms.length === 0 && (
-            <USER hover={false} style={{ textAlign: 'center' }}>
+            <USER clicked={false} style={{ textAlign: 'center' }}>
               현재 참여하고 계신 채팅방이 없습니다! <br />
               <br />
               지금 바로 우리동네 이웃들과 재능을 나눠보세요!!
@@ -170,17 +167,11 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
             </USER>
           )}
           {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
-            <USERBOX
-              key={index}
-              onClick={() => changeRoom(index)}
-              onMouseEnter={() => setHover(index)}
-              onMouseLeave={() => setHover(-1)}
-              clicked={clickedRoom === index}
-            >
+            <USERBOX key={index} onClick={() => changeRoom(index)} clicked={clickedRoom === index}>
               <WRAPIMG>
                 <PROFILEIMG src={chatRoom.profileImage} alt="profile image," />
               </WRAPIMG>
-              <USER hover={hover === index}>{chatRoom.otherNickname}</USER>
+              <USER clicked={clickedRoom === index}>{chatRoom.otherNickname}</USER>
               <COUNT value={chatRoom.count}>
                 <NUMBER>{chatRoom.count}</NUMBER>
               </COUNT>

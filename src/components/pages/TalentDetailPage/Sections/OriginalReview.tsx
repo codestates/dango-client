@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 import ReplyReview from './ReplyReview';

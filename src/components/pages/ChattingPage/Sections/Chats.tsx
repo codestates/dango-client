@@ -40,20 +40,8 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
 
   const infiniteScroll = () => {
     if (chattingRoomRef.current) {
-      const { scrollHeight } = chattingRoomRef.current;
       const { scrollTop } = chattingRoomRef.current;
-      const { clientHeight } = chattingRoomRef.current;
-
-      console.log('scrollHeight:::::', scrollHeight);
-      console.log('scrollTop::::::', scrollTop);
-      console.log('clientHeight::::::', clientHeight);
-      console.log('------------------------------------------------------------------------------------------');
-
       if (scrollTop === 0 && !lastData) {
-        console.log('디스패치 클릭모어버튼');
-        // if (page !== 0) {
-        //   setLoading(true);
-        // }
         dispatch(nextPage());
       }
     }
