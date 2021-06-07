@@ -7,6 +7,7 @@ import { postTalentData, TalentState } from '../../../_reducer/talent';
 import { updateChatRooms, UpdateChatRoomsPayload } from '../../../_reducer/user';
 import { setIsFirstChat } from '../../../_reducer/chattings';
 import { openModal } from '../../../_reducer/modal';
+import Loading from '../LandingPage/Sections/Loading';
 import server from '../../../api';
 import {
   CONTAINER,
@@ -66,6 +67,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
   const [detailData, setDetailData] = useState<any>();
   const [editDetail, setEditDetail] = useState<any>(); // 수정 가능한 데이터
   const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<number>(0);
   const input = useRef<HTMLInputElement | null>(null);
   const textarea = useRef<HTMLTextAreaElement | null>(null);
   const copyUrlRef = useRef<HTMLTextAreaElement | null>(null);
@@ -111,6 +113,8 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
 
   // 카카오톡으로 공유하기
   useEffect(() => {
+    console.log('이미지::::::::::::', detailData?.images);
+
     Kakao.Link.createDefaultButton({
       container: '.create-kakao-link-btn', // 버튼 class name
       objectType: 'location',
@@ -240,6 +244,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
   return (
     <CONTAINER>
       <Modal />
+      {detailData?.images.length !== loaded && <Loading size="12vw" />}
       <SELLER>
         <PROFILE>
           <PROFILEIMG>
@@ -335,13 +340,25 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
       </DETAIL>
       <PHOTOS>
         <PHOTODIV>
-          {detailData?.images[0] ? <PHOTO src={detailData.images[0]} alt="사진" /> : <SPAN>No image</SPAN>}
+          {detailData?.images[0] ? (
+            <PHOTO src={detailData.images[0]} alt="사진" onLoad={() => setLoaded((previous) => previous + 1)} />
+          ) : (
+            <SPAN>No image</SPAN>
+          )}
         </PHOTODIV>
         <PHOTODIV>
-          {detailData?.images[1] ? <PHOTO src={detailData.images[1]} alt="사진" /> : <SPAN>No image</SPAN>}
+          {detailData?.images[1] ? (
+            <PHOTO src={detailData.images[1]} alt="사진" onLoad={() => setLoaded((previous) => previous + 1)} />
+          ) : (
+            <SPAN>No image</SPAN>
+          )}
         </PHOTODIV>
         <PHOTODIV>
-          {detailData?.images[2] ? <PHOTO src={detailData.images[2]} alt="사진" /> : <SPAN>No image</SPAN>}
+          {detailData?.images[2] ? (
+            <PHOTO src={detailData.images[2]} alt="사진" onLoad={() => setLoaded((previous) => previous + 1)} />
+          ) : (
+            <SPAN>No image</SPAN>
+          )}
         </PHOTODIV>
       </PHOTOS>
       <Review />

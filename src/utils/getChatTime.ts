@@ -8,5 +8,6 @@ export default function getChatTime(createdAt: string): string {
   } : ${
     new Date(createdAt).getMinutes() < 10 ? `0${new Date(createdAt).getMinutes()}` : new Date(createdAt).getMinutes()
   }`;
+  const weekday = `${new Date(createdAt).getMonth() + 1}월 ${new Date(createdAt).getDate()}일`;
   return time;
 }
