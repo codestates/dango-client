@@ -87,7 +87,7 @@ export const SBUTTON = styled.button`
   font-size: 0.875rem;
 `;
 
-// Small Button, 작은 사이즈
+// Small Small Button, 아주 작은 사이즈
 export const SSBUTTON = styled.button`
   outline: none;
   border: none;

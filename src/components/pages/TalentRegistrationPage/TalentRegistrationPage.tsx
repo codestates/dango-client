@@ -35,6 +35,7 @@ import {
   DESCRIPTION_SPAN,
   PRICEBOX,
 } from './TalentRegistrationPageStyle';
+import { MBUTTON } from '../../../styles/Buttons';
 
 const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
 
@@ -105,7 +106,7 @@ export default function TalentRegistrationPage(): JSX.Element {
         <FORM>
           <TITLEBOX>
             <TITLE_SPAN>제목</TITLE_SPAN>
-            <TITLE onChange={handleChange('title')} placeholder="ex) 냉장고 정리의 달인" maxLength={20} />
+            <TITLE onChange={handleChange('title')} placeholder="예) 냉장고 정리의 달인" maxLength={20} />
           </TITLEBOX>
 
           <SEARCHBOX>
@@ -141,14 +142,14 @@ export default function TalentRegistrationPage(): JSX.Element {
             <DESCRIPTION_SPAN>설명</DESCRIPTION_SPAN>
             <DESCRIPTION
               onChange={handleChange('description')}
-              placeholder="ex) 비좁아진 냉장고의 공간을 되찾아 드립니다! &#13;&#10; 주부 경력 20년!!"
+              placeholder="예) 비좁아진 냉장고의 공간을 되찾아 드립니다!"
               maxLength={170}
             />
           </DESCRIPTIONBOX>
         </FORM>
         <ImageUploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
         <BUTTONDIV>
-          <BUTTON type="button" onClick={handleFormSubmit}>
+          <BUTTON type="button" onClick={handleFormSubmit} style={{ padding: '0 1.5rem' }}>
             재능 등록
           </BUTTON>
         </BUTTONDIV>

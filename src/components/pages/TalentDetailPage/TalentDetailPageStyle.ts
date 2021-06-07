@@ -4,19 +4,24 @@ export const CONTAINER = styled.div`
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  height: 87vh;
+  height: 89vh;
   grid-gap: 20px;
-  margin: 1.25rem auto;
+  margin: 1rem auto;
+  margin-top: 5.5rem;
   width: 75%;
   @media screen and (max-width: 1024px) {
     width: 95%;
+  }
+  @media screen and (max-height: 789px) {
+    height: 87.5vh;
+    margin: 0.5rem auto;
+    margin-top: 5.5rem;
   }
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(6, 1fr);
     width: 95%;
     height: 120vh;
   }
-  margin-top: 5.5rem;
 `;
 
 export const SELLER = styled.div`
@@ -26,6 +31,9 @@ export const SELLER = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  @media screen and (max-height: 789px) {
+    height: 65vh;
+  }
 `;
 
 export const PROFILE = styled.div`
@@ -77,6 +85,9 @@ export const DETAIL = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem;
+  @media screen and (max-height: 789px) {
+    height: 65vh;
+  }
 `;
 
 export const TOP = styled.div`
@@ -251,13 +262,18 @@ export const PHOTOS = styled.div`
   justify-content: space-evenly;
   padding: 1rem 0;
   border: 3px solid ${({ theme }) => theme.colors.lightpurple};
+  height: 160px;
+  @media screen and (max-height: 789px) {
+    height: 20vh;
+  }
 `;
 
 export const PHOTODIV = styled.div`
-  box-shadow: 0px 0px 2px 0.5px ${({ theme }) => theme.colors.lightpurple};
+  box-shadow: 0px 0px 3px 0.5px ${({ theme }) => theme.colors.lightpurple};
   background-color: white;
   width: 30%;
   ${({ theme }) => theme.common.flexCenter};
+  height: 122px;
 `;
 
 export const PHOTO = styled.img`
@@ -285,6 +301,7 @@ export const PHOTO = styled.img`
   }
 `;
 
-export const SPAN = styled.span`
-  color: ${({ theme }) => theme.colors.lightpurple};
+export const NO_PHOTO = styled.img`
+  max-height: 122px;
+  width: 100%;
 `;

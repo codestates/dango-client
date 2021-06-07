@@ -41,7 +41,7 @@ import {
   OPTION,
   PHOTODIV,
   PHOTO,
-  SPAN,
+  NO_PHOTO,
 } from './TalentDetailPageStyle';
 import Modal from '../../../utils/modal';
 import { SBUTTON } from '../../../styles/Buttons';
@@ -249,9 +249,13 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
         </GRADE>
         <BUTTONDIV>
           {userRole === 'seller' ? (
-            <SBUTTON style={{ marginTop: '5px' }} type="button" onClick={handleClick}>
-              재능 수정하기
-            </SBUTTON>
+            isClicked ? (
+              <></>
+            ) : (
+              <SBUTTON style={{ marginTop: '5px' }} type="button" onClick={handleClick}>
+                재능 수정하기
+              </SBUTTON>
+            )
           ) : (
             <SBUTTON onClick={handleChat} type="button">
               채팅으로 거래하기
@@ -331,13 +335,25 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
       </DETAIL>
       <PHOTOS>
         <PHOTODIV>
-          {detailData?.images[0] ? <PHOTO src={detailData.images[0]} alt="사진" /> : <SPAN>No image</SPAN>}
+          {detailData?.images[0] ? (
+            <PHOTO src={detailData.images[0]} alt="사진" />
+          ) : (
+            <NO_PHOTO src="/images/No_image.png" alt="사진" />
+          )}
         </PHOTODIV>
         <PHOTODIV>
-          {detailData?.images[1] ? <PHOTO src={detailData.images[1]} alt="사진" /> : <SPAN>No image</SPAN>}
+          {detailData?.images[1] ? (
+            <PHOTO src={detailData.images[1]} alt="사진" />
+          ) : (
+            <NO_PHOTO src="/images/No_image.png" alt="사진" />
+          )}
         </PHOTODIV>
         <PHOTODIV>
-          {detailData?.images[2] ? <PHOTO src={detailData.images[2]} alt="사진" /> : <SPAN>No image</SPAN>}
+          {detailData?.images[2] ? (
+            <PHOTO src={detailData.images[2]} alt="사진" />
+          ) : (
+            <NO_PHOTO src="/images/No_image.png" alt="사진" />
+          )}
         </PHOTODIV>
       </PHOTOS>
       <Review />
