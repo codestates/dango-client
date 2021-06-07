@@ -93,7 +93,6 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           })
           .catch((err) => {
             if (!err.response) {
-              console.log(err);
               return;
             }
             const { message } = err.response.data;
@@ -160,7 +159,6 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
           })
           .catch((err) => {
             if (!err.response) {
-              console.log(err);
               return;
             }
             const { message } = err.response.data;
