@@ -1278,28 +1278,70 @@ export const CIRCLE11 = styled(CIRCLE9)`
 `;
 // ::::::::::::::::::::: FOOTER :::::::::::::::::::::
 export const FOOTERCONTAINER = styled(CIRCLECONTAINER)`
+  animation: none;
+  opacity: 1;
   position: absolute;
   border-top: 0.5px solid #efefef;
-  height: 13vh;
+  height: 25vh;
   /* display: flex; */
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 320;
-  margin: 1rem;
-  padding-bottom: 2rem;
-  justify-content: center;
+  // margin: 1rem;
+  margin-top: 0;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  // align-items: flex-start;
+  justify-content: space-between;
   top: 500vh;
-  @media screen and (max-width: 730px) {
+  @media screen and (max-width: 768px) {
     font-size: 0.9rem;
     height: 32vh;
   }
 `;
 export const TEAMNAME = styled('div')`
-  font-weight: 320;
-  padding: 15px 20px;
+  font-weight: 500;
+  font-size: 2rem;
+  color: ${({ theme }) => theme.colors.purple};
+  margin-left: 6rem;
+  margin-right: 8rem;
+  // padding: 15px 20px;
+  @media screen and (max-width: 768px) {
+    margin-left: 1rem;
+    margin-right: 2rem;
+  }
 `;
-export const CONTRIBUTERS = styled('div')`
-  padding: 15px 20px;
+
+export const FOOTER = styled('div')`
+  display: flex;
+  // flex-direction: column;
+  margin-right: auto;
+  //justify-content: space-evenly;
+  // margin-right: 5rem;
 `;
+
+export const CONTACT = styled('div')`
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  margin-left: 5rem;
+  @media screen and (max-width: 768px) {
+    margin-left: 4rem;
+  }
+`;
+export const CONTACT_LABEL = styled('div')`
+  // padding: 15px 20px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+`;
+
 export const OURS = styled('a')`
-  padding: 15px 20px;
+  // padding: 15px 20px;
+  margin-bottom: 0.5rem;
+`;
+
+export const RIGHTS = styled('div')`
+  color: gray;
 `;

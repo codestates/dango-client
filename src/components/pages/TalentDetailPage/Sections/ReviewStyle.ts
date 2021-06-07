@@ -11,10 +11,12 @@ const REVIEW = styled.div`
 
   @media screen and (max-width: 768px) {
     grid-column: 1/7;
-    grid-row: 6/10;
+    grid-row: 5/10;
+    height: 30vh;
   }
   padding: 1rem;
   min-width: 300px;
+  min-height: 235px;
   overflow: auto;
 `;
 

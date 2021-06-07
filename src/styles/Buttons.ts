@@ -87,7 +87,7 @@ export const SBUTTON = styled.button`
   font-size: 0.875rem;
 `;
 
-// Small Button, 작은 사이즈
+// Small Small Button, 아주 작은 사이즈
 export const SSBUTTON = styled.button`
   outline: none;
   border: none;
@@ -98,10 +98,15 @@ export const SSBUTTON = styled.button`
 
   /* 색상 */
   color: ${({ theme }) => theme.colors.purple};
-  border: 0.12rem solid;
+  border: 0.12rem solid ${({ theme }) => theme.colors.purple};
   background: white;
   &:hover {
     color: ${({ theme }) => theme.colors.yellow};
+    border: 0.12rem solid ${({ theme }) => theme.colors.yellow};
+  }
+  &:active {
+    color: ${({ theme }) => theme.colors.lightpurple};
+    border: 0.12rem solid ${({ theme }) => theme.colors.lightpurple};
   }
 
   /* 크기 */

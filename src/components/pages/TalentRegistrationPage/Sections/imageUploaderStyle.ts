@@ -51,13 +51,14 @@ export const IMAGEP = styled.p`
 export const PLUS = styled.div`
   position: absolute;
   margin-left: 220px;
-  margin-top: 220px;
+  margin-top: 223px;
   width: 190px;
   height: 190px;
   ${({ theme }) => theme.common.flexCenter}
   cursor: pointer;
   background-color: #fffcf0;
   box-shadow: 1px 1px 3px 1px #dadce0;
+  color: gray;
   &:hover {
     color: ${({ theme }) => theme.colors.purple};
   }

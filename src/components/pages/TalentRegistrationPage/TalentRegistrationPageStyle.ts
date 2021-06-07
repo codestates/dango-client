@@ -11,8 +11,9 @@ export const CONTAINER = styled.div`
   padding-bottom: 1rem;
   height: 85vh;
   margin-top: 3rem;
-  //width: 75%;
+  // width: 75%;
   width: 1080px;
+  min-width: 768px;
   @media screen and (max-width: 1200px) {
     width: 95%;
   }
@@ -223,16 +224,21 @@ export const DESCRIPTION = styled.textarea`
 export const BUTTONDIV = styled.div`
   grid-column: 10/13;
   grid-row: 10/11;
-  ${({ theme }) => theme.common.flexCenter}
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
   @media screen and (max-width: 768px) {
     grid-column: 1/13;
     grid-row: 16/17;
   }
-  height: 6rem;
+  // border: 1px solid;
+
+  // height: 6rem;
 `;
 
 export const BUTTON = styled.button`
-  outline: none;
+  /* outline: none;
   border: none;
   cursor: pointer;
   padding-left: 1rem;
@@ -241,10 +247,34 @@ export const BUTTON = styled.button`
   background: none;
   color: gray;
   &:hover {
-    color: ${({ theme }) => theme.colors.purple};
+    background-color: ${({ theme }) => theme.colors.purple};
+    color: white;
     background-color: rgba(131, 90, 241, 0.1);
+    background-color: #fffcf0;
   }
   height: 100%;
   font-size: 1.5rem;
-  width: 100%;
+  width: 50%; */
+  outline: none;
+  border: none;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  /* 색상 */
+  color: ${({ theme }) => theme.colors.purple};
+  border: 0.12rem solid ${({ theme }) => theme.colors.purple};
+  background: white;
+  &:hover {
+    color: ${({ theme }) => theme.colors.yellow};
+    border: 0.12rem solid ${({ theme }) => theme.colors.yellow};
+  }
+  &:active {
+    color: ${({ theme }) => theme.colors.lightpurple};
+    border: 0.12rem solid ${({ theme }) => theme.colors.lightpurple};
+  }
+  height: 2.25rem;
+  ${({ theme }) => theme.common.flexCenter}; // 글자 수직 가운데 정렬
+  font-size: 1rem;
 `;
