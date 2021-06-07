@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../_reducer';
 import { setIsFirstChat } from '../../../_reducer/chattings';
 import { initCount } from '../../../_reducer/user';
@@ -27,12 +27,14 @@ import {
 } from './ChattingPageStyle';
 
 export interface RoomType {
+  talentId: string;
   roomId: string;
+  count: number;
   otherId: string;
   otherNickname: string;
-  count: number;
-  talentId: string;
   profileImage: string;
+  clickPurchase: boolean[];
+  otherIsJoined: boolean;
 }
 interface RoomInfo {
   userId: string | undefined;
@@ -40,6 +42,7 @@ interface RoomInfo {
   otherId: string;
   talentId: string;
   clickPurchase: boolean[];
+  otherIsJoined: boolean;
 }
 
 interface ChatInfo {
@@ -69,7 +72,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   const [curRoomId, setCurRoomId] = useState<string>('');
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
   const [showChatList, setShowChatList] = useState<boolean>(false);
-  const [hover, setHover] = useState<number>(-1);
+  const [clickedRoom, setClickedRoom] = useState<number>(-1);
 
   const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
   const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
@@ -124,6 +127,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
         otherId: currentRoomInfo.otherId,
         talentId: currentRoomInfo.talentId,
         clickPurchase: currentRoomInfo.clickPurchase,
+        otherIsJoined: currentRoomInfo.otherIsJoined,
       };
     }
     return null;
@@ -133,6 +137,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
     setCurOtherId(otherList[index]);
     setCurRoomId(roomIdList[index]);
     setShowChatList(false);
+    setClickedRoom(index);
     // 채팅방에 들어가면 안 읽은 메시지 수를 0으로 만들어준다.
     dispatch(initCount({ index }));
     // 실시간으로 갱신되던 lastChat도 초기화시켜준다. (서버에서 불러와서 render에 저장해서 렌더할꺼기때문에 냅두면 겹친다.)
@@ -150,9 +155,9 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
               ✕
             </CHATLISTESC>
           </CHATLISTTITLE>
-          {!userInfo && <USER hover={false}>로그인이 필요한 서비스입니다.</USER>}
+          {!userInfo && <USER clicked={false}>로그인이 필요한 서비스입니다.</USER>}
           {userInfo?.chatRooms.length === 0 && (
-            <USER hover={false} style={{ textAlign: 'center' }}>
+            <USER clicked={false} style={{ textAlign: 'center' }}>
               현재 참여하고 계신 채팅방이 없습니다! <br />
               <br />
               지금 바로 우리동네 이웃들과 재능을 나눠보세요!!
@@ -162,16 +167,11 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
             </USER>
           )}
           {userInfo?.chatRooms?.map((chatRoom: RoomType, index: number) => (
-            <USERBOX
-              key={index}
-              onClick={() => changeRoom(index)}
-              onMouseEnter={() => setHover(index)}
-              onMouseLeave={() => setHover(-1)}
-            >
+            <USERBOX key={index} onClick={() => changeRoom(index)} clicked={clickedRoom === index}>
               <WRAPIMG>
                 <PROFILEIMG src={chatRoom.profileImage} alt="profile image," />
               </WRAPIMG>
-              <USER hover={hover === index}>{chatRoom.otherNickname}</USER>
+              <USER clicked={clickedRoom === index}>{chatRoom.otherNickname}</USER>
               <COUNT value={chatRoom.count}>
                 <NUMBER>{chatRoom.count}</NUMBER>
               </COUNT>

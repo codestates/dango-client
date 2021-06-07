@@ -27,11 +27,10 @@ export const BACKGROUND = styled('div')`
 `;
 
 export const CONTAINER = styled('div')`
-  height: 60%;
   outline: 0;
   max-width: 600px;
   height: 460px;
-  background-color: white;
+  background: white;
   animation: ${SHOWMODAL} 0.7s forwards;
 `;
 
@@ -56,7 +55,6 @@ export const XBTN = styled('button')`
   background-color: white;
   width: 70px;
   height: 70px;
-  /* border-radius: 50%; */
   padding: 11px;
   outline: none;
   position: absolute;

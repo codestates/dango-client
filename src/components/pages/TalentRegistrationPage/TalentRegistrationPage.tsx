@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import server from '../../../api/index';
@@ -39,12 +39,12 @@ import { MBUTTON } from '../../../styles/Buttons';
 
 const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
 
-export default function TalentRegistrationPage(): JSX.Element {
+function TalentRegistrationPage(): JSX.Element {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user);
   const [location, setLocation] = useState<number[]>([]);
   const [address, setAddress] = useState<string>();
-  const [imageUrl, setImageUrl] = useState<any>([]);
+  const [imageUrl, setImageUrl] = useState<string[]>([]);
   const [registerData, setRegisterData] = useState({
     images: imageUrl,
     description: '',
@@ -69,7 +69,7 @@ export default function TalentRegistrationPage(): JSX.Element {
     });
   };
 
-  const handleFreeTalent = (event: any) => {
+  const handleFreeTalent = () => {
     setRegisterData({
       ...registerData,
       price: 0,
@@ -89,13 +89,12 @@ export default function TalentRegistrationPage(): JSX.Element {
       };
       server
         .post('/talents/create', body)
-        .then((res) => {
-          console.log('res', res);
+        .then(() => {
           dispatch(openModal({ type: 'ok', text: '재능이 등록되었습니다!' }));
           setImageUrl([]);
           history.push('/map');
         })
-        .catch((err) => console.log(err));
+        .catch(() => '');
     }
   };
 
@@ -157,3 +156,5 @@ export default function TalentRegistrationPage(): JSX.Element {
     </>
   );
 }
+
+export default memo(TalentRegistrationPage);

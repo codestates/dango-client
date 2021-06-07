@@ -115,6 +115,7 @@ export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.E
           dispatch(modifyNickname({ nickname }));
           dispatch(openModal({ type: 'ok', text: '닉네임이 변경되었습니다.' }));
           setModifyMode(false);
+          setNicknameCheck(false);
         })
         .catch((err) => {
           setNicknameCheck(false);

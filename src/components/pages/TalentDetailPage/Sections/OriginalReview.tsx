@@ -38,7 +38,7 @@ interface OriginalReviewProps {
 
 // 한개의 리뷰
 export default function OriginalReview({ review }: OriginalReviewProps): JSX.Element {
-  const userRole = useSelector((state: RootState) => state.talent.userRole);
+  const { userRole, sellerNickname } = useSelector((state: RootState) => state.talent);
 
   const [postReplyBox, setPostReplyBox] = useState<boolean>(false);
   const [replyBox, setReplyBox] = useState<boolean>(false);
@@ -125,7 +125,7 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
         <REPLYBOX>
           <REPLY>
             <REPLYTOP>
-              <REPLYNAME>고수</REPLYNAME>
+              <REPLYNAME>{sellerNickname}</REPLYNAME>
               <REPLYDATE>{review.reply.replyDate}</REPLYDATE>
             </REPLYTOP>
             <REPLYCONTENT>{review.reply.replyDescription}</REPLYCONTENT>

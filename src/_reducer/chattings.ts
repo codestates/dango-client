@@ -48,8 +48,12 @@ export const chattingsSlice = createSlice({
       state.page = 0;
     },
 
-    clickMoreBtn: (state) => {
-      state.page++;
+    nextPage: (state) => {
+      if (state.page === 0) {
+        state.page += 2;
+      } else {
+        state.page++;
+      }
     },
     getChattingData: (state, action: PayloadAction<{ data: any[] }>) => {
       const newState = { ...state, render: [...action.payload.data, ...state.render] };
@@ -63,5 +67,5 @@ export const chattingsSlice = createSlice({
   },
 });
 
-export const { setIsFirstChat, newChattingRoom, clickMoreBtn, getChattingData, setIsJoined } = chattingsSlice.actions;
+export const { setIsFirstChat, newChattingRoom, nextPage, getChattingData, setIsJoined } = chattingsSlice.actions;
 export default chattingsSlice.reducer;

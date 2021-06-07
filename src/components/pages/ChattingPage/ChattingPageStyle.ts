@@ -139,7 +139,7 @@ export const CHATLISTESC = styled.div<{ show: boolean }>`
   }
 `;
 
-export const USERBOX = styled.div`
+export const USERBOX = styled.div<{ clicked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -150,6 +150,12 @@ export const USERBOX = styled.div`
   padding: 1vw;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   white-space: nowrap;
+
+  // 채팅방 호버시 리스트의 이펙트
+  &:hover {
+    border: 1px solid rgba(131, 90, 241, 0.4);
+    box-shadow: 1px 1px 4px 1px ${(props) => props.theme.colors.lightpurple};
+  }
 `;
 export const WRAPIMG = styled.div`
   // 프로필이미지 크기
@@ -167,7 +173,7 @@ export const PROFILEIMG = styled.img`
   width: 100%;
   height: 100%;
 `;
-export const USER = styled.div<{ hover: boolean }>`
+export const USER = styled.div<{ clicked: boolean }>`
   height: 100%;
   display: flex;
   align-items: center;
@@ -175,7 +181,7 @@ export const USER = styled.div<{ hover: boolean }>`
   color: grey;
   margin-right: 1vw;
 
-  ${(props) => props.hover && `color: ${props.theme.colors.purple}; font-weight: 600;`}
+  ${(props) => props.clicked && `color: ${props.theme.colors.purple}; font-weight: 600;`}
 `;
 export const COUNT = styled.div<{ value: number }>`
   display: flex;

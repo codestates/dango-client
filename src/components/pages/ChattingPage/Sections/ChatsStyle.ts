@@ -18,7 +18,7 @@ export const CHAT = styled.div<ChatProps>`
   /* height: 90%; */
   min-height: 4.5vw;
   padding: 0.1rem 0;
-  margin-top: 0.4rem; // 첫화면에서도 스크롤을 주기 위해서
+  /* margin-top: 0.4rem; // 첫화면에서도 스크롤을 주기 위해서 */
 `;
 export const WRAPIMG = styled.div<ChatProps>`
   // 프로필이미지 크기
