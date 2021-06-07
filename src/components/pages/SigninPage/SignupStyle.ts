@@ -5,6 +5,9 @@ import { MBUTTON } from '../../../styles/Buttons';
 
 export const SIGNUP_BACKGROUND = styled(BACKGROUND)`
   z-index: 6;
+  background: #7f7f7f;
+  border: 2px solid #7f7f7f;
+  outline: none;
 `;
 
 export const SIGNUP_CONTAINER = styled(CONTAINER)`
