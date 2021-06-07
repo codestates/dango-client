@@ -254,7 +254,7 @@ function LocationSearch({ setLocation, setAddress, addressRef }: LocationSearchP
     <SEARCH>
       <INPUT
         type="text"
-        placeholder="예) 한빛로, 동교동, 강남역, Starbucks                          🔍"
+        placeholder="예) 양화로, 서교동, 강남역, Starbucks                          🔍"
         onChange={handleChangeLocation}
         onKeyPress={handleEnterKey}
         onKeyDown={handleKeyDown}

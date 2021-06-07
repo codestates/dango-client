@@ -74,8 +74,11 @@ import {
   CIRCLE11,
   FOOTERCONTAINER,
   TEAMNAME,
-  CONTRIBUTERS,
+  CONTACT_LABEL,
+  CONTACT,
   OURS,
+  FOOTER,
+  RIGHTS,
 } from './LandingPageStyle';
 
 interface Footer {
@@ -89,10 +92,16 @@ function LandingPage(): JSX.Element {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const slideRef = useRef<HTMLDivElement>(null);
   const footerData = [
-    { name: '권순기', link: 'https://github.com/soon327' },
-    { name: '신영호', link: 'https://github.com/ShinYoungHO' },
-    { name: '안유원', link: 'https://github.com/Yu-Won' },
-    { name: '지주현', link: 'https://github.com/Jebbit-koi' },
+    { name: 'DANGO Wiki', link: 'https://github.com/codestates/dango-client/wiki' },
+    { name: 'Client Repository', link: 'https://github.com/codestates/dango-client' },
+    { name: 'Server Repository', link: 'https://github.com/codestates/dango-server' },
+  ];
+
+  const footerContact = [
+    { name: 'Juhyeon Ji', link: 'https://github.com/Jebbit-koi' },
+    { name: 'Soonki Kwon', link: 'https://github.com/soon327' },
+    { name: 'Youngho Shin', link: 'https://github.com/ShinYoungHO' },
+    { name: 'Yuwon Ahn', link: 'https://github.com/Yu-Won' },
   ];
   const history = useHistory();
 
@@ -274,16 +283,30 @@ function LandingPage(): JSX.Element {
 
       <RELATIVE>
         <FOOTERCONTAINER>
-          <TEAMNAME>Team Name: JAWS</TEAMNAME>
-          <CONTRIBUTERS>Contributers: </CONTRIBUTERS>
-          {footerData.map((footer: Footer, index: number) => (
-            <>
-              <OURS href={footer.link} key={index} target="_blank">
-                {' '}
-                {footer.name}
-              </OURS>
-            </>
-          ))}
+          <FOOTER>
+            <TEAMNAME>DANGO</TEAMNAME>
+            <CONTACT>
+              <CONTACT_LABEL>ABOUT AS</CONTACT_LABEL>
+              {footerData.map((footer: Footer, index: number) => (
+                <>
+                  <OURS href={footer.link} key={index} target="_blank">
+                    {footer.name}
+                  </OURS>
+                </>
+              ))}
+            </CONTACT>
+            <CONTACT>
+              <CONTACT_LABEL>CONTACT</CONTACT_LABEL>
+              {footerContact.map((footer: Footer, index: number) => (
+                <>
+                  <OURS href={footer.link} key={index} target="_blank">
+                    {footer.name}
+                  </OURS>
+                </>
+              ))}
+            </CONTACT>
+          </FOOTER>
+          <RIGHTS>ⓒ 2021 Team JAWS All Rights Reserved</RIGHTS>
         </FOOTERCONTAINER>
       </RELATIVE>
     </div>
