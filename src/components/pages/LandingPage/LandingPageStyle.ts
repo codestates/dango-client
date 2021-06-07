@@ -2,14 +2,16 @@ import styled, { css, keyframes } from 'styled-components';
 
 import mainSVG from '../../../images/mainimg.svg';
 
-import mapTest from '../../../images/maptest.jpg';
 import mapSVG from '../../../images/mapsvg.svg';
+import mapSVG1 from '../../../images/map1.png';
+import mapSVG2 from '../../../images/map2.png';
 
-import chatTest from '../../../images/chattest.jpg';
 import chatSVG from '../../../images/chatsvg.svg';
+import chatMobile from '../../../images/chatStart_mobile.gif';
+import chat from '../../../images/chatStart.gif';
 
-import talentTest from '../../../images/talenttest.jpeg';
 import talentSVG from '../../../images/talentsvg.svg';
+import detail1 from '../../../images/detail1.png';
 
 import lastSVG from '../../../images/lastsvg.svg';
 import { LBUTTON } from '../../../styles/Buttons';
@@ -185,18 +187,6 @@ to {
 }
 `;
 
-const MAPFADEIN3 = keyframes`
-from {
-    opacity: 0;
-    left: -600px;
-    max-width: 100%;
-}
-to {
-    opacity: 1;
-    
-}
-`;
-
 const CHATFADEIN1 = keyframes`
 from {
     opacity: 0;
@@ -230,13 +220,6 @@ to {
 
 export const RELATIVE = styled('div')`
   position: relative;
-  /* max-width: 100%;
-  overflow-x: hidden; */
-  /* overflow: hidden;
-  width: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; */
 `;
 
 // ::::::::::::::::::::: 인트로 DIV :::::::::::::::::::::
@@ -263,7 +246,6 @@ export const TITLECONTAINER = styled('div')`
   padding-top: 15vh;
   height: 70vh;
   overflow: hidden;
-  /* position: relative; */
   animation: ${SHOWUP} 4s ease-in-out forwards;
   @media screen and (max-width: 768px) {
     display: flex;
@@ -340,28 +322,11 @@ export const IMGCONTAINER = styled('div')`
   @media screen and (max-width: 600px) {
     top: 35vh;
   }
-  /* @media screen and (max-width: 730px) {
-    left: 25vw;
-  }
-  @media screen and (max-width: 650px) {
-    left: 20vw;
-  }
-  @media screen and (max-width: 580px) {
-    left: 10vw;
-  } */
 `;
 
 export const MAINIMG = styled('img')`
   width: 50vmin;
   height: 60vmin;
-  /* @media screen and (max-width: 1080px) {
-    width: 60vw;
-    height: 50vh;
-  } */
-  /* @media screen and (max-width: 865px) {
-    width: 400vw;
-    height: 200px;
-  } */
 `;
 
 MAINIMG.defaultProps = {
@@ -464,7 +429,6 @@ export const TRIANGLE_CONTAINER = styled('div')`
   @media screen and (max-width: 750px) {
     width: 20%;
     height: 30%;
-    /* left: -10%; */
   }
 `;
 
@@ -508,31 +472,13 @@ export const TRIANGLE2 = styled(TRIANGLE1)<{ scrollY: number }>`
   }
 `;
 
-export const MAPIMG1 = styled(MAINIMG)<{ scrollY: number }>`
-  width: 40vh;
-  height: 30vh;
-  top: 70vh;
-  left: 1%;
-  position: absolute;
-  animation: ${({ scrollY }) =>
-    scrollY > 326
-      ? css`
-          ${MAPFADEIN1} 2.1s forwards
-        `
-      : css`
-          ${NONE} 2s forwards
-        `};
-  @media screen and (max-width: 750px) {
-    animation: ${FADEOUT} 0.3s forwards;
-  }
-`;
-
 export const MAPIMG2 = styled(MAINIMG)<{ scrollY: number }>`
-  width: 40vh;
-  height: 30vh;
-  top: 52vh;
-  left: 15%;
+  width: 65vh;
+  height: 50vh;
+  top: 54vh;
+  left: 6%;
   position: absolute;
+  border: 1px solid ${({ theme }) => theme.colors.lightpurple};
   z-index: 5;
   animation: ${({ scrollY }) =>
     scrollY > 326
@@ -547,35 +493,8 @@ export const MAPIMG2 = styled(MAINIMG)<{ scrollY: number }>`
   }
 `;
 
-export const MAPIMG3 = styled(MAINIMG)<{ scrollY: number }>`
-  width: 40vh;
-  height: 30vh;
-  top: 80vh;
-  left: 23%;
-  position: absolute;
-  animation: ${({ scrollY }) =>
-    scrollY > 326
-      ? css`
-          ${MAPFADEIN3} 1.5s forwards
-        `
-      : css`
-          ${NONE} 2s forwards
-        `};
-  @media screen and (max-width: 750px) {
-    animation: ${FADEOUT} 0.3s forwards;
-  }
-`;
-
-MAPIMG1.defaultProps = {
-  src: mapTest,
-};
-
 MAPIMG2.defaultProps = {
-  src: mapTest,
-};
-
-MAPIMG3.defaultProps = {
-  src: mapTest,
+  src: mapSVG2,
 };
 
 export const MAPDESCRIPTION = styled('div')`
@@ -682,15 +601,11 @@ export const SLIDE_MAPIMG3 = styled('img')`
 `;
 
 SLIDE_MAPIMG1.defaultProps = {
-  src: mapTest,
+  src: mapSVG1,
 };
 
 SLIDE_MAPIMG2.defaultProps = {
-  src: chatTest,
-};
-
-SLIDE_MAPIMG3.defaultProps = {
-  src: talentTest,
+  src: mapSVG2,
 };
 
 // ::::::::::::::::::::: 채팅 :::::::::::::::::::::
@@ -717,11 +632,12 @@ export const CHATDESCRIPTION = styled('div')`
 `;
 
 export const CHATIMG1 = styled(MAINIMG)<{ scrollY: number }>`
-  width: 55vh;
-  height: 40vh;
-  top: 165vh;
-  right: 5%;
+  width: 65vh;
+  height: 50vh;
+  top: 160vh;
+  right: 0;
   position: absolute;
+  border: 1px solid ${({ theme }) => theme.colors.lightpurple};
   animation: ${({ scrollY }) =>
     scrollY > 1190
       ? css`
@@ -736,10 +652,10 @@ export const CHATIMG1 = styled(MAINIMG)<{ scrollY: number }>`
 `;
 
 export const CHATIMG2 = styled(MAINIMG)<{ scrollY: number }>`
-  width: 25vh;
-  height: 40vh;
+  width: 30vh;
+  height: 45vh;
   top: 175vh;
-  right: 30%;
+  right: 33%;
   position: absolute;
   animation: ${({ scrollY }) =>
     scrollY > 1190
@@ -755,11 +671,11 @@ export const CHATIMG2 = styled(MAINIMG)<{ scrollY: number }>`
 `;
 
 CHATIMG1.defaultProps = {
-  src: chatTest,
+  src: chat,
 };
 
 CHATIMG2.defaultProps = {
-  src: chatTest,
+  src: chatMobile,
 };
 
 export const CHATSVGCONTAINER = styled(IMGCONTAINER)`
@@ -835,11 +751,6 @@ export const TALK_BUBBLE2 = styled('div')`
 // ::::::::::::::::::::: 재능등록 :::::::::::::::::::::
 
 export const TALENTCONTAINER = styled(CIRCLECONTAINER)<{ scrollY: number }>`
-  /* overflow: hidden;
-  width: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; */
   animation: ${({ scrollY }) =>
     scrollY > 1860
       ? css`
@@ -891,32 +802,11 @@ export const TALENTDESCRIPTION2 = styled(MAPDESCRIPTION)`
 `;
 
 export const TALENTIMG1 = styled(MAINIMG)<{ scrollY: number }>`
-  width: 55vh;
-  height: 40vh;
-  top: 255vh;
-  left: 2vh;
-  position: absolute;
-  animation: ${({ scrollY }) =>
-    scrollY > 1860
-      ? css`
-          ${CHATFADEIN1} 1.8s forwards
-        `
-      : css`
-          ${NONE} 2s forwards
-        `};
-  @media screen and (max-width: 1330px) {
-    animation: ${FADEOUT} 1s forwards;
-  }
-  @media screen and (max-width: 800px) {
-    display: none;
-  }
-`;
-
-export const TALENTIMG2 = styled(MAINIMG)<{ scrollY: number }>`
-  width: 55vh;
-  height: 40vh;
-  top: 290vh;
-  left: 45vh;
+  width: 70vh;
+  height: 55vh;
+  top: 272vh;
+  left: 6%;
+  border: 1px solid ${({ theme }) => theme.colors.lightpurple};
   position: absolute;
   animation: ${({ scrollY }) =>
     scrollY > 1860
@@ -935,11 +825,7 @@ export const TALENTIMG2 = styled(MAINIMG)<{ scrollY: number }>`
 `;
 
 TALENTIMG1.defaultProps = {
-  src: talentTest,
-};
-
-TALENTIMG2.defaultProps = {
-  src: talentTest,
+  src: detail1,
 };
 
 export const SQUARE_CONTAINER = styled('div')`
@@ -987,9 +873,6 @@ export const SQUARE2 = styled('div')<{ scrollY: number }>`
       : css`
           ${NONE} 2s forwards
         `};
-  /* @media screen and (max-width: 823px) {
-    width: 30vh;
-  } */
 `;
 export const SQUARE3 = styled('div')<{ scrollY: number }>`
   width: 50vh;
