@@ -123,7 +123,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
       content: {
         title: `DANGO와 나누는 재능, ${detailData?.title}`,
         description: detailData?.description,
-        imageUrl: 'https://dango.s3.amazonaws.com/image/original/5ab0cf1c1bdfb3ac9c8a66ded2c1a49b',
+        imageUrl: 'https://dango.s3.amazonaws.com/image/original/kakaodango.png',
         link: {
           mobileWebUrl: `http://dango.kr/detail/${talentId}`,
           webUrl: `http://dango.kr/detail/${talentId}`,

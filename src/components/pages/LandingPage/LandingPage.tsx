@@ -25,9 +25,7 @@ import {
   TRIANGLE_CONTAINER,
   TRIANGLE1,
   TRIANGLE2,
-  MAPIMG1,
   MAPIMG2,
-  MAPIMG3,
   MAPDESCRIPTION,
   MAPSVGCONTAINER,
   MAPSVG,
@@ -37,7 +35,6 @@ import {
   IMG_CONTAINER,
   SLIDE_MAPIMG1,
   SLIDE_MAPIMG2,
-  SLIDE_MAPIMG3,
   CHATCONTAINER,
   CHATDESCRIPTION,
   CHATIMG1,
@@ -52,7 +49,6 @@ import {
   TALENTDESCRIPTION1,
   TALENTDESCRIPTION2,
   TALENTIMG1,
-  TALENTIMG2,
   SQUARE_CONTAINER,
   SQUARE1,
   SQUARE2,
@@ -89,7 +85,7 @@ interface Footer {
 
 function LandingPage(): JSX.Element {
   const [scrollY, setScrollY] = useState<number>(0);
-  const totalSlide = 2;
+  const totalSlide = 1;
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const slideRef = useRef<HTMLDivElement>(null);
   const footerData = [
@@ -179,9 +175,7 @@ function LandingPage(): JSX.Element {
           </TRIANGLE_CONTAINER>
 
           <>
-            <MAPIMG1 scrollY={scrollY} />
             <MAPIMG2 scrollY={scrollY} />
-            <MAPIMG3 scrollY={scrollY} />
           </>
           <MAPDESCRIPTION>
             DANGO는 내가 있는 위치를 기반으로 <br />
@@ -195,7 +189,6 @@ function LandingPage(): JSX.Element {
           <IMG_CONTAINER ref={slideRef}>
             <SLIDE_MAPIMG1 />
             <SLIDE_MAPIMG2 />
-            <SLIDE_MAPIMG3 />
           </IMG_CONTAINER>
           <SLIDE_BTN_LEFT onClick={prevSlide}>
             <IoIosArrowBack size="20" />
@@ -257,7 +250,6 @@ function LandingPage(): JSX.Element {
           </TALENTDESCRIPTION2>
           <>
             <TALENTIMG1 scrollY={scrollY} />
-            <TALENTIMG2 scrollY={scrollY} />
           </>
         </TALENTCONTAINER>
       </RELATIVE>
