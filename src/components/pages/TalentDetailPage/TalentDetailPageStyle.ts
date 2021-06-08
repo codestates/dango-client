@@ -158,7 +158,7 @@ export const SHAREBOX = styled.div`
 export const SHAREDIV = styled.div`
   border-radius: 15px;
   border: 1.5px solid #ececf5;
-  position: relative; // url 복사할때, textarea 영역이 보이지 않도록 하기 위해.
+  position: relative;
   overflow: hidden;
   width: 50px;
   height: 50px;
@@ -277,14 +277,8 @@ export const PHOTODIV = styled.div`
 `;
 
 export const PHOTO = styled.img`
-  // height: 80%;
-  // width: 40%;
-  // max-width: 215px;
   max-height: 122px;
   width: 100%;
-  // height: 100%;
-  // height: 122px;
-  // border: 2px solid #dadce0;
   cursor: pointer;
   &:hover {
     position: absolute;
@@ -295,9 +289,6 @@ export const PHOTO = styled.img`
     height: auto;
     background-color: white;
     box-shadow: 1px 1px 50px 15px #dadce0;
-    /* top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); */
   }
 `;
 

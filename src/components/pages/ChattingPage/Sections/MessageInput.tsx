@@ -20,7 +20,6 @@ const TEXT = styled.input`
 `;
 const SUBMIT = styled(SendSvg)`
   flex: 1;
-  /* border: none; */
   height: 2vw;
   cursor: pointer;
   min-width: 1.2rem;
@@ -33,7 +32,6 @@ const SUBMIT = styled(SendSvg)`
   &:active {
     fill: ${({ theme }) => theme.colors.lightpurple};
   }
-  /* border-radius: 3px; */
 `;
 
 interface Props {

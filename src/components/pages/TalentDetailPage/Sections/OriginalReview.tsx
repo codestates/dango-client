@@ -36,7 +36,6 @@ interface OriginalReviewProps {
   };
 }
 
-// 한개의 리뷰
 export default function OriginalReview({ review }: OriginalReviewProps): JSX.Element {
   const { userRole, sellerNickname } = useSelector((state: RootState) => state.talent);
 
@@ -50,14 +49,12 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
     }
   }, [review]);
 
-  // useCallback으로 감싸기
   const getStar = (rating: number) => {
     const Stars = [];
     const YELLOW = '#ffdb58';
     const GREY = '#dcdcdc';
     let fillColor;
 
-    // 5개의 별이미지를 만든다. rating 이하의 별들은 노란색으로, rating보다 큰 별들은 회색으로 만든다.
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
         fillColor = YELLOW;
@@ -73,7 +70,6 @@ export default function OriginalReview({ review }: OriginalReviewProps): JSX.Ele
     setPostReplyBox(true);
   };
 
-  // 더보기버튼 함수
   const setEllipsis = (str: string) => {
     const limit = 100;
     return {

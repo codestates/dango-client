@@ -18,8 +18,7 @@ import theme from '../styles/theme';
 import Navbar from './pages/LandingPage/Sections/Navbar';
 import SigninModal from './pages/SigninPage/SigninModal';
 import LandingPage from './pages/LandingPage/LandingPage';
-// import Loading from './pages/LandingPage/Sections/Loading';
-// import TalentRegistrationPage from './pages/TalentRegistrationPage/TalentRegistrationPage';
+
 interface ChatInfo {
   createdAt: string;
   message: string;
@@ -39,19 +38,17 @@ function App(): JSX.Element {
   const [connectSocket, setConnectSocket] = useState<any | null>(null);
   const [lastChat, setLastChat] = useState<ChatInfo | null>(null);
 
-  // id가 제대로 안들어갈때가있어서 deps를 빈배열로넣고 로그인할때마다 페이지 새로고침시킴
   useEffect(() => {
     if (!id) {
       return;
     }
-    console.log('app에서 소켓생성 ----------------------');
     const socket = io(`${process.env.REACT_APP_API_URL}/?clientId=${id}`, {
       transports: ['websocket'],
       path: '/socket.io',
       withCredentials: true,
     });
     const connect = socket.on('connect', () => {
-      console.log('connectSocket! socket.id: ', socket.id);
+      socket.id;
     });
     setConnectSocket(connect);
 
@@ -60,37 +57,27 @@ function App(): JSX.Element {
       chatRooms.map((chatRoom: any) => chatRoom.otherId),
     );
     connect.on('hasjoined', (data: any) => {
-      console.log('ChattingRoom2 -> ChattingRoom2 hasjoined가 되었나?', data);
+      data;
     });
 
-    // FIXME:
     connect.on('otherIsJoined', (otherId: string, roomId: string, isJoined: boolean) => {
-      console.log('otherIsJoined::::: otherId:', otherId, 'roomId:', roomId, isJoined);
       dispatch(setIsJoined({ otherId, roomId, isJoined }));
     });
 
-    // TODO: 2. 메시지를 보내면 소켓에서 다시 그메시지를 준다. 그걸 setLastchat에 넣는다.
     connect.on('messageFromOther', (receivedChats: ChatInfo, talentId: string) => {
-      console.log('messageFromOther되면 오는 receivedChats:::', receivedChats);
-
-      // 새방이 만들어졌다는 메시지라면 서버에서 새 chatRooms를 받아서
       if (receivedChats.type === 'init') {
-        console.log('채팅방 만들어졌음 이제 서버에서 룸데이터받을꺼임');
         server
           .get(`/users/chatinfo/${id}`)
           .then((res) => {
-            console.log('서버에서받은 룸데이터', res.data);
             dispatch(renewChatRooms({ chatRooms: res.data.chatrooms }));
           })
-          .catch((err) => console.log(err));
+          .catch(() => '');
         if (receivedChats.message === '거래가 시작됐습니다.') {
           return;
         }
       }
 
-      // 메시지타입이 confirm인경우
       if (receivedChats.type === 'confirm') {
-        console.log('구매완료눌렀을때 roomId::: ', receivedChats.roomId, '  ,  talentId::::', talentId);
         const who: 'mine' | 'other' = receivedChats.postedBy._id === id ? 'mine' : 'other';
         const { roomId } = receivedChats;
         dispatch(updatePurchase({ roomId, who, talentId }));

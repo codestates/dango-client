@@ -28,7 +28,6 @@ export default function PurchaseList({ reviewed, unreviewed, showPurchase, setSh
     const GREY = '#dcdcdc';
     let fillColor;
 
-    // 5개의 별이미지를 만든다. rating 이하의 별들은 노란색으로, rating보다 큰 별들은 회색으로 만든다.
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
         fillColor = YELLOW;

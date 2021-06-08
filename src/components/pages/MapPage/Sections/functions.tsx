@@ -1,7 +1,6 @@
 import React from 'react';
 import { ReactComponent as StarSvg } from '../../../../images/star.svg';
 
-// 카테고리를 이모티콘으로 렌더
 export function handleCategory(category: string): string {
   switch (category) {
     case '홈/리빙':
@@ -23,10 +22,9 @@ export function handleCategory(category: string): string {
   }
 }
 
-// 별점 평균 범위별로 렌더
 export function handleStarRatings(ratings: number | undefined): JSX.Element {
   switch (true) {
-    case ratings !== undefined && ratings >= 4.5: // 별 다섯 개
+    case ratings !== undefined && ratings >= 4.5:
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -36,7 +34,7 @@ export function handleStarRatings(ratings: number | undefined): JSX.Element {
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
         </>
       );
-    case ratings !== undefined && ratings < 4.5 && ratings >= 3.5: // 별 네 개
+    case ratings !== undefined && ratings < 4.5 && ratings >= 3.5:
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -46,7 +44,7 @@ export function handleStarRatings(ratings: number | undefined): JSX.Element {
           <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
         </>
       );
-    case ratings !== undefined && ratings < 3.5 && ratings >= 2.5: // 별 세 개
+    case ratings !== undefined && ratings < 3.5 && ratings >= 2.5:
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -56,7 +54,7 @@ export function handleStarRatings(ratings: number | undefined): JSX.Element {
           <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
         </>
       );
-    case ratings !== undefined && ratings < 2.5 && ratings >= 1.5: // 별 두 개
+    case ratings !== undefined && ratings < 2.5 && ratings >= 1.5:
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -66,7 +64,7 @@ export function handleStarRatings(ratings: number | undefined): JSX.Element {
           <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />
         </>
       );
-    case ratings !== undefined && ratings < 1.5 && ratings >= 0.5: // 별 한 개
+    case ratings !== undefined && ratings < 1.5 && ratings >= 0.5:
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#ffdb58" />
@@ -77,7 +75,6 @@ export function handleStarRatings(ratings: number | undefined): JSX.Element {
         </>
       );
     default:
-      // 별 0개 or 별점 없음
       return (
         <>
           <StarSvg style={{ marginRight: '3px' }} fill="#dcdcdc" />

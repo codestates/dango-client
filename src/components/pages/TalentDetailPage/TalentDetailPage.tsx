@@ -65,7 +65,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
   const [detailData, setDetailData] = useState<any>();
-  const [editDetail, setEditDetail] = useState<any>(); // 수정 가능한 데이터
+  const [editDetail, setEditDetail] = useState<any>();
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<number>(0);
   const input = useRef<HTMLInputElement | null>(null);
@@ -76,20 +76,15 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
   const { talentId } = useParams<{ talentId: string }>();
   const categoryList = ['홈/리빙', '비즈니스', '개발/디자인', '건강', '레슨', '반려동물', '기타'];
 
-  // 렌더할 데이터 서버에서 불러오기
   useEffect(() => {
     server
       .get(`/talents/detail/${talentId}`)
       .then((res) => {
-        console.log('디테일데이터:', res.data);
         let userRole: 'normal' | 'seller' | 'reviewer' = 'normal';
 
-        // 작성자의 id와 유저의 id가 같으면 판매자
         if (userInfo) {
           if (res.data.userInfo._id === userInfo.id) {
             userRole = 'seller';
-
-            // 유저의 unreviewed 에 해당 글의 id가있으면 리뷰작성가능자
           } else if (userInfo.unreviewed.indexOf(talentId) !== -1) {
             userRole = 'reviewer';
           }
@@ -104,22 +99,18 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
           userRole,
         };
         dispatch(postTalentData(payload));
-
         setDetailData(res.data);
         setEditDetail(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch(() => '');
   }, [userInfo]);
 
-  // 카카오톡으로 공유하기
   useEffect(() => {
-    console.log('이미지::::::::::::', detailData?.images);
-
     Kakao.Link.createDefaultButton({
-      container: '.create-kakao-link-btn', // 버튼 class name
+      container: '.create-kakao-link-btn',
       objectType: 'location',
-      address: detailData ? detailData.address.split('(')[0] : '홍대입구역', // required라서 없으면 에러가 난다.
-      addressTitle: 'DANGO', // 지도에서 표시될 이름
+      address: detailData ? detailData.address.split('(')[0] : '홍대입구역',
+      addressTitle: 'DANGO',
       content: {
         title: `DANGO와 나누는 재능, ${detailData?.title}`,
         description: detailData?.description,
@@ -146,7 +137,6 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
     });
   }, [detailData]);
 
-  // Edit 버튼 클릭
   const handleClick = (): void => {
     setIsClicked(true);
   };
@@ -179,23 +169,20 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
     }
   };
 
-  // [채팅으로 거래하기] 버튼 눌렀을 때
   const handleChat = () => {
     if (!userInfo) {
       dispatch(openModal({ type: 'error', text: '로그인이 필요한 서비스입니다.' }));
     } else {
-      // 처음 누르면 새로운 채팅방 만들어주기
       if (userInfo?.chatRooms?.find((room: any) => room.talentId === talentId) === undefined) {
         const body = {
-          userId: userInfo?.id, // buyer id (동네 이웃 id)
-          otherId: detailData.userInfo._id, // seller id (동네 고수 id)
+          userId: userInfo?.id,
+          otherId: detailData.userInfo._id,
           talentId,
         };
         server
           .post('/chats/createchat', body)
-          //  상대방에게 새방이 만들어졌음을 알린다.
+
           .then((res) => {
-            console.log('채팅방 생겼다고 상대방한테 보내기 서버데이터:', res.data);
             connectSocket.emit('initChat', body.otherId, res.data.roomId);
             return res;
           })
@@ -212,15 +199,14 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
                 otherIsJoined: true,
               },
             };
-            dispatch(updateChatRooms(payload)); // 새로운 채팅방 chatRooms에 추가
+            dispatch(updateChatRooms(payload));
             dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: true, talentId }));
           })
           .then(() => {
             history.push('/chatting');
           })
-          .catch((err) => console.log(err));
+          .catch(() => '');
       } else {
-        // 두번째부터는 기존 채팅방으로 이동
         dispatch(setIsFirstChat({ isFromDetail: true, isFirstChat: false, talentId }));
         history.push('/chatting');
       }

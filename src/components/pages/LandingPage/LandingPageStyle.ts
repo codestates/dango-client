@@ -3,8 +3,8 @@ import styled, { css, keyframes } from 'styled-components';
 import mainSVG from '../../../images/mainimg.svg';
 
 import mapSVG from '../../../images/mapsvg.svg';
-import mapSVG1 from '../../../images/map1.png';
-import mapSVG2 from '../../../images/map2.png';
+import mapSVG1 from '../../../images/map1.webp';
+import mapSVG2 from '../../../images/map2.webp';
 
 import chatSVG from '../../../images/chatsvg.svg';
 import chatMobile from '../../../images/chatStart_mobile.gif';
@@ -226,7 +226,6 @@ export const RELATIVE = styled('div')`
 
 export const DIV = styled('div')`
   ${({ theme }) => theme.common.flexCenter};
-  /* text-align: center; */
   font-weight: 300;
   font-size: 4rem;
   padding-top: 5vh;
@@ -889,9 +888,6 @@ export const SQUARE3 = styled('div')<{ scrollY: number }>`
       : css`
           ${NONE} 2s forwards
         `};
-  /* @media screen and (max-width: 823px) {
-    width: 30vh;
-  } */
 `;
 export const SQUARE4 = styled('div')<{ scrollY: number }>`
   width: 20vh;
@@ -946,9 +942,6 @@ export const SQUARE6 = styled('div')<{ scrollY: number }>`
       : css`
           ${NONE} 2s forwards
         `};
-  /* @media screen and (max-width: 1330px) {
-    right: 0;
-  } */
 `;
 export const SQUARE7 = styled('div')<{ scrollY: number }>`
   width: 60vh;
@@ -965,9 +958,6 @@ export const SQUARE7 = styled('div')<{ scrollY: number }>`
       : css`
           ${NONE} 2s forwards
         `};
-  /* @media screen and (max-width: 823px) {
-    width: 30vh;
-  } */
 `;
 export const SQUARE8 = styled('div')<{ scrollY: number }>`
   width: 60vh;
@@ -984,9 +974,6 @@ export const SQUARE8 = styled('div')<{ scrollY: number }>`
       : css`
           ${NONE} 2s forwards
         `};
-  /* @media screen and (max-width: 823px) {
-    width: 30vh;
-  } */
 `;
 export const SQUARE9 = styled('div')<{ scrollY: number }>`
   width: 90vh;
@@ -1025,9 +1012,6 @@ export const SQUARE10 = styled('div')<{ scrollY: number }>`
       : css`
           ${NONE} 2s forwards
         `};
-  /* @media screen and (max-width: 1330px) {
-    right: 0;
-  } */
 `;
 export const SQUARE11 = styled('div')<{ scrollY: number }>`
   width: 40vh;
@@ -1085,14 +1069,6 @@ export const LASTSVGCONTAINER = styled(IMGCONTAINER)`
 export const LASTSVG = styled('img')<{ scrollY: number }>`
   width: 50vh;
   height: 40vh;
-  /* animation: ${({ scrollY }) =>
-    scrollY > 2770
-      ? css`
-          ${CHATFADEIN2} 1.8s forwards
-        `
-      : css`
-          ${NONE} 2s forwards
-        `}; */
   @media screen and (max-width: 850px) {
     width: 40vh;
     height: 30vh;
@@ -1116,11 +1092,6 @@ export const CIRCLE7 = styled(CIRCLE)`
   left: 25%;
   top: 395vh;
   background: ${({ theme }) => theme.colors.lightpurple};
-  /* @media screen and (max-width: 1110px) {
-    left: 5%;
-    max-width: 100%;
-    overflow-x: hidden;
-  } */
   @media screen and (max-width: 850px) {
     left: 5%;
     width: 50vh;
@@ -1166,17 +1137,13 @@ export const FOOTERCONTAINER = styled(CIRCLECONTAINER)`
   position: absolute;
   border-top: 0.5px solid #efefef;
   height: 25vh;
-  /* display: flex; */
   font-size: 0.9rem;
   font-weight: 320;
-  // margin: 1rem;
   margin-top: 0;
   padding-top: 1.5rem;
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
-
-  // align-items: flex-start;
   justify-content: space-between;
   top: 500vh;
   @media screen and (max-width: 768px) {
@@ -1190,7 +1157,6 @@ export const TEAMNAME = styled('div')`
   color: ${({ theme }) => theme.colors.purple};
   margin-left: 6rem;
   margin-right: 8rem;
-  // padding: 15px 20px;
   @media screen and (max-width: 768px) {
     margin-left: 1rem;
     margin-right: 2rem;
@@ -1199,29 +1165,23 @@ export const TEAMNAME = styled('div')`
 
 export const FOOTER = styled('div')`
   display: flex;
-  // flex-direction: column;
   margin-right: auto;
-  //justify-content: space-evenly;
-  // margin-right: 5rem;
 `;
 
 export const CONTACT = styled('div')`
   display: flex;
   flex-direction: column;
-  // justify-content: center;
   margin-left: 5rem;
   @media screen and (max-width: 768px) {
     margin-left: 4rem;
   }
 `;
 export const CONTACT_LABEL = styled('div')`
-  // padding: 15px 20px;
   font-weight: 500;
   margin-bottom: 1rem;
 `;
 
 export const OURS = styled('a')`
-  // padding: 15px 20px;
   margin-bottom: 0.5rem;
 `;
 

@@ -56,13 +56,13 @@ export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.E
         authorization: `Bearer ${accessToken}`,
       },
     };
-    // 본인이 맞는지 확인
+
     server
       .post('/users/validate', data, config)
       .then(() => setModifyMode(true))
       .catch((err) => {
         if (!err.response) {
-          console.log(err);
+          return;
         }
         dispatch(openModal({ type: 'error', text: err.response.data.message }));
       });
@@ -82,7 +82,6 @@ export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.E
         setNicknameCheck(false);
         inputRef.current.focus();
       } else {
-        // 서버에 닉네임 중복체크 요청
         const data = { nickname: inputRef.current?.value };
         server
           .post('/users/doublecheck', data)
@@ -93,7 +92,6 @@ export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.E
           .catch((err) => {
             setNicknameCheck(false);
             if (!err.response) {
-              console.log(err);
               return;
             }
             dispatch(openModal({ type: 'error', text: err.response.data.message }));
@@ -106,7 +104,6 @@ export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.E
     if (!nicknameCheck) {
       dispatch(openModal({ type: 'error', text: '유효한 닉네임을 입력해주세요.' }));
     } else {
-      // 서버에 닉네임수정 요청
       const data = { userId: userInfo?.id, nickname: inputRef.current?.value };
       server
         .post('/users/edit', data)
@@ -120,7 +117,6 @@ export default function UserInfo({ setShowSell, setShowPurchase }: Props): JSX.E
         .catch((err) => {
           setNicknameCheck(false);
           if (!err.response) {
-            console.log(err);
             return;
           }
           dispatch(openModal({ type: 'error', text: err.response.data.message }));

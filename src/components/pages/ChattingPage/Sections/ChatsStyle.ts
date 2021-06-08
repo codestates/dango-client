@@ -11,18 +11,14 @@ export const RENDER = styled.div`
 `;
 
 export const CHAT = styled.div<ChatProps>`
-  /* border: 1px solid blue; */
   display: flex;
   flex-direction: ${(props) => (props.mine ? 'row-reverse' : 'row')};
   align-items: center;
-  /* height: 90%; */
   min-height: 4.5vw;
   padding: 0.1rem 0;
-  /* margin-top: 0.4rem; // 첫화면에서도 스크롤을 주기 위해서 */
 `;
 export const WRAPIMG = styled.div<ChatProps>`
-  // 프로필이미지 크기
-  width: 4.2vw; // 5vw * 0.9
+  width: 4.2vw;
   height: 4.2vw;
   max-width: 60px;
   max-height: 60px;
@@ -37,24 +33,20 @@ export const PROFILEIMG = styled.img`
   height: 100%;
 `;
 export const MESSAGEBOX = styled.div<ChatProps>`
-  /* border: 1px solid; */
   width: 70%;
   height: auto;
-  min-height: 4.5vw; // 부모 CHAT에 꽉맞춘다.
+  min-height: 4.5vw;
   flex-direction: ${(props) => (props.mine ? 'row-reverse' : 'row')};
-
   display: flex;
-  justify-content: stretch; // ??
+  justify-content: stretch;
   align-items: flex-end;
 `;
 export const MESSAGE = styled.div<ChatProps>`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.24);
 
   position: relative;
-  /* display: inline-block; */
   padding: 0.6rem;
   color: ${(props) => (props.mine ? 'whitesmoke' : 'grey')};
-  /* min-height: 1vw; */
   width: auto;
   min-width: 10%;
   max-width: 90%;

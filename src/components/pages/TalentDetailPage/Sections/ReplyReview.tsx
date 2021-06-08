@@ -13,7 +13,7 @@ interface ReplyReviewProps {
   setPostReplyBox: (bool: boolean) => void;
 }
 
-export default function ReplyReview({ reviewId, setPostReplyBox }: ReplyReviewProps) {
+export default function ReplyReview({ reviewId, setPostReplyBox }: ReplyReviewProps): JSX.Element {
   const dispatch = useDispatch();
   const { talentId, userId } = useSelector((state: RootState) => state.talent, shallowEqual);
   const [text, setText] = useState<string>('');
@@ -44,7 +44,6 @@ export default function ReplyReview({ reviewId, setPostReplyBox }: ReplyReviewPr
           setPostReplyBox(false);
         })
         .catch((err) => {
-          console.log(err);
           if (err.response?.data?.message) {
             dispatch(openModal({ type: 'error', text: err.response.data.message }));
           }

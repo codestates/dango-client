@@ -43,10 +43,8 @@ export default function ChattingOption({
       chatroomId: roomInfo?.chatRoomId,
     };
 
-    // setLastChat(response.data.confirmedChat);
     if (roomInfo) {
       connectSocket.emit('confirm', roomInfo.talentId, roomInfo.userId, roomInfo.chatRoomId, roomInfo.otherId);
-      // dispatch(purchaseComplete({ talentId: roomInfo.talentId, confirmed: response.data.confirmed }));
 
       dispatch(openModal({ type: 'ok', text: '거래완료 신청이 성공적으로 접수되었습니다!' }));
     }
@@ -62,7 +60,7 @@ export default function ChattingOption({
     };
     server
       .delete('/chats/delete', config)
-      .then(() => setCurRoomId('')) // 방을 나갔으므로 curRoomId도 초기값으로 초기화해준다.
+      .then(() => setCurRoomId(''))
       .then(() => {
         connectSocket.emit('initChat', roomInfo?.otherId, roomInfo?.chatRoomId, true);
         if (roomInfo?.talentId) {
@@ -72,7 +70,6 @@ export default function ChattingOption({
       })
       .catch((err) => {
         if (!err.response) {
-          console.log(err);
           return;
         }
         dispatch(openModal({ type: 'error', text: err.response.data.message }));

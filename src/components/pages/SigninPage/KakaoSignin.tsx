@@ -19,7 +19,6 @@ function KakaoSignin(): JSX.Element {
     Kakao.Auth.login({
       success: function (response: any) {
         setKakaoAccessToken(response.access_token);
-        console.log(response.access_token);
         const config = {
           headers: {
             authorization: `Bearer ${response.access_token}`,
@@ -28,8 +27,6 @@ function KakaoSignin(): JSX.Element {
         server
           .post('/users/kakao/signin', null, config)
           .then((response) => {
-            console.log('kakao respose.data:::', response.data);
-
             const {
               _id: id,
               accessToken,
@@ -41,7 +38,6 @@ function KakaoSignin(): JSX.Element {
               reviewed,
               chatRooms,
             } = response.data;
-            console.log(response.data);
 
             const payload: UserState = {
               userInfo: {
@@ -60,13 +56,11 @@ function KakaoSignin(): JSX.Element {
             };
 
             dispatch(signin(payload));
-            console.log(payload);
             dispatch(openModal({ type: 'ok', text: '로그인되었습니다.', callbackName: 'renewPage' }));
             history.push('/');
           })
           .catch((err) => {
             if (!err.response) {
-              console.log(err);
               return;
             }
             const { message } = err.response.data;
@@ -82,12 +76,11 @@ function KakaoSignin(): JSX.Element {
           });
       },
       fail: function (error: any) {
-        console.log('카카오 로그인 실패!', error);
+        error;
       },
     });
   };
 
-  // 카카오,구글 로그인 컴포넌트에서 SignUp컴포넌트를 각각 리턴합니다.(social 종류와, 토큰과 setIsUser을 props로 담아서)
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <button

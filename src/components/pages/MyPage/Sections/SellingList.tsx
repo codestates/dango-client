@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Type } from '../MyPage';
 import { handleCategory } from '../../MapPage/Sections/functions';
 import { SELLINGLIST, HEADER, LIST, ITEM, CATEGORY_IMG, SELLINFO, TITLE, PRICE, MOBILE_ESC } from './SellingListStyle';

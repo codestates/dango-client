@@ -6,12 +6,10 @@ export const CONTAINER = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   display: grid;
-  // grid-template-columns: 3fr 1fr;
   gap: 20px;
   padding-bottom: 1rem;
   height: 85vh;
   margin-top: 3rem;
-  // width: 75%;
   width: 1080px;
   min-width: 768px;
   @media screen and (max-width: 1200px) {
@@ -145,7 +143,7 @@ export const PRICEINPUT = styled.input`
   text-align: end;
   padding-right: 1rem;
   height: 2.5rem;
-  width: 170px; // FIXME:
+  width: 170px;
   transition: all 0.2s ease-in-out;
   &:focus {
     box-shadow: 3px 3px 6px 1px #dadce0;
@@ -232,37 +230,15 @@ export const BUTTONDIV = styled.div`
     grid-column: 1/13;
     grid-row: 16/17;
   }
-  // border: 1px solid;
-
-  // height: 6rem;
 `;
 
 export const BUTTON = styled.button`
-  /* outline: none;
-  border: none;
-  cursor: pointer;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  box-shadow: 1px 1px 3px 1px #dadce0;
-  background: none;
-  color: gray;
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.purple};
-    color: white;
-    background-color: rgba(131, 90, 241, 0.1);
-    background-color: #fffcf0;
-  }
-  height: 100%;
-  font-size: 1.5rem;
-  width: 50%; */
   outline: none;
   border: none;
   border-radius: 1.25rem;
   cursor: pointer;
   padding-left: 1rem;
   padding-right: 1rem;
-
-  /* 색상 */
   color: ${({ theme }) => theme.colors.purple};
   border: 0.12rem solid ${({ theme }) => theme.colors.purple};
   background: white;
@@ -275,6 +251,6 @@ export const BUTTON = styled.button`
     border: 0.12rem solid ${({ theme }) => theme.colors.lightpurple};
   }
   height: 2.25rem;
-  ${({ theme }) => theme.common.flexCenter}; // 글자 수직 가운데 정렬
+  ${({ theme }) => theme.common.flexCenter};
   font-size: 1rem;
 `;

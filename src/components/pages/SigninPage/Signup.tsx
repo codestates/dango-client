@@ -24,13 +24,10 @@ interface SignupProps {
   setIsUser: (bool: boolean) => void;
 }
 
-// 카카오와 구글의 signin 컴포넌트에서, 각각 props를 내려받습니다.
-
 function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
   const [nickname, setNickname] = useState<string>('');
-
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
   };
@@ -49,7 +46,6 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
         },
       };
 
-      // 구글,카카오에 따라 서버랑 통신하는게 다를듯해서, 여기부터 분기하겠습니당.
       if (social === 'kakao') {
         server
           .post('/users/kakao/signup', data, config)
@@ -81,8 +77,8 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               },
               accessToken,
             };
-            dispatch(signin(payload)); // 유저정보 저장
-            setIsUser(true); // 닉네임창 없앤다.
+            dispatch(signin(payload));
+            setIsUser(true);
             dispatch(
               openModal({
                 type: 'ok',
@@ -104,10 +100,7 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               }),
             );
           });
-      }
-
-      // 구글 회원가입인 경우 서버랑 통신코드
-      else {
+      } else {
         const data = {
           nickname,
         };
@@ -146,8 +139,8 @@ function Signup({ social, accessToken, setIsUser }: SignupProps): JSX.Element {
               },
               accessToken,
             };
-            dispatch(signin(payload)); // 유저정보 저장
-            setIsUser(true); // 닉네임창 없앤다.
+            dispatch(signin(payload));
+            setIsUser(true);
             history.push('/');
             dispatch(
               openModal({

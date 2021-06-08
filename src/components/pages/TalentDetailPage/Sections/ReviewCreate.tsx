@@ -19,11 +19,8 @@ function ReviewCreate(): JSX.Element {
   const [reviewText, setReviewText] = useState<string>();
   const textRef = useRef<HTMLTextAreaElement>(null);
 
-  // 마우스가 별 위에 올라가면 스테이트를 변경.
   const onMouseEnter = (index: number) => setHoverRating(index);
-  // 마우스가 별 밖으로 나가면 스테이트를 0으로 변경.
   const onMouseLeave = () => setHoverRating(0);
-  // 클릭시, 별 인덱스를 스테이트에 저장.
   const onSaveRating = (index: number) => setRating(index);
   const handleChangeText = (event: React.ChangeEvent<HTMLTextAreaElement>) => setReviewText(event.target.value);
 
@@ -48,7 +45,6 @@ function ReviewCreate(): JSX.Element {
         })
         .catch((err) => {
           if (!err.response) {
-            console.log(err);
             return;
           }
           const { message } = err.response.data;

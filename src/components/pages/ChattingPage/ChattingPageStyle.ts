@@ -38,7 +38,6 @@ export const CHATLIST = styled.div<{ show: boolean }>`
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   background-color: white;
-  /* padding: 1.5vw; */
   margin-right: 1.5vw;
   min-width: 200px;
 
@@ -65,22 +64,6 @@ export const CHATLIST = styled.div<{ show: boolean }>`
 
     ${(props) => props.show && 'display:flex;'}
   }
-
-  // 스크롤디자인 보류!
-  /* ::-webkit-scrollbar {
-    width: 0.6rem;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: #2f3542;
-    border-radius: 10px;
-    background-clip: padding-box;
-    border: 2px solid transparent;
-  }
-  ::-webkit-scrollbar-track {
-    background-color: grey;
-    border-radius: 10px;
-    box-shadow: inset 0px 0px 5px white;
-  } */
 `;
 
 export const CHAT = styled.div`
@@ -106,7 +89,6 @@ export const CHATLISTTITLE = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 0.6rem;
-  /* border-bottom: 1px solid rgba(0, 0, 0, 0.2); */
 `;
 export const CHATLISTTEXT = styled.div`
   display: flex;
@@ -151,15 +133,13 @@ export const USERBOX = styled.div<{ clicked: boolean }>`
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   white-space: nowrap;
 
-  // 채팅방 호버시 리스트의 이펙트
   &:hover {
     border: 1px solid rgba(131, 90, 241, 0.4);
     box-shadow: 1px 1px 4px 1px ${(props) => props.theme.colors.lightpurple};
   }
 `;
 export const WRAPIMG = styled.div`
-  // 프로필이미지 크기
-  width: 4vw; // 5vw * 0.9
+  width: 4vw;
   height: 4vw;
   min-width: 33px;
   min-height: 33px;

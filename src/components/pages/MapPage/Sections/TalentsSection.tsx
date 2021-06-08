@@ -42,47 +42,42 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
   const dispatch = useDispatch();
   const { filter, talentData } = useSelector((state: RootState) => state.map);
 
-  // checkbox(filter)
   const handleCheckBox = (currentValue: any) => {
     if (infoWindowGroup.length > 0) {
-      // 모든 인포윈도우를 닫고, 모든 마커를 기본마커이미지로바꾼다.
       infoWindowGroup.forEach((infowindow) => {
         infowindow[1].close();
       });
     }
-    // null의 indexOf 못하므로 기본 설정.
+
     if (filter === null) {
       const payload: MapState = {
         filter: [],
       };
       dispatch(handleFilter(payload));
     }
-    // 이전의 배열(체크리스트)을 불러온다. 그 배열에서 현재 체크된 것의 인덱스를 알아낸다.
+
     const currentIndex = filter.indexOf(currentValue);
-    // 배열 복사.
     const newCheckBoxList = [...filter];
-    // 기존 배열에 없는 값이면 새로 값을 푸쉬, 있는 값이면 삭제.
+
     if (currentIndex === -1) {
       newCheckBoxList.push(currentValue);
     } else {
       newCheckBoxList.splice(currentIndex, 1);
     }
-    // 변화된 배열을 저장한다! 이걸로 filter에 담아서 서버에 요청 보내야 함.
+
     const payload: MapState = {
       filter: newCheckBoxList,
     };
     dispatch(handleFilter(payload));
   };
 
-  // radiobox(sort)
   const handleRadioBox = (event: any) => {
     if (infoWindowGroup.length > 0) {
-      // 모든 인포윈도우를 닫고, 모든 마커를 기본마커이미지로바꾼다.
       infoWindowGroup.forEach((infowindow) => {
         infowindow[1].close();
       });
     }
-    console.log(event.target.value);
+
     const payload: MapState = {
       sort: event.target.value,
     };
@@ -103,12 +98,11 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
     });
 
     if (infoWindowGroup.length > 0) {
-      // 모든 인포윈도우를 닫고, 모든 마커를 기본마커이미지로바꾼다.
       infoWindowGroup.forEach((infowindow) => {
         infowindow[1].close();
         infowindow[2].setImage(markerImage);
       });
-      // 클릭한 마커의 인포윈도우를 열고,마커를 클릭이미지로 바꾼다.
+
       talent[1].open(map, talent[2]);
       talent[2].setImage(clickImage);
 
@@ -141,8 +135,6 @@ function TalentsSection({ map, setMap, infoWindowGroup, setInfoWindowGroup }: Ta
         </CHECKBOX>
         <RADIOBOX>
           <RADIOBOX_SPAN>정렬</RADIOBOX_SPAN>
-          {/* <RADIOINPUT type="radio" id="default" name="default" value="default" checked />
-          <LABEL htmlFor="default">거리순</LABEL> */}
           <UL>
             {sortData.map((ele) => (
               <LI key={ele.id} onChange={handleRadioBox} style={{ marginRight: '0.5rem' }}>

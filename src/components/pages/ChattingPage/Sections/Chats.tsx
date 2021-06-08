@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { ChatsLists } from './ChattingRoom';
 import { RootState } from '../../../../_reducer';
@@ -6,9 +6,6 @@ import { nextPage } from '../../../../_reducer/chattings';
 import getChatTime from '../../../../utils/getChatTime';
 import { RENDER, CHAT, WRAPIMG, PROFILEIMG, MESSAGEBOX, MESSAGE, TIME } from './ChatsStyle';
 import Loading from '../../LandingPage/Sections/Loading';
-
-// TODO: 프로필 이미지를 읽어오기전에 채팅이 랜더되면서 뒤늦게 이미지가 나타나서 스크롤이 위로 밀린다.
-// image의 onLoad에 함수를 넣어 상태를 바꾼뒤에 랜더시키는 방법이있는것같은데 일단 나중에..
 
 interface ChatsProps {
   chatsLists: ChatsLists[];
@@ -26,8 +23,6 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
   const currentScroll = useRef<number>(0);
 
   useEffect(() => {
-    // 더보기를 눌렀을때 서버에서 메시지 10개를 더 받아온다.
-    // page가 0일때는 방에 처음 들어왔을 때이므로, room컴포넌트의 함수만 실행되도록한다.
     if (page === 0) {
       if (chattingRoomRef.current) {
         chattingRoomRef.current.scrollTop = chattingRoomRef.current.scrollHeight;
@@ -41,7 +36,7 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
   const infiniteScroll = () => {
     if (chattingRoomRef.current) {
       const { scrollTop } = chattingRoomRef.current;
-      if (scrollTop === 0 && !lastData) {
+      if (scrollTop < 25 && !lastData) {
         dispatch(nextPage());
       }
     }
@@ -49,8 +44,6 @@ function Chats({ chatsLists, getChats, loading, setLoading, chattingRoomRef, las
 
   useEffect(() => {
     chattingRoomRef.current?.addEventListener('scroll', infiniteScroll, true);
-    // window.addEventListener('scroll', infiniteScroll);
-    // return () => window.removeEventListener('scroll', infiniteScroll);
     return () => chattingRoomRef.current?.removeEventListener('scroll', infiniteScroll, true);
   }, [infiniteScroll]);
 

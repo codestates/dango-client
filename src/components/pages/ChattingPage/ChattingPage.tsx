@@ -79,39 +79,28 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   const talentIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.talentId);
 
   useEffect(() => {
-    // 상세페이지에서 [채팅으로 거래하기] 버튼을 통해 들어온 경우
     if (isFromDetail) {
-      // 첫 채팅일 경우, 채팅방을 바로 열어주고 isFirstChat 변경
       if (isFirstChat) {
         setCurOtherId(otherList[otherList.length - 1]);
         setCurRoomId(roomIdList[roomIdList.length - 1]);
         dispatch(setIsFirstChat({ isFromDetail: false, isFirstChat: false, talentId }));
       } else {
-        // 기존 채팅방이 있으면, 그 채팅방을 열어준다.
-        // chatRooms에서 해당 talentId에 해당하는 인덱스를 알아내서 roomID를 찾는다.
         const chatIndex = talentIdList.indexOf(talentId);
         setCurOtherId(otherList[chatIndex]);
         setCurRoomId(roomIdList[chatIndex]);
       }
     }
-
-    // 유저정보가 바뀌었을때도(거래완료를 눌렀다거나) roomInfo를 갱신해준다.
     if (curRoomId !== '') {
       setRoomInfo(getRoomInfo());
     }
   }, [userInfo, connectSocket]);
 
-  // 채팅방을 클릭할때마다 실행된다.
   useEffect(() => {
     if (curRoomId === '') {
       return;
     }
-    // room의 정보를 ChattingOption에 전달해주기위한 함수
     setRoomInfo(getRoomInfo());
-
-    // joinchat 실행.
     connectSocket.emit('joinchat', curOtherId, curRoomId);
-    // 이 방을 떠날 때(방 바꿀때마다) leavechat 실행.
     return () => {
       connectSocket.emit('leavechat', curOtherId, curRoomId);
       connectSocket.emit('updateReadBy', curOtherId, curRoomId);
@@ -138,9 +127,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
     setCurRoomId(roomIdList[index]);
     setShowChatList(false);
     setClickedRoom(index);
-    // 채팅방에 들어가면 안 읽은 메시지 수를 0으로 만들어준다.
     dispatch(initCount({ index }));
-    // 실시간으로 갱신되던 lastChat도 초기화시켜준다. (서버에서 불러와서 render에 저장해서 렌더할꺼기때문에 냅두면 겹친다.)
     setLastChat(null);
   };
 

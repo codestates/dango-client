@@ -4,11 +4,8 @@ const REVIEW = styled.div`
   display: flex;
   grid-column: 7/10;
   grid-row: 1/5;
-  // box-shadow: 1px 1px 3px 1px #dadce0;
   box-shadow: 0 0 3px 1px ${({ theme }) => theme.colors.lightpurple};
   flex-direction: column;
-  // border: 5px solid ${({ theme }) => theme.colors.lightpurple};
-
   @media screen and (max-width: 768px) {
     grid-column: 1/7;
     grid-row: 5/10;
@@ -20,23 +17,21 @@ const REVIEW = styled.div`
   overflow: auto;
 `;
 
-// ReviewList
 const REVIEWLIST = styled.ul`
   flex: 7 1 auto;
   padding-left: 0.5rem;
   padding-top: 1rem;
 `;
 
-// original review
 export const LIST = styled.li`
   margin-bottom: 2.5rem;
 `;
+
 export const INFO = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
-  // border: 1px solid;
   padding-right: 0.5rem;
 `;
 
@@ -50,6 +45,7 @@ export const NICKNAME = styled.span`
   margin-right: 1rem;
   font-weight: 500;
 `;
+
 export const DATE = styled.div`
   color: gray;
   font-size: 0.8rem;
@@ -61,7 +57,6 @@ export const REVIEWCONTENT = styled.p`
   line-height: 120%;
 `;
 
-// 답글
 export const REPLYBUTTON = styled.div`
   margin-right: 0.5rem;
   margin-top: -0.5rem;
@@ -74,6 +69,7 @@ export const REPLYBOX = styled.div`
   padding: 0.5rem;
   margin-left: 1.5rem;
 `;
+
 export const REPLY = styled.div`
   display: flex;
   flex-direction: column;
@@ -102,7 +98,6 @@ export const REPLYCONTENT = styled.p`
   line-height: 120%;
 `;
 
-// ReviewCreate
 const REVIEWCREATE = styled.div`
   height: 20vh;
   display: flex;
@@ -115,7 +110,6 @@ const REVIEWCREATE = styled.div`
 
 export const STARDIV = styled.div`
   margin-left: auto;
-
   display: flex;
   align-items: center;
 `;
@@ -132,12 +126,10 @@ export const TEXTAREA = styled.textarea`
 
 export const BUTTONDIV = styled.div`
   margin-left: auto;
-
   display: flex;
   align-items: center;
 `;
 
-// reply review create
 export const FORM = styled.form`
   display: flex;
   flex-direction: column;

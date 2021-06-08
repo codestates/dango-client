@@ -10,7 +10,6 @@ import { LINK, CONTAINER, LOGOCONTAINER, LOGO, NAV, MENUBARS } from './NavBarSty
 
 function Navbar(): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
-  console.log(userInfo);
   const [show, setShow] = useState<boolean>(false);
   const location = useLocation();
 

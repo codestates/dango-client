@@ -15,22 +15,16 @@ function GoogleSignin(): JSX.Element {
 
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_LOGIN_KEY as string;
 
-  // 요청 성공 시
   const responseGoogle = (response: any) => {
     setGoogleIdToken(response.tokenObj.id_token);
-    console.log('GoogleLogin response: ', response);
   };
 
-  // google id token 값을 받았을 때만 실행
   useEffect(() => {
     if (googleIdToken !== null) {
-      console.log('googleIdToken:::', googleIdToken);
       const config = { headers: { authorization: `Bearer ${googleIdToken}` } };
       server
         .post('/users/google/signin', null, config)
         .then((response) => {
-          console.log('google respose.data:::', response.data);
-
           const {
             _id: id,
             accessToken,
@@ -64,7 +58,6 @@ function GoogleSignin(): JSX.Element {
         })
         .catch((err) => {
           if (!err.response) {
-            console.log(err);
             return;
           }
           const { message } = err.response.data;
@@ -104,7 +97,7 @@ function GoogleSignin(): JSX.Element {
         )}
         buttonText="Login"
         onSuccess={(result) => responseGoogle(result)}
-        onFailure={(result) => console.log('failure', result)}
+        onFailure={(result) => result}
         cookiePolicy="single_host_origin"
       />
 

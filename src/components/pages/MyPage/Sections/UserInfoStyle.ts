@@ -1,28 +1,7 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { ReactComponent as ModifySvg } from '../../../../images/edit.svg';
 import { SSBUTTON } from '../../../../styles/Buttons';
 import Withdrawal from '../../SigninPage/Withdrawal';
-// const showModal = keyframes//`
-
-//    ${'0%'} {
-//     transform: translateY(0) translateZ(0) rotateX(0);
-//     transform-origin: 50% 100%;
-//   }
-//   ${'100%'} {
-//     transform: translateY(100%) translateZ(100px) rotateX(180deg);
-//     transform-origin: 50% 0%;
-//   }
-
-//   ${'0%'}{
-//     transform: translateY(0) translateZ(0) rotateX(0);
-//     transform-origin: 50% 0%;
-//   }
-//   ${'100%'}{
-//     transform: translateY(-100%) translateZ(100px) rotateX(-180deg);
-//     transform-origin: 50% 100%;
-//   }
-
-// `;
 
 export const USERINFO = styled.div`
   grid-column: 1/3;
@@ -31,13 +10,10 @@ export const USERINFO = styled.div`
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 2%;
-
   border-radius: 0.2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: relative;
   overflow: hidden;
-  /* min-width: 261px; */
-
   transition: all 0.2s ease-in-out;
   &:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -48,8 +24,6 @@ export const USERINFO = styled.div`
     grid-column: 2/6;
     grid-row: 2/11;
     padding: 1vw;
-
-    /* min-width: 352px; */
   }
   @media screen and (max-width: 540px) {
     grid-row: 3/10;
@@ -67,8 +41,6 @@ export const HELLO = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.xxl};
   color: #4c4c4c;
   font-weight: bold;
-  /* white-space: nowrap; */
-
   @media screen and (max-width: 540px) {
     font-size: 1rem;
   }
@@ -102,7 +74,6 @@ export const INFO = styled.div`
   width: 100%;
 `;
 
-// ------------PROFILE_BOX 안 ----------------//
 export const WRAPIMG = styled.div`
   height: 10vw;
   width: 10vw;
@@ -147,7 +118,7 @@ export const NICKNAME_INPUT = styled.input`
   width: 9rem;
   height: 25px;
 
-  ${(props) => props.disabled && 'margin-bottom:19px;'} // modifyBox만큼 미리 마진을줘서 수정할때 위치안변하게
+  ${(props) => props.disabled && 'margin-bottom:19px;'}
 
   @media screen and (max-width: 540px) {
     font-size: ${({ theme }) => theme.fontSizes.base};
@@ -162,7 +133,6 @@ export const MODIFY_BUTTON = styled(ModifySvg)`
   top: 26%;
   right: 0;
   transform: translateY(-50%);
-
   &:hover {
     fill: #fa697c;
   }
@@ -197,7 +167,6 @@ export const MODIFY_ESC_BUTTON = styled.div`
   transform: translateY(-50%);
 `;
 
-// -------------------INFO 안---------------//
 export const EMAIL = styled.div`
   display: flex;
   justify-content: center;
@@ -221,7 +190,6 @@ export const WITHDRAWAL_BUTTON = styled(Withdrawal)`
   all: unset;
 `;
 
-// ----------------모바일 용 버튼 ----------------- //
 export const MOBILE_BUTTON = styled.div`
   display: none;
 

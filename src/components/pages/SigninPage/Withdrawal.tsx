@@ -23,7 +23,6 @@ function Withdrawal(): JSX.Element {
   const [withdrawalURL, setWithdrawalURL] = useState('');
   const [config, setConfig] = useState<{ data: { nickname: string } }>();
 
-  // 유저정보가 갱신될때마다 서버에 요청할 URL과 config를 갱신시킨다.
   useEffect(() => {
     if (!userInfo) {
       return;
@@ -36,9 +35,6 @@ function Withdrawal(): JSX.Element {
     }
   }, [userInfo]);
 
-  // TODO:로그인토큰이 만료되면 회원탈퇴가 안된다. 갱신하려면 refreshToken 이필요하기때문. 로그인 할때 리덕스에 저장해서 재발급받는 방식으로 리팩토링하자.
-
-  // 실제 실행함수는 utils/modal.tsx에서 확인
   const handleKakaoWithdrawal = () => {
     dispatch(
       openModal({

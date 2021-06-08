@@ -65,8 +65,6 @@ export const GO_TO_REVIEW = styled.div`
   }
 `;
 
-// -----------모바일 버튼 -------------- //
-
 export const MOBILE_ESC = styled.div<{ showPurchase: boolean }>`
   display: none;
   position: absolute;

@@ -15,7 +15,6 @@ const showModal = keyframes`
 export const SELLINGLIST = styled.div<{ showSell: boolean }>`
   grid-column: 3/5;
   grid-row: 2/11;
-
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -24,8 +23,6 @@ export const SELLINGLIST = styled.div<{ showSell: boolean }>`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: relative;
   overflow: hidden;
-  /* min-width: 261px; */
-
   transition: all 0.2s ease-in-out;
   &:hover {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -36,7 +33,6 @@ export const SELLINGLIST = styled.div<{ showSell: boolean }>`
     display: none;
     z-index: 5;
     animation: ${showModal} 0.5s forwards;
-
     ${({ showSell }) =>
       showSell &&
       css`
@@ -57,8 +53,6 @@ export const HEADER = styled.header`
   width: 100%;
   flex: 1;
   ${({ theme }) => theme.common.flexCenter};
-  /* background-color: ${({ theme }) => theme.colors.middlepurple}; */
-  // border-bottom: 5px solid rgba(0, 0, 0, 0.1);
   font-weight: 600;
   padding: 0 1vw;
   min-height: 3rem;
@@ -77,13 +71,11 @@ export const LIST = styled.div`
   overflow: hidden;
   overflow-y: auto;
   width: 100%;
-  // padding: 0.5vw;
 `;
 
 export const ITEM = styled(Link)`
   display: flex;
   justify-content: space-between;
-  /* border: 1px solid; */
   width: 100%;
   height: auto;
   min-height: 72px;
@@ -123,8 +115,6 @@ export const TITLE = styled.div`
 export const PRICE = styled.div`
   color: grey;
 `;
-
-// -----------모바일 버튼 -------------- //
 
 export const MOBILE_ESC = styled.div<{ showSell: boolean }>`
   display: none;

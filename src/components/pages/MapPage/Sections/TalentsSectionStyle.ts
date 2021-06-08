@@ -1,14 +1,11 @@
 import styled from 'styled-components';
 
 export const CONTAINER = styled.div`
-  // grid-column: 5/7;
   width: 370px;
-  // border: 1px solid;
   z-index: 2;
   margin-left: auto;
   display: flex;
   flex-direction: column;
-  // justify-content: space-between;
   font-size: 0.9rem;
   @media screen and (max-width: 768px) {
     display: none;
@@ -22,19 +19,13 @@ export const FILTERSECTION = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-
-  // box-shadow: 1px 1px 3px 1px #dadce0;
 `;
 
 export const CHECKBOX = styled.div`
-  // max-width: 640px;
   border-bottom: 2px solid ${({ theme }) => theme.colors.lightgray};
-  // padding: 0 1rem 1rem 1rem;
-  //  height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  //  border: 1px solid;
   height: 60%;
   padding: 0 1rem;
 `;
@@ -45,9 +36,6 @@ export const CHECKBOX_SPAN = styled.span`
 
 export const UL = styled.ul`
   list-style: none;
-  // padding: 20px;
-
-  // max-width: 600px;
 `;
 
 export const LI = styled.li`
@@ -102,20 +90,12 @@ export const RADIOBOX_SPAN = styled.span`
 `;
 
 export const RADIODIV = styled.div`
-  // width: 100%;
-  // max-width: 600px;
-  // margin: 2rem auto;
   background: white;
-  // border: 1px solid;
   border-radius: 3px;
   text-align: left;
   display: inline;
-  // flex-direction: column;
-  // justify-content: space-evenly;
-  // padding: 1rem 1rem 0 1rem;
 `;
 export const RADIOLABEL = styled(LABEL)`
-  // color: #adadad;
   border-radius: 5px;
 `;
 
@@ -136,7 +116,7 @@ export const RADIOINPUT = styled.input`
 export const TALENTSLIST = styled.div`
   height: 70vh;
   border-top: 1.5px solid rgba(0, 0, 0, 0.09);
-  overflow: auto; // 내용이 넘칠 때 스크롤바 생김.
+  overflow: auto;
 `;
 
 export const TALENT = styled.div`
@@ -159,7 +139,6 @@ export const CATEGORY = styled.div`
   height: 12vh;
   text-align: center;
   line-height: 11vh;
-  //border: 1px solid;
   margin-left: 0.5rem;
 `;
 
