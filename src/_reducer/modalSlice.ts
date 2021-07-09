@@ -13,6 +13,7 @@ export interface OpenPayload {
   text: string;
   callbackName?: 'goToRoot' | 'googleWithdrawal' | 'kakaoWithdrawal' | 'renewPage';
   callbackData?: any;
+  callback?: any;
 }
 
 const initialState: ModalState = {
@@ -33,9 +34,14 @@ export const modalSlice = createSlice({
     closeModal: () => {
       return initialState;
     },
+
+    // clickConfirm이 dispatch되면 openModal의 callback함수가 실행된다.
+    clickConfirm: () => {
+      return initialState;
+    },
   },
 });
 
-export const { openModal, closeModal } = modalSlice.actions;
+export const { openModal, closeModal, clickConfirm } = modalSlice.actions;
 
 export default modalSlice.reducer;

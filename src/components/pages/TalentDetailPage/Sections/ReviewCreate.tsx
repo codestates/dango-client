@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { updateReview } from '../../../../_reducer/user';
-import { openModal } from '../../../../_reducer/modal';
+import { openModal } from '../../../../_reducer/modalSlice';
 import { REVIEWCREATE, STARDIV, TEXTAREA, BUTTONDIV } from './ReviewStyle';
 import StarScore from './StarScore';
 import getToday from '../../../../utils/getToday';

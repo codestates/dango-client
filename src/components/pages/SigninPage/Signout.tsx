@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GoogleLogout } from 'react-google-login';
 import { IoIosLogOut } from 'react-icons/io';
 import { signout } from '../../../_reducer/user';
-import { openModal } from '../../../_reducer/modal';
+import { openModal } from '../../../_reducer/modalSlice';
 import { RootState } from '../../../_reducer';
 import server from '../../../api';
 
@@ -40,8 +40,11 @@ function Signout({ show }: { show: boolean }): JSX.Element {
   };
 
   const handleGoogleSignout = () => {
+    const callback = () => {
+      console.log('콜백함수실행');
+    };
     dispatch(signout());
-    dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.', callbackName: 'renewPage' }));
+    dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.', callback }));
   };
 
   return (

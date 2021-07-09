@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import server from '../api';
 import { RootState } from '../_reducer';
-import { openModal, closeModal } from '../_reducer/modal';
+import { openModal, closeModal, clickConfirm } from '../_reducer/modalSlice';
 import { signout } from '../_reducer/user';
 import { ReactComponent as CrossSvg } from '../images/cross.svg';
 import { ReactComponent as CheckSvg } from '../images/check.svg';
@@ -24,7 +24,8 @@ export default function Modal(): JSX.Element {
 
   // 모달종류와 상관없이 확인을 누르면 실행되는 함수
   const okCallback = () => {
-    dispatch(closeModal());
+    dispatch(clickConfirm());
+
     if (callbackName) {
       // OK클릭시 실행할 콜백들 작성
       if (callbackName === 'googleWithdrawal') {

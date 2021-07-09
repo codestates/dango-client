@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { ChatInfo } from './ChattingRoom';
 import { RootState } from '../../../../_reducer';
-import { openModal } from '../../../../_reducer/modal';
+import { openModal } from '../../../../_reducer/modalSlice';
 import { escapeRoom } from '../../../../_reducer/user';
 import server from '../../../../api';
 import { CHATTINGOPTION, COMPLETEBTN, COMPLETED, ESCAPEBTN, CHATLISTBTN } from './ChattingOptionStyle';

@@ -6,7 +6,7 @@ import { RootState } from '../../../_reducer';
 import { postTalentData, TalentState } from '../../../_reducer/talent';
 import { updateChatRooms, UpdateChatRoomsPayload } from '../../../_reducer/user';
 import { setIsFirstChat } from '../../../_reducer/chattings';
-import { openModal } from '../../../_reducer/modal';
+import { openModal } from '../../../_reducer/modalSlice';
 import Loading from '../LandingPage/Sections/Loading';
 import server from '../../../api';
 import {

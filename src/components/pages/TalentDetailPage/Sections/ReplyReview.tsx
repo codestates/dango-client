@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { updateReply } from '../../../../_reducer/talent';
-import { openModal } from '../../../../_reducer/modal';
+import { openModal } from '../../../../_reducer/modalSlice';
 import getToday from '../../../../utils/getToday';
 import server from '../../../../api';
 import { REPLYTEXTAREA, FORM, REPLYBUTTONDIV } from './ReviewStyle';
