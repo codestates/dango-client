@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import server from '../../../api/index';
 import { RootState } from '../../../_reducer';
-import { openModal } from '../../../_reducer/modal';
+import { openModal } from '../../../_reducer/modalSlice';
 import ImageUploader from './Sections/imageUploader';
 import LocationSearch from './Sections/LocationSearch';
 import Modal from '../../../utils/modal';

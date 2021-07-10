@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { RootState } from '../../../../_reducer';
 import { modifyNickname } from '../../../../_reducer/user';
-import { openModal } from '../../../../_reducer/modal';
+import { openModal } from '../../../../_reducer/modalSlice';
 import Withdrawal from '../../SigninPage/Withdrawal';
 import server from '../../../../api';
 import validateNickname from '../../../../utils/validateNickname';

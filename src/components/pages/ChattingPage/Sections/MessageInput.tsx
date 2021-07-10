@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { ReactComponent as SendSvg } from '../../../../images/chatSend.svg';
-import { openModal } from '../../../../_reducer/modal';
+import { openModal } from '../../../../_reducer/modalSlice';
 
 const INPUTDIV = styled.div`
   display: flex;

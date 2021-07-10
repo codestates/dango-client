@@ -173,6 +173,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
               setLastChat={setLastChat}
               showChatList={showChatList}
               setShowChatList={setShowChatList}
+              setClickedRoom={setClickedRoom}
               connectSocket={connectSocket}
             />
           )}

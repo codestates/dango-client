@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GoogleLogout } from 'react-google-login';
 import { IoIosLogOut } from 'react-icons/io';
 import { signout } from '../../../_reducer/user';
-import { openModal } from '../../../_reducer/modal';
+import { openModal } from '../../../_reducer/modalSlice';
 import { RootState } from '../../../_reducer';
 import server from '../../../api';
 
