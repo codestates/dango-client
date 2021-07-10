@@ -40,11 +40,8 @@ function Signout({ show }: { show: boolean }): JSX.Element {
   };
 
   const handleGoogleSignout = () => {
-    const callback = () => {
-      console.log('콜백함수실행');
-    };
     dispatch(signout());
-    dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.', callback }));
+    dispatch(openModal({ type: 'ok', text: '로그아웃되었습니다.', callbackName: 'renewPage' }));
   };
 
   return (
