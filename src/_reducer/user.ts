@@ -1,5 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export interface ChatRoomsInfo {
+  talentId: string;
+  roomId: string;
+  count: number;
+  otherId: string;
+  otherNickname: string;
+  profileImage: string;
+  clickPurchase: boolean[];
+  otherIsJoined: boolean;
+}
+
 export interface UserState {
   userInfo: {
     id: string;
@@ -7,11 +18,11 @@ export interface UserState {
     nickname: string;
     image: string | undefined;
     email: string | undefined;
-    selling: any;
-    buying: any;
-    unreviewed: any;
-    reviewed: any;
-    chatRooms: any;
+    selling?: string[];
+    buying?: string[];
+    unreviewed?: string[];
+    reviewed?: string[];
+    chatRooms?: ChatRoomsInfo[] | undefined;
   } | null;
   accessToken: string | null;
   isSignin?: boolean;
@@ -67,10 +78,10 @@ export const userSlice = createSlice({
 
     updateReview: (state, action: PayloadAction<UpdateReviewPayload>) => {
       const { talentId } = action.payload;
-      if (state.userInfo) {
+      if (state.userInfo?.unreviewed) {
         const index = state.userInfo.unreviewed.indexOf(talentId);
-        state.userInfo.unreviewed.splice(index, 1);
-        state.userInfo.reviewed.push(talentId);
+        state.userInfo.unreviewed?.splice(index, 1);
+        state.userInfo.reviewed?.push(talentId);
       }
     },
 
@@ -81,7 +92,7 @@ export const userSlice = createSlice({
     },
 
     updateChatRooms: (state, action: PayloadAction<UpdateChatRoomsPayload>) => {
-      if (state.userInfo) {
+      if (state.userInfo?.chatRooms) {
         state.userInfo.chatRooms.push(action.payload.chatRooms);
       }
     },
@@ -95,7 +106,7 @@ export const userSlice = createSlice({
       // 거래완료버튼을 눌렀을때 서버에서 confirmed를 boolean값으로 준다.
 
       const { roomId, who, talentId } = action.payload;
-      if (state.userInfo) {
+      if (state.userInfo?.chatRooms && state.userInfo?.buying && state.userInfo?.unreviewed) {
         const roomIndex = state.userInfo.chatRooms.findIndex((room: any) => room.roomId === roomId);
 
         const { clickPurchase } = state.userInfo.chatRooms[roomIndex];
@@ -116,7 +127,7 @@ export const userSlice = createSlice({
 
     escapeRoom: (state, action: PayloadAction<{ talentId: string }>) => {
       const { talentId } = action.payload;
-      if (state.userInfo) {
+      if (state.userInfo?.buying && state.userInfo?.chatRooms) {
         const buyingIndex = state.userInfo.buying.indexOf(talentId);
         state.userInfo.buying.splice(buyingIndex, 1);
 
@@ -126,7 +137,7 @@ export const userSlice = createSlice({
     },
     initCount: (state, action: PayloadAction<{ index: number }>) => {
       const { index } = action.payload;
-      if (state.userInfo) {
+      if (state.userInfo?.chatRooms) {
         state.userInfo.chatRooms[index].count = 0;
       }
     },

@@ -85,7 +85,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
         if (userInfo) {
           if (res.data.userInfo._id === userInfo.id) {
             userRole = 'seller';
-          } else if (userInfo.unreviewed.indexOf(talentId) !== -1) {
+          } else if (userInfo.unreviewed?.indexOf(talentId) !== -1) {
             userRole = 'reviewer';
           }
         }
