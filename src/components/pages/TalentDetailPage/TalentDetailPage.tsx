@@ -90,7 +90,7 @@ function TalentDetailPage({ connectSocket }: Props): JSX.Element {
             userRole = 'seller';
 
             // 유저의 unreviewed 에 해당 글의 id가있으면 리뷰작성가능자
-          } else if (userInfo.unreviewed.indexOf(talentId) !== -1) {
+          } else if (userInfo.unreviewed?.indexOf(talentId) !== -1) {
             userRole = 'reviewer';
           }
         }
