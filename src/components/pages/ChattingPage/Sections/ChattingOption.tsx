@@ -1,10 +1,8 @@
-import React, { useState, useEffect, SetStateAction } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
 import { ChatInfo } from './ChattingRoom';
-import { RootState } from '../../../../_reducer';
-import { openModal } from '../../../../_reducer/modal';
+import { openModal } from '../../../../_reducer/modalSlice';
 import { escapeRoom } from '../../../../_reducer/user';
 import server from '../../../../api';
 import { CHATTINGOPTION, COMPLETEBTN, COMPLETED, ESCAPEBTN, CHATLISTBTN } from './ChattingOptionStyle';
@@ -22,6 +20,7 @@ interface ChattingOptionProps {
   setLastChat: (lastChat: ChatInfo) => void;
   showChatList: boolean;
   setShowChatList: (boolean: boolean) => void;
+  setClickedRoom: (index: number) => void;
   connectSocket: any;
 }
 
@@ -31,6 +30,7 @@ export default function ChattingOption({
   setLastChat,
   showChatList,
   setShowChatList,
+  setClickedRoom,
   connectSocket,
 }: ChattingOptionProps): JSX.Element {
   const dispatch = useDispatch();
@@ -66,6 +66,7 @@ export default function ChattingOption({
         if (roomInfo?.talentId) {
           dispatch(escapeRoom({ talentId: roomInfo.talentId }));
         }
+        setClickedRoom(-1);
         dispatch(openModal({ type: 'ok', text: '채팅방 나가기 완료' }));
       })
       .catch((err) => {
@@ -93,7 +94,11 @@ export default function ChattingOption({
     <CHATTINGOPTION>
       <CHATLISTBTN onClick={() => setShowChatList(!showChatList)} />
       {roomInfo && checkPurchase()}
-      <ESCAPEBTN onClick={handleEscape} />
+      <ESCAPEBTN
+        onClick={() =>
+          dispatch(openModal({ type: 'danger', text: '채팅방을 나가시겠습니까?', callback: handleEscape }))
+        }
+      />
     </CHATTINGOPTION>
   );
 }

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { IoIosClose } from 'react-icons/io';
 import server from '../../../api';
 import { signin, UserState } from '../../../_reducer/user';
-import { openModal } from '../../../_reducer/modal';
+import { openModal } from '../../../_reducer/modalSlice';
 import validateNickname from '../../../utils/validateNickname';
 
 import {

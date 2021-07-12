@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { RootState } from '../../../_reducer';
-import { openModal } from '../../../_reducer/modal';
+import { openModal } from '../../../_reducer/modalSlice';
 
 const WITHDRAWAL_BUTTON = styled.button`
   all: unset;
