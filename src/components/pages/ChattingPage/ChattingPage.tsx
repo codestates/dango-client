@@ -74,17 +74,17 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   const [showChatList, setShowChatList] = useState<boolean>(false);
   const [clickedRoom, setClickedRoom] = useState<number>(-1);
 
-  const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
-  const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
-  const talentIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.talentId);
+  const roomIdList = userInfo?.chatRooms?.map((chatRoom: RoomType) => chatRoom.roomId);
+  const otherList = userInfo?.chatRooms?.map((chatRoom: RoomType) => chatRoom.otherId);
+  const talentIdList = userInfo?.chatRooms?.map((chatRoom: RoomType) => chatRoom.talentId);
 
   useEffect(() => {
     if (isFromDetail) {
-      if (isFirstChat) {
+      if (isFirstChat && otherList && roomIdList) {
         setCurOtherId(otherList[otherList.length - 1]);
         setCurRoomId(roomIdList[roomIdList.length - 1]);
         dispatch(setIsFirstChat({ isFromDetail: false, isFirstChat: false, talentId }));
-      } else {
+      } else if (talentIdList && otherList && roomIdList) {
         const chatIndex = talentIdList.indexOf(talentId);
         setCurOtherId(otherList[chatIndex]);
         setCurRoomId(roomIdList[chatIndex]);
@@ -108,7 +108,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   }, [curRoomId]);
 
   const getRoomInfo = () => {
-    const currentRoomInfo = userInfo?.chatRooms.find((room: RoomType) => room.roomId === curRoomId);
+    const currentRoomInfo = userInfo?.chatRooms?.find((room: RoomType) => room.roomId === curRoomId);
     if (currentRoomInfo) {
       return {
         userId: userInfo?.id,
@@ -123,12 +123,14 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   };
 
   const changeRoom = (index: number): void => {
-    setCurOtherId(otherList[index]);
-    setCurRoomId(roomIdList[index]);
-    setShowChatList(false);
-    setClickedRoom(index);
-    dispatch(initCount({ index }));
-    setLastChat(null);
+    if (otherList && roomIdList) {
+      setCurOtherId(otherList[index]);
+      setCurRoomId(roomIdList[index]);
+      setShowChatList(false);
+      setClickedRoom(index);
+      dispatch(initCount({ index }));
+      setLastChat(null);
+    }
   };
 
   return (
@@ -143,7 +145,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
             </CHATLISTESC>
           </CHATLISTTITLE>
           {!userInfo && <USER clicked={false}>로그인이 필요한 서비스입니다.</USER>}
-          {userInfo?.chatRooms.length === 0 && (
+          {userInfo?.chatRooms?.length === 0 && (
             <USER clicked={false} style={{ textAlign: 'center' }}>
               현재 참여하고 계신 채팅방이 없습니다! <br />
               <br />

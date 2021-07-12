@@ -54,7 +54,7 @@ function App(): JSX.Element {
 
     connect.emit(
       'joinroom',
-      chatRooms.map((chatRoom: any) => chatRoom.otherId),
+      chatRooms?.map((chatRoom: any) => chatRoom.otherId),
     );
     connect.on('hasjoined', (data: any) => {
       data;
