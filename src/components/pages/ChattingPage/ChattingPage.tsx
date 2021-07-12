@@ -74,19 +74,19 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   const [showChatList, setShowChatList] = useState<boolean>(false);
   const [clickedRoom, setClickedRoom] = useState<number>(-1);
 
-  const roomIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.roomId);
-  const otherList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.otherId);
-  const talentIdList = userInfo?.chatRooms.map((chatRoom: RoomType) => chatRoom.talentId);
+  const roomIdList = userInfo?.chatRooms?.map((chatRoom: RoomType) => chatRoom.roomId);
+  const otherList = userInfo?.chatRooms?.map((chatRoom: RoomType) => chatRoom.otherId);
+  const talentIdList = userInfo?.chatRooms?.map((chatRoom: RoomType) => chatRoom.talentId);
 
   useEffect(() => {
     // 상세페이지에서 [채팅으로 거래하기] 버튼을 통해 들어온 경우
     if (isFromDetail) {
       // 첫 채팅일 경우, 채팅방을 바로 열어주고 isFirstChat 변경
-      if (isFirstChat) {
+      if (isFirstChat && otherList && roomIdList) {
         setCurOtherId(otherList[otherList.length - 1]);
         setCurRoomId(roomIdList[roomIdList.length - 1]);
         dispatch(setIsFirstChat({ isFromDetail: false, isFirstChat: false, talentId }));
-      } else {
+      } else if (talentIdList && otherList && roomIdList) {
         // 기존 채팅방이 있으면, 그 채팅방을 열어준다.
         // chatRooms에서 해당 talentId에 해당하는 인덱스를 알아내서 roomID를 찾는다.
         const chatIndex = talentIdList.indexOf(talentId);
@@ -119,7 +119,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   }, [curRoomId]);
 
   const getRoomInfo = () => {
-    const currentRoomInfo = userInfo?.chatRooms.find((room: RoomType) => room.roomId === curRoomId);
+    const currentRoomInfo = userInfo?.chatRooms?.find((room: RoomType) => room.roomId === curRoomId);
     if (currentRoomInfo) {
       return {
         userId: userInfo?.id,
@@ -134,14 +134,16 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
   };
 
   const changeRoom = (index: number): void => {
-    setCurOtherId(otherList[index]);
-    setCurRoomId(roomIdList[index]);
-    setShowChatList(false);
-    setClickedRoom(index);
-    // 채팅방에 들어가면 안 읽은 메시지 수를 0으로 만들어준다.
-    dispatch(initCount({ index }));
-    // 실시간으로 갱신되던 lastChat도 초기화시켜준다. (서버에서 불러와서 render에 저장해서 렌더할꺼기때문에 냅두면 겹친다.)
-    setLastChat(null);
+    if (otherList && roomIdList) {
+      setCurOtherId(otherList[index]);
+      setCurRoomId(roomIdList[index]);
+      setShowChatList(false);
+      setClickedRoom(index);
+      // 채팅방에 들어가면 안 읽은 메시지 수를 0으로 만들어준다.
+      dispatch(initCount({ index }));
+      // 실시간으로 갱신되던 lastChat도 초기화시켜준다. (서버에서 불러와서 render에 저장해서 렌더할꺼기때문에 냅두면 겹친다.)
+      setLastChat(null);
+    }
   };
 
   return (
@@ -156,7 +158,7 @@ function ChattingPage({ connectSocket, lastChat, setLastChat }: Props): JSX.Elem
             </CHATLISTESC>
           </CHATLISTTITLE>
           {!userInfo && <USER clicked={false}>로그인이 필요한 서비스입니다.</USER>}
-          {userInfo?.chatRooms.length === 0 && (
+          {userInfo?.chatRooms?.length === 0 && (
             <USER clicked={false} style={{ textAlign: 'center' }}>
               현재 참여하고 계신 채팅방이 없습니다! <br />
               <br />
