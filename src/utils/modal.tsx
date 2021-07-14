@@ -28,11 +28,7 @@ export default function Modal(): JSX.Element {
 
     if (callbackName) {
       // OK클릭시 실행할 콜백들 작성
-      if (callbackName === 'googleWithdrawal') {
-        googleWithdrawal();
-      } else if (callbackName === 'kakaoWithdrawal') {
-        kakaoWithdrawal();
-      } else if (callbackName === 'renewPage') {
+      if (callbackName === 'renewPage') {
         window.location.reload();
       } else if (callbackName === 'goToRoot') {
         history.push('/');
@@ -50,37 +46,6 @@ export default function Modal(): JSX.Element {
         history.push('/');
       }
     }
-  };
-
-  // callbackName === 'googleWithdrawal'
-  const googleWithdrawal = () => {
-    server
-      .delete(callbackData.withdrawalURL, callbackData.config)
-      .then(() => {
-        dispatch(signout());
-        dispatch(openModal({ type: 'ok', text: '회원탈퇴가 완료되었습니다.', callbackName: 'goToRoot' }));
-      })
-      .catch((err) => {
-        if (!err.response) {
-          console.log(err);
-          return;
-        }
-        dispatch(openModal({ type: 'error', text: err.response.data.message }));
-      });
-  };
-
-  // callbackName === 'kakaoWithdrawal'
-  const kakaoWithdrawal = () => {
-    const { Kakao } = window;
-    Kakao.API.request({
-      url: '/v1/user/unlink',
-      success: function () {
-        googleWithdrawal();
-      },
-      fail: function (err: any) {
-        console.log(err);
-      },
-    });
   };
 
   return (

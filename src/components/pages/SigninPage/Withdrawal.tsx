@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import server from '../../../api';
 import { RootState } from '../../../_reducer';
+import { signout } from '../../../_reducer/user';
 import { openModal } from '../../../_reducer/modalSlice';
 
 const WITHDRAWAL_BUTTON = styled.button`
@@ -18,6 +21,7 @@ const WITHDRAWAL_BUTTON = styled.button`
 `;
 
 function Withdrawal(): JSX.Element {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.user, shallowEqual);
   const [withdrawalURL, setWithdrawalURL] = useState('');
@@ -35,13 +39,41 @@ function Withdrawal(): JSX.Element {
     }
   }, [userInfo]);
 
+  const withdrawal = () => {
+    const goToRoot = () => {
+      history.push('/');
+    };
+    server
+      .delete(withdrawalURL, config)
+      .then(() => {
+        dispatch(signout());
+        dispatch(openModal({ type: 'ok', text: '회원탈퇴가 완료되었습니다.', onConfirm: goToRoot }));
+      })
+      .catch((err) => {
+        if (!err.response) {
+          console.log(err);
+          return;
+        }
+        dispatch(openModal({ type: 'error', text: err.response.data.message }));
+      });
+  };
+
   const handleKakaoWithdrawal = () => {
+    const confirmCallback = () => {
+      const { Kakao } = window;
+      Kakao.API.request({
+        url: '/v1/user/unlink',
+        success: withdrawal,
+        fail: function (err: any) {
+          console.log(err);
+        },
+      });
+    };
     dispatch(
       openModal({
         type: 'danger',
         text: '정말 탈퇴하시겠습니까? 😢',
-        callbackName: 'kakaoWithdrawal',
-        callbackData: { config, withdrawalURL },
+        onConfirm: confirmCallback,
       }),
     );
   };
@@ -51,8 +83,7 @@ function Withdrawal(): JSX.Element {
       openModal({
         type: 'danger',
         text: '정말 탈퇴하시겠습니까? 😢',
-        callbackName: 'googleWithdrawal',
-        callbackData: { config, withdrawalURL },
+        onConfirm: withdrawal,
       }),
     );
   };
