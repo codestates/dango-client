@@ -51,30 +51,34 @@ export default function ChattingOption({
   };
 
   const handleEscape = () => {
-    const config = {
-      data: {
-        userId: roomInfo?.userId,
-        otherId: roomInfo?.otherId,
-        chatRoomId: roomInfo?.chatRoomId,
-      },
+    const onConfirmCallback = () => {
+      const config = {
+        data: {
+          userId: roomInfo?.userId,
+          otherId: roomInfo?.otherId,
+          chatRoomId: roomInfo?.chatRoomId,
+        },
+      };
+      server
+        .delete('/chats/delete', config)
+        .then(() => setCurRoomId(''))
+        .then(() => {
+          connectSocket.emit('initChat', roomInfo?.otherId, roomInfo?.chatRoomId, true);
+          if (roomInfo?.talentId) {
+            dispatch(escapeRoom({ talentId: roomInfo.talentId }));
+          }
+          setClickedRoom(-1);
+          dispatch(openModal({ type: 'ok', text: '채팅방 나가기 완료' }));
+        })
+        .catch((err) => {
+          if (!err.response) {
+            return;
+          }
+          dispatch(openModal({ type: 'error', text: err.response.data.message }));
+        });
     };
-    server
-      .delete('/chats/delete', config)
-      .then(() => setCurRoomId(''))
-      .then(() => {
-        connectSocket.emit('initChat', roomInfo?.otherId, roomInfo?.chatRoomId, true);
-        if (roomInfo?.talentId) {
-          dispatch(escapeRoom({ talentId: roomInfo.talentId }));
-        }
-        setClickedRoom(-1);
-        dispatch(openModal({ type: 'ok', text: '채팅방 나가기 완료' }));
-      })
-      .catch((err) => {
-        if (!err.response) {
-          return;
-        }
-        dispatch(openModal({ type: 'error', text: err.response.data.message }));
-      });
+
+    dispatch(openModal({ type: 'danger', text: '채팅방을 나가시겠습니까?', onConfirm: onConfirmCallback }));
   };
 
   const checkPurchase = () => {
@@ -94,11 +98,7 @@ export default function ChattingOption({
     <CHATTINGOPTION>
       <CHATLISTBTN onClick={() => setShowChatList(!showChatList)} />
       {roomInfo && checkPurchase()}
-      <ESCAPEBTN
-        onClick={() =>
-          dispatch(openModal({ type: 'danger', text: '채팅방을 나가시겠습니까?', callback: handleEscape }))
-        }
-      />
+      <ESCAPEBTN onClick={handleEscape} />
     </CHATTINGOPTION>
   );
 }
