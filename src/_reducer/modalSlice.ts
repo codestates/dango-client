@@ -13,7 +13,8 @@ export interface OpenPayload {
   text: string;
   callbackName?: 'goToRoot' | 'googleWithdrawal' | 'kakaoWithdrawal' | 'renewPage';
   callbackData?: any;
-  callback?: any;
+  onConfirm?: any;
+  onCancle?: any;
 }
 
 const initialState: ModalState = {
