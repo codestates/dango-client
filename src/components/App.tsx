@@ -17,7 +17,7 @@ import Mypage from './pages/MyPage/MyPage';
 import theme from '../styles/theme';
 import Navbar from './pages/LandingPage/Sections/Navbar';
 import SigninModal from './pages/SigninPage/SigninModal';
-import LandingPage from './pages/LandingPage/LandingPage';
+import NewLandingPage from './pages/LandingPage/NewLandingPage';
 
 interface ChatInfo {
   createdAt: string;
@@ -95,7 +95,7 @@ function App(): JSX.Element {
           <div className="App">
             <Navbar />
             <Switch>
-              <Route path="/" exact component={LandingPage} />
+              <Route path="/" exact component={NewLandingPage} />
               <Route path="/signin" component={SigninModal} />
               <Route path="/map" component={MapPage} />
               <Route
