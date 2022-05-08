@@ -40,4 +40,4 @@ DANGO는 누구나 재능을 가지고 있다는 생각에서 출발했습니다
  
 ## 배포 링크
  
-[DANGO](https://dango.kr)
+[DANGO](https://dango-e2ef5.web.app/)
